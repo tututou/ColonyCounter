@@ -1,0 +1,42 @@
+﻿Revert "Merge pull request #2 from zceaton/Front-End"
+
+This reverts commit 122fc5e0ff729996e677dbfaa7a31e30d3df88f2, reversing
+changes made to bddf61be523668f9f05a10a96b0c8a1f0a7bb3e0.
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	new file:   .gitignore
+#	deleted:    Front-End/Angular-JS/.bowerrc
+#	deleted:    Front-End/Angular-JS/.gitignore
+#	deleted:    Front-End/Angular-JS/.jshintrc
+#	deleted:    Front-End/Angular-JS/.travis.yml
+#	deleted:    Front-End/Angular-JS/LICENSE
+#	deleted:    Front-End/Angular-JS/README.md
+#	deleted:    Front-End/Angular-JS/app/app.css
+#	deleted:    Front-End/Angular-JS/app/app.js
+#	deleted:    Front-End/Angular-JS/app/components/version/interpolate-filter.js
+#	deleted:    Front-End/Angular-JS/app/components/version/interpolate-filter_test.js
+#	deleted:    Front-End/Angular-JS/app/components/version/version-directive.js
+#	deleted:    Front-End/Angular-JS/app/components/version/version-directive_test.js
+#	deleted:    Front-End/Angular-JS/app/components/version/version.js
+#	deleted:    Front-End/Angular-JS/app/components/version/version_test.js
+#	deleted:    Front-End/Angular-JS/app/index-async.html
+#	deleted:    Front-End/Angular-JS/app/index.html
+#	deleted:    Front-End/Angular-JS/app/view1/view1.html
+#	deleted:    Front-End/Angular-JS/app/view1/view1.js
+#	deleted:    Front-End/Angular-JS/app/view1/view1_test.js
+#	deleted:    Front-End/Angular-JS/app/view2/view2.html
+#	deleted:    Front-End/Angular-JS/app/view2/view2.js
+#	deleted:    Front-End/Angular-JS/app/view2/view2_test.js
+#	deleted:    Front-End/Angular-JS/bower.json
+#	deleted:    Front-End/Angular-JS/e2e-tests/protractor.conf.js
+#	deleted:    Front-End/Angular-JS/e2e-tests/scenarios.js
+#	deleted:    Front-End/Angular-JS/karma.conf.js
+#	deleted:    Front-End/Angular-JS/package.json
+#	new file:   README.md
+#
+
