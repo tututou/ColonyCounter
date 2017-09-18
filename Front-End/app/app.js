@@ -1,14 +1,51 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('myApp', [
-  'ngRoute',
-  'myApp.view1',
-  'myApp.view2',
-  'myApp.version'
+angular.module('App', [
+  'ui.router',
+  'ngAnimate', 
+  'ngCookies',
+  'ngSanitize',
+  'ui.router',
+  'ngMaterial',
+  'nvd3',
+  'md.data.table',
+  'App.DashboardController',
+  'App.NavigationController',
+  'App.SidebarController'
 ]).
-config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
-  $locationProvider.hashPrefix('!');
 
-  $routeProvider.otherwise({redirectTo: '/view1'});
-}]);
+.config(function($stateProvider, $urlRouterProvider) {
+    
+    $stateProvider
+        .state('site', {
+            abstract: true,
+            views: { 
+                'navigation': {
+                    templateUrl: 'Controllers/NavigationController/NavigationController.html',
+                },
+                'content': {
+                    templateUrl: 'Controllers/DashboardController/DashboardController.html',
+                },
+                'sidebar': {
+                    templateUrl: 'Controllers/SidebarController/SidebarController.html'
+                }
+            },
+            resolve: {
+            }
+        })
+    
+        .state('site.dashboard', {
+            url: '/',
+            views: {
+                'content': {
+                    templateUrl: 'Controllers/DashboardController/DashboardController.html',
+                }
+            }
+        })
+    
+    $urlRouterProvider.otherwise('/');
+})
+.run(function(){
+
+});
