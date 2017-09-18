@@ -8,6 +8,7 @@ Front-End/app/bower_components/
 Front-End/tmp
 Front-End/.DS_Store
 Front-End/.idea
+Front-End/build
 **/*.pyc
 Back-End/__pycache__
 Back-End/**/__pycache__

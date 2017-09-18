@@ -1,7 +1,6 @@
-'use strict';
-
 // Declare app level module which depends on views, and components
 angular.module('App', [
+  'html-templates',
   'ui.router',
   'ngAnimate', 
   'ngCookies',
@@ -13,12 +12,12 @@ angular.module('App', [
   'App.DashboardController',
   'App.NavigationController',
   'App.SidebarController'
-]).
-
+])
+.controller('MainController', [ function( ) {
+}])
 .config(function($stateProvider, $urlRouterProvider) {
     
-    $stateProvider
-        .state('site', {
+    $stateProvider.state('site', {
             abstract: true,
             views: { 
                 'navigation': {
@@ -34,7 +33,6 @@ angular.module('App', [
             resolve: {
             }
         })
-    
         .state('site.dashboard', {
             url: '/',
             views: {
@@ -42,7 +40,7 @@ angular.module('App', [
                     templateUrl: 'Controllers/DashboardController/DashboardController.html',
                 }
             }
-        })
+        });
     
     $urlRouterProvider.otherwise('/');
 })
