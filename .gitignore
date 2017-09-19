@@ -1,4 +1,5 @@
 .idea/
+npm-debug.log
 Front-End/logs/*
 Front-End/!.gitkeep
 Front-End/node_modules/

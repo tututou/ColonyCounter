@@ -21,7 +21,9 @@ module.exports = {
         js: ['app/**/*.js','!app/**/*.spec.js'],
         scripts: ['scripts/*.js', 'services/*.js'],
         html: ['app/**/*.html'],
-        css: ['app/**/*.css'],
+        css: ['app/**/*.css', 'app/**/*.css'],
+        scss: ['app/**/*.scss', 'app/**/*.scss'],
+        less: ['app/**/*.less', 'app/**/*.less'],
         assets: ['assets/images/**/*']
     },
     

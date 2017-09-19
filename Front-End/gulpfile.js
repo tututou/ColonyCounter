@@ -4,6 +4,8 @@ var cdnify = require('gulp-cdnizer');
 var changed = require('gulp-changed');
 var concat = require('gulp-concat');
 var css = require('gulp-csso');
+var sass = require('gulp-sass');
+var less = require('gulp-less');
 var debug = require('gulp-debug');
 var del = require('del');
 var html2Js = require('gulp-ng-html2js');
@@ -24,8 +26,18 @@ var packageJson = require('./package.json');
 var gulpConfig = require('./gulpconfig.js');
 
 gulp.task('style', function() {
+    var lessStream = gulp.src(gulpConfig.appFiles.less)
+        .pipe(less())
+        .pipe(concat('less-files.less'));
 
-    return gulp.src(gulpConfig.appFiles.css)
+    var scssStream = gulp.src(gulpConfig.appFiles.scss)
+        .pipe(sass())
+        .pipe(concat('scss-files.scss'));
+    
+    var cssStream = gulp.src(gulpConfig.appFiles.css)
+        .pipe(concat('css-files.css'));
+
+    return merge(scssStream, lessStream, cssStream)
         .pipe(concat(packageJson.name + '-' + packageJson.version + '.css'))
         .pipe(gulp.dest(gulpConfig.buildDirectory + '/assets/css/'));
 });
@@ -128,7 +140,7 @@ gulp.task('watch', function() {
               function() { runSequence('ngHtml2Js', 'reload') });
     gulp.watch(['index.html'],
               function() { runSequence('index', 'reload') });
-    gulp.watch([gulpConfig.appFiles.css],
+    gulp.watch([gulpConfig.appFiles.css, gulpConfig.appFiles.less, gulpConfig.appFiles.scss],
               function() { runSequence('style', 'reload') });
 });
 

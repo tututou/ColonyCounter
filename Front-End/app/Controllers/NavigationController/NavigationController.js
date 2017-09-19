@@ -3,16 +3,22 @@ angular
     .controller('NavigationController', NavigationController);
 
 NavigationController.$inject = [
-	'$scope'
+	'$scope',
+	'$mdSidenav'
 ];
 
-function NavigationController( $scope ) {
+function NavigationController( $scope, $mdSidenav ) {
 
 	var vm = this;
+	vm.openSideNavPanel = openSideNavPanel;
 
 	init();
 
 	function init() {
 
 	}
+
+    function openSideNavPanel() {
+        $mdSidenav('left').open();
+    };
 }

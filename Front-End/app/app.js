@@ -15,7 +15,7 @@ angular.module('App', [
 ])
 .controller('MainController', [ function( ) {
 }])
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
     
     $stateProvider.state('site', {
             abstract: true,
@@ -33,7 +33,7 @@ angular.module('App', [
             resolve: {
             }
         })
-        .state('site.dashboard', {
+        .state('site.home', {
             url: '/',
             views: {
                 'content': {
@@ -43,6 +43,10 @@ angular.module('App', [
         });
     
     $urlRouterProvider.otherwise('/');
+
+    $mdThemingProvider.theme('default')
+      .primaryPalette('indigo')
+      .dark();
 })
 .run(function(){
 
