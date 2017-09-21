@@ -1,0 +1,26 @@
+<div ng-controller="SidebarController as sidebarController">
+	<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+		<md-toolbar layout="row">
+			<div class="md-toolbar-tools">
+				<h2>
+					<span>Browse</span>
+				</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" aria-label="Close Side Panel" ng-click="sidebarController.closeSideNavPanel()">
+					<md-tooltip>Close Side Panel</md-tooltip>
+					<md-icon class="md-default-theme" class="material-icons"><i class="fa fa-arrow-left fa-lg"></i></md-icon>
+				</md-button>
+			</div>
+		</md-toolbar> 
+		<md-content layout-padding="">
+			<md-list ng-repeat="section in sidebarController.menuSections">
+				<md-subheader ng-bind="section.name" style="background-color: transparent;"></md-subheader>
+				<md-divider></md-divider>
+				<md-list-item ng-repeat="row in section.rows" ui-sref="{{row.sref}}">
+					<md-icon class="md-default-theme material-icons" style="margin-top: 0px"><i class="fa {{row.iconClass}} fa-lg"></i></md-icon>
+					<p ng-bind="row.name"></p>
+				</md-list-item>
+			</md-list>
+		</md-content> 
+	</md-sidenav>
+</div>
