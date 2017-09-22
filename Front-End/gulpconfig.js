@@ -24,7 +24,7 @@ module.exports = {
         css: ['app/**/*.css', 'app/**/*.css'],
         scss: ['app/**/*.scss', 'app/**/*.scss'],
         less: ['app/**/*.less', 'app/**/*.less'],
-        assets: ['assets/images/**/*']
+        assets: ['app/Assets/Images/**/*', 'app/Assets/Images/*']
     },
     
     bowerLibs: {
