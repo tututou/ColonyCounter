@@ -11,7 +11,8 @@ angular.module('App', [
   'md.data.table',
   'App.DashboardController',
   'App.NavigationController',
-  'App.SidebarController'
+  'App.SidebarController',
+  'App.TutorialController'
 ])
 .controller('MainController', [ function( ) {
 }])
@@ -36,8 +37,16 @@ angular.module('App', [
         .state('site.home', {
             url: '/',
             views: {
-                'content': {
+                'content@': {
                     templateUrl: 'Controllers/DashboardController/DashboardController.html',
+                }
+            }
+        })
+        .state('site.tutorial', {
+            url: '/tutorial',
+            views: {
+                'content@': {
+                    templateUrl: 'Controllers/TutorialController/TutorialController.html',
                 }
             }
         });
