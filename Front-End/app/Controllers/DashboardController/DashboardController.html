@@ -1,19 +1,25 @@
 <div class="md-padding" ng-controller="DashboardController as dashboardController">
-		<md-content layout-padding>
-			<div>
-				<form name="imageForm" ng-submit="">
-					<input ng-model='file' type="file"/>
-					<!--<input type="submit" value='Submit'/>-->
-				</form>
+		<md-content layout-padding layout="column">
+			<div layout="row" ng-show="dashboardController.files.length > 0">
+				<ul>
+					<li ng-repeat="file in dashboardController.files">
+						{{file}}
+					</li>
+				</ul>
 			</div>
-			<div>
-				<button class="md-button" style="color : rgb(255, 255, 255); background-color: rgb(5, 158, 0);">Upload all</button>
-				<button class="md-button" style="color : rgb(255, 255, 255); background-color: rgba(229, 255, 0, 0.96);">Cancel all</button>
-				<button class="md-button" style="color : rgb(255, 255, 255); background-color: rgba(255, 0, 0, 0.96);">Remove all</button>
+			<form name="imageForm" ng-submit="">
+				<input ng-model='dashboardController.files' type="file" multiple/>
+				<!--<input type="submit" value='Submit'/>-->
+			</form>
+			<div layout="row">
+				<md-button class="md-raised md-success" flex="100" ng-click="dashboardController.show()">Submit</md-button>
 			</div>
-			<div>
+			<div layout="row">
+				<md-button class="md-raised md-warn" flex="100">Clear all</md-button>
+			</div>
+			<!--<div flex="33" layout-align="center">
 				<button>Submit</button>
-			</div>
+			</div>-->
 		</md-content>
 	</md-input-container>
 </div>

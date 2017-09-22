@@ -45,7 +45,7 @@ angular.module('App', [
     $urlRouterProvider.otherwise('/');
 
     $mdThemingProvider.theme('default')
-      .primaryPalette('red')
+      .primaryPalette('blue')
       .dark();
 })
 .run(function(){
