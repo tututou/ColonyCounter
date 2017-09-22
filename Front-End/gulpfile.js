@@ -55,9 +55,9 @@ gulp.task('cleanProd', function() {
 
 gulp.task('copy', function() {
 
-    var imgAssets = gulp.src(gulpConfig.appFiles.assets, { base: 'assets/'})
-        .pipe(changed(gulpConfig.buildDirectory + 'app/assets'))
-        .pipe(gulp.dest(gulpConfig.buildDirectory + 'app/assets'));
+    var imgAssets = gulp.src(gulpConfig.appFiles.assets/*, { base: 'assets/'}*/)
+        .pipe(changed(gulpConfig.buildDirectory + '/app/Assets/Images'))
+        .pipe(gulp.dest(gulpConfig.buildDirectory + '/assets/images/'));
 
     var js = gulp.src(gulpConfig.appFiles.js)
         .pipe(changed(gulpConfig.buildDirectory + '/app'))
