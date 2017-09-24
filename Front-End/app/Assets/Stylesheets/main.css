@@ -1,3 +1,8 @@
+
+.spacer{
+	padding-top: 20px;
+}
+
 .md-button.md-raised.md-success:not([disabled]) {
     /*box-shadow: 0 2px 5px 0 rgb(0, 255, 0);*/
 }
