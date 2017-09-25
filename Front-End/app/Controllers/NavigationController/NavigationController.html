@@ -1,0 +1,17 @@
+<div ng-controller="NavigationController as navigationController">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<md-button class="md-icon-button" aria-label="Icon" aria-label="Side Panel" ng-click="navigationController.openSideNavPanel()">
+				<md-tooltip>Side Panel</md-tooltip>
+				<md-icon><i class="fa fa-bars fa-lg"></i></md-icon>
+			</md-button>
+			<h2>
+				<span>ColonyCounter</span>
+			</h2>
+			<span flex></span>
+			<md-button class="md-raised" aria-label="icon" ui-sref="site.tutorial">
+				<md-icon class="fa fa-info-circle fa-lg"></md-icon> Tutorial  
+			</md-button>
+		</div>
+	</md-toolbar>
+</div>
