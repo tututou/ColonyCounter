@@ -1,14 +1,14 @@
 <div class="md-padding" ng-controller="DashboardController as dashboardController">
 		<md-content layout-padding layout="column">
-			<!--<div layout="row" ng-show="dashboardController.files.length > 0">
+			<div layout="row" ng-show="dashboardController.file.length > 0">
 				<ul>
 					<li ng-repeat="file in dashboardController.file">
-						{{file}}
+						{{file.name}}
 					</li>
 				</ul>
-			</div>-->
+			</div>
 			<form name="imageForm" ng-submit="">
-				<input type="file" file-input="dashboardController.file"/>
+				<input type="file" file-input="dashboardController.file" multiple/>
 			</form>
 			<div layout="row">
 				<md-button class="md-raised md-success" flex="100" ng-click="dashboardController.show()">Submit</md-button>
