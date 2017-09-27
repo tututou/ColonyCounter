@@ -1,6 +1,7 @@
 import cv2
-import numpy as np
 import matplotlib as mpl
+import numpy as np
+import os
 mpl.use('TkAgg')
 from matplotlib import pyplot as plt
 
@@ -145,8 +146,10 @@ class preProcess(object):
         return out_img
 
 if __name__ == '__main__':
-    img = '/Users/Matthew/Documents/UB-COMPSCI/Fall_2017/CSE442-SoftwareEngineering/colonycounter/plosPicHQ/q120404-01.jpg'
-    cc = preProcess(img)
+    img = 'test_images/43.jpg'
+    img_path = os.path.abspath(img)
+    print(img_path)
+    cc = preProcess(img_path)
     cc.correct_brightness()
     cc.display_images([cc.original_img, cc.gray], ['original','gray'], 1, 2)
     print(cc.colonycount)
