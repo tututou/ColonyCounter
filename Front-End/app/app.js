@@ -12,7 +12,8 @@ angular.module('App', [
   'App.DashboardController',
   'App.NavigationController',
   'App.SidebarController',
-  'App.TutorialController'
+  'App.TutorialController',
+  'App.ImageFactory'
 ])
 .controller('MainController', [ function( ) {
 }])
