@@ -13,7 +13,8 @@ angular.module('App', [
   'App.NavigationController',
   'App.SidebarController',
   'App.TutorialController',
-  'App.ImageFactory'
+  'App.ImageFactory',
+  'App.fileInput'
 ])
 .controller('MainController', [ function( ) {
 }])

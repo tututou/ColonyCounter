@@ -6,18 +6,20 @@ ImageFactory.$inject = [
 ];
 
 function ImageFactory(){
-        return {
-            encodeImage: $("#file").on('change', function(event){
-                    var reader = new FileReader();
-                    reader.onload = function(loadEvent){
-                        $scope.file = loadEvent.target.result;
-                        $scope.$apply();
-                    };
-                    reader.readAsDataURL(event.target.files[0]);
-                }),
+    var file;    
+    return {
+            encodeImage: function(file){
+                var reader = new FileReader();
+                reader.onload = function(loadEvent){
+                    file = loadEvent.target.result;
+                    //uploadFile();
+                    console.log(file);
+                };
+                reader.readAsDataURL(file);
+            },
                 
             uploadFile: function(){
-                    if ($scope.file === null || $scope.file === "" || !($scope.file)){
+                    if (file === null || file === "" || !file){
                         alert("No file has been uploaded");
                         return;
                     }

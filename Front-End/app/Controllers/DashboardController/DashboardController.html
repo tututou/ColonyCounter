@@ -2,13 +2,13 @@
 		<md-content layout-padding layout="column">
 			<!--<div layout="row" ng-show="dashboardController.files.length > 0">
 				<ul>
-					<li ng-repeat="file in dashboardController.files">
+					<li ng-repeat="file in dashboardController.file">
 						{{file}}
 					</li>
 				</ul>
 			</div>-->
 			<form name="imageForm" ng-submit="">
-				<input ng-model='dashboardController.file' type="file" validfile/>
+				<input type="file" file-input="dashboardController.file"/>
 			</form>
 			<div layout="row">
 				<md-button class="md-raised md-success" flex="100" ng-click="dashboardController.show()">Submit</md-button>

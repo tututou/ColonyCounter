@@ -3,16 +3,14 @@ angular
     .controller('DashboardController', DashboardController);
 
 DashboardController.$inject = [
-    'ImageFactory',
-    '$scope',
-    '$state'
+    'ImageFactory'
 ];
 
-function DashboardController(){//$scope, ImageFactory, $state) {
-
+function DashboardController(ImageFactory){
     var vm = this;
     vm.file = [];
     vm.show = show;
+    vm.fileChanged = fileChanged;
     
     init();
 
@@ -22,9 +20,11 @@ function DashboardController(){//$scope, ImageFactory, $state) {
 
     function show(){
         console.log(vm.file);
+        fileChanged();
     }
 
-    function encodeFile(){
-        //ImageFactory.encodeImage();
+    function fileChanged(){
+        console.log(vm.file);
+        ImageFactory.encodeImage(vm.file[0]);
     }
 }
