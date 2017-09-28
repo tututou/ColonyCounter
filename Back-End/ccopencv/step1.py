@@ -91,7 +91,7 @@ class step1(object):
         self.step_img = cv2.cvtColor(cv2.merge(channels), cv2.COLOR_BGR2GRAY)
         cv2.imshow('step_img', self.step_img)
         cv2.waitKey(0)
-        cv2.imwrite('test_images/step_img1-bad_2.jpg', self.step_img, [cv2.IMWRITE_JPEG_QUALITY, 90])
+        cv2.imwrite('test_images/step1_img-bad_3.jpg', self.step_img, [cv2.IMWRITE_JPEG_QUALITY, 100])
 
     def make_convoluted_mask(self):
         ''' All "mask" white image of size original(rows,col) '''
@@ -159,7 +159,7 @@ class step1(object):
         return out_img
 
 if __name__ == '__main__':
-    img = 'test_images/bad_2.jpg'
+    img = 'test_images/bad_3.jpg'
     img_path = os.path.abspath(img)
     print(img_path)
     cc = step1(img_path)
