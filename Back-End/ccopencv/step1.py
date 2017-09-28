@@ -41,24 +41,26 @@ class step1(object):
         red = self.step_img[:,:,2]
         channels = [blue, green, red]
 
-        #self.display_images( channels, ['blue', 'green', 'red'], 1, 3)
         for idx,channel in enumerate(channels):
-            # remove masked region
+
+            # remove masked region from channel[i]
             channel = cv2.subtract(channel, inverted_mask)
 
             # maintain aspect ratio
             r = 196.0 / channel.shape[1];
 
+            # shrink image down
             conv = cv2.resize(channel,
                               dsize=(0,0),
                               fx = r,
                               fy = r,
                               interpolation = cv2.INTER_AREA
             )
+
+            # reduce noise while maintaining edges
             conv = cv2.medianBlur(conv, 11)
-            # print('channel shape', channel.shape)
-            # print('conv shape', conv.shape)
-            # print('mask shape', self.conv_mask.shape)
+
+            # scale image back up to original dimensions
             conv = cv2.resize(
                 conv,
                 dsize=(channel.shape[1],channel.shape[0]),
@@ -66,9 +68,8 @@ class step1(object):
                 fy = 0,
                 interpolation=cv2.INTER_LINEAR
             );
-            # parint('conv shape', conv.shape)
 
-            # Extract Foreground mask?
+            # Extract Foreground mask
             # channel = 255*(conv/self.conv_mask) - channel;
             div = cv2.divide(conv, self.conv_mask)
             channel = cv2.subtract(div*255, channel)
@@ -84,10 +85,10 @@ class step1(object):
                 mask = self.conv_mask
             );
 
-            # Subtract positive Laplacian of Gaussian or (add negative ?)
+            # Subtract positive Laplacian of Gaussian
             channels[idx] = self.subtract_Lap_of_gaussian(channel, step1.LAPOFGAUSS_BLUR_SIZE)
 
-        # merge all channels into grayscale img
+        # merge all channels into grayscale step_img
         self.step_img = cv2.cvtColor(cv2.merge(channels), cv2.COLOR_BGR2GRAY)
         cv2.imshow('step_img', self.step_img)
         cv2.waitKey(0)
@@ -100,13 +101,6 @@ class step1(object):
             255,
             dtype = "uint8"
         )
-
-    def display_images(self, images, titles, rows, cols):
-        for i in range(len(images)):
-            plt.subplot(rows,cols,i+1),cv2.imshow(images[i],'gray')
-            plt.title(titles[i])
-            plt.xticks([]),plt.yticks([])
-        plt.show()
 
     def subtract_Lap_of_gaussian(self, img_in, blur_size):
         '''
@@ -125,16 +119,11 @@ class step1(object):
             mode=cv2.RETR_CCOMP,
             method=cv2.CHAIN_APPROX_SIMPLE
         )
-        # print(len(contours))
-        # print(len(hierarchy))
-        # print(np.shape(contours))
+
         hierarchy = hierarchy[0]
         for idx,cnt in enumerate(contours):
             # if the contour has no holes and if it is not a hole
             if hierarchy[idx][2] < 0 and hierarchy[idx][3] < 0:
-                # print(np.shape(contours[idx]))
-                # print('contour', contours[idx])
-                # print('hierarchy', hierarchy[idx])
 
                 contoursToDraw.append(cnt)
                 # print(len(contoursToDraw[0]))
@@ -151,11 +140,7 @@ class step1(object):
                 )
                 contoursToDraw.pop()
 
-        # cv2.imshow('draw on temp_mat',temp_mat)
-        # cv2.waitKey(2000)
         out_img = cv2.subtract(img_in, temp_mat)
-        # cv2.imshow('out_img', out_img)
-        # cv2.waitKey(0)
         return out_img
 
 if __name__ == '__main__':
