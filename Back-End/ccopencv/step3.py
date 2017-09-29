@@ -18,7 +18,7 @@ class Step3(object):
         contour_fams = []
         step_img = np.full(
             (self.input_img.shape[0], self.input_img.shape[1]), 
-            1, 
+            1,
             dtype = "uint8")
         self.makeContourChunksArray(self.input_img, contour_fams)
 
@@ -49,7 +49,7 @@ class Step3(object):
                 contour_chunks.append(contours)
 
     ##
-    # Reshapes the output from cv2.findContours from its 4D original structure to a 2D list of (x, y) points
+    # Reshapes the output from cv2.findContours from its 4D original structure to a 2D numpy array of (x, y) points
     # for easier processing.
     ##
     def reshapeContours(self, contours):
@@ -57,7 +57,7 @@ class Step3(object):
         for i in range(0, len(contours)):
             (x, y) = contours[i][0]
             out.append((x, y))
-        return out
+        return np.array(out)
 
     ##
     # Reduces the number of points in a contour list to that of size_out while maintaining the
@@ -77,9 +77,8 @@ class Step3(object):
         for i in range(0, size_out):
             x = int(tmp_mat[0][i])
             y = int(tmp_mat[1][i])
-            out.append((x, y))
-        return out
-
+            out.append(np.array([x, y]))
+        return np.array(out)
 
 if __name__ == '__main__':
     img_path = os.path.abspath('test_images/43.jpg')
