@@ -24,13 +24,24 @@ class step3(object):
             (self.input_img.shape[0], self.input_img.shape[1]), 
             1,
             dtype = "uint8")
-        self.makeContourChunksArray(self.input_img, contour_fams)
+        self.makeContourChunksArray(self.input_img)
+        feature_matrix = self.makeFeaturesMatrix(self.cont_groups)
+
+
+    def makeFeaturesMatrix(self, cont_groups):
+        n = len(cont_groups)
+        n_features = features.getNFeature()
+        out = []
+        for i in range(0, n):
+            row = features.calcFeatures(cont_groups[i])
+            out.append(np.array(row))
+        return np.array(out)
 
     ##
     # Populates the contour_fams container provided with a list of contour familiar for the provided src image.
     # Contours are taken over a variety of thresholds to score later.
     ##
-    def makeContourChunksArray(self, src, contour_fams):
+    def makeContourChunksArray(self, src):
         # minLoc/maxLoc is a tuple of form (x, y)
         [minVal, maxVal, minLoc, maxLoc] = cv2.minMaxLoc(src)
         low = int(minVal)
