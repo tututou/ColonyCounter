@@ -26,7 +26,16 @@ function DashboardController(ImageFactory){
 
     function fileChanged(){
         console.log(vm.file);
-        ImageFactory.encodeImage(vm.file[0]);
+        var request = ImageFactory.encodeImage(vm.file[0]);
+        request.then(
+            function(success){
+                console.log("success", success);
+            },
+            function(error){
+                console.log("error", error);
+            }    
+        );
+        console.log("yo");
     }
 
     function clearAll(){
