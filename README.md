@@ -9,7 +9,7 @@
 5. Install git
 6. run `git clone https://github.com/abarganier/ColonyCounter.git`
 7. from the command line navigate to the Back-End folder within the git repo
-8. run `pip install requirements.txt`
+8. run `pip install -r requirements.txt`
 9. run `python manage.py runserver`
 10. In a web browser navigate to https://127.0.0.1:8000
 
