@@ -12,15 +12,15 @@ class cont_group(object):
         
     def __init__(self, contours):
         self.contours = contours
-        self.hierarchies = np.array()
         self.n_per_clust = 0
         self.makeHierarchies(len(contours) - 1);
     
     def makeHierarchies(self, num_holes):
+        self.hierarchies = []
         if num_holes == 0:
             self.hierarchies.append(np.array([-1, -1, -1, -1]))
         else:
-            hierarchies.append(np.array([-1, -1, 1, -1]))
+            self.hierarchies.append(np.array([-1, -1, 1, -1]))
             firstElem = 0
             secondElem = 0
             for i in range(1, num_holes+1):
@@ -33,3 +33,4 @@ class cont_group(object):
                 else:
                     secondElem = i - 1
                 self.hierarchies.append(np.array([firstElem, secondElem, -1, 0]))
+        self.hierarchies = np.array(self.hierarchies)
