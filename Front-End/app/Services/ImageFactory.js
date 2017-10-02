@@ -3,27 +3,28 @@ angular
     .factory('ImageFactory', ImageFactory);
 
 ImageFactory.$inject = [
+    "$http"
 ];
 
-function ImageFactory(){
+function ImageFactory($http){
     var file;    
     return {
             encodeImage: function(file){
-                var reader = new FileReader();
-                reader.onload = function(loadEvent){
+                 var reader = new FileReader();
+                 reader.onload = function(loadEvent){
                     file = loadEvent.target.result;
-                    //uploadFile();
-                    console.log(file);
-                };
-                reader.readAsDataURL(file);
+                    uploadFile();
+                 };
+               var encodedFile = reader.readAsDataURL(file);
+               if (file === null || file === "" || !file){
+                alert("No file has been uploaded");
+                return;
+                }
+               return $http.post("http://localhost:8000/ccopencv/colonycount", {'file' : encodedFile,
+                                                                                'type' : file.type});
             },
                 
             uploadFile: function(){
-                    if (file === null || file === "" || !file){
-                        alert("No file has been uploaded");
-                        return;
-                    }
-                
                     var dtx = eval("(" + atob($scope.file.substring("data:application/json;base64,".length)) + ")");
                 
                     $http.get('yourScript.php?data=' + encodeURIComponent(JSON.stringify(dtx))).then(function(response){
