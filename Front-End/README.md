@@ -32,5 +32,5 @@ If you find a library that you'd like to add to the project, there are a couple 
 
 # Setting up Chrome to test
 Use these two commands:
-cd C:\Program Files (x86)\Google\Chrome\Application
-chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security
+1. cd C:\Program Files (x86)\Google\Chrome\Application   
+2. chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security
