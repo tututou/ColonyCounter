@@ -4,8 +4,10 @@ import numpy as np
 import os
 mpl.use('TkAgg')
 from matplotlib import pyplot as plt
+import helpers.features as features
+import helpers.cont_group
         
-class Step3(object):
+class step3(object):
         
     def __init__(self, img):
         self.input_img = img.copy()
@@ -22,6 +24,11 @@ class Step3(object):
             dtype = "uint8")
         self.makeContourChunksArray(self.input_img, contour_fams)
 
+    def sizeOk(self, contour):
+        if len(contour) < 7:
+            return False
+        return True
+
     ##
     # Populates the contour_fams container provided with a list of contour familiar for the provided src image.
     # Contours are taken over a variety of thresholds to score later.
@@ -33,9 +40,10 @@ class Step3(object):
         high = int(maxVal)
         assert low <= high
         limit = high - low
+        hierarchies = []
         contour_chunks = []
 
-        # Threshold image in multiples of two and see if contours exist in each threshold
+        # Threshold image in multiples of two and see if contours exist in each threshold; get hierarchies
         for thresholdAmt in range(2, limit, 2):
             _, thrd = cv2.threshold(src, low + thresholdAmt, 255, cv2.THRESH_BINARY)
             # contours is a 2D list of (x, y), hierarchy is a list of 4 element vectors
@@ -46,7 +54,58 @@ class Step3(object):
                     contour = contours[index]
                     if len(contour) > 100:
                         contours[index] = self.subsample(contour, 100)
-                contour_chunks.append(contours)
+                contour_chunks.append(np.array(contours))
+                hierarchies.append(np.array(hierarchy[0])) # Gets rid of extra dime
+        contour_chunks = np.array(contour_chunks)
+        hierarchies = np.array(hierarchies)
+
+        for index, chunk in enumerate(contour_chunks):
+            hierarchy = hierarchies[index]
+            count = 0
+            chunkCount = len(chunk)
+            features.calculateWH(chunk)
+            while(count < chunkCount):
+                holes = 0
+                if hierarchy[count][0] > 0:
+                    holes = hierarchy[count][0]-c-1
+                else:
+                    holes = chunkCount - (count+1)
+                if self.sizeOk(chunk[count]):
+                    print("blah")
+
+# bool Step_3::isSizeOK(const std::vector<cv::Point>& cont) {
+#     if(cont.size() < 7) {
+#         return false;
+#     }
+#     cv::Point p = Features::calculateWH(cont);
+#     if(p.x < m_min_radius || p.y > m_max_radius) {
+#         return false;
+#     }
+#     return true;
+# # }
+
+    # for (unsigned int i = 0; i < lim; i++) {
+    #     cont_chunk& chunk = all_contours_chunk[i];
+    #     hier_chunk& hierarchy = all_htieras_chunk[i];
+    #     unsigned int c = 0;
+    #     unsigned int CC = chunk.size();
+    #     while(c < CC) {
+    #         /*if this is not the lastest non-hole*/
+    #         unsigned int nHoles = 0;
+    #         if (hierarchy[c][0] > 0) {
+    #             nHoles = hierarchy[c][0]-c-1;
+    #         } else {
+    #             nHoles = CC - (c+1);
+    #         }
+    #         if (isSizeOK(chunk[c])) {
+    #             #pragma omp critical
+    #             {
+    #                 contour_fams.push_back(ContourFamily(cont_chunk(chunk.begin() + c, chunk.begin() + c + nHoles + 1)));
+    #             }
+    #         }
+    #         c += nHoles + 1;
+    #     }
+    # }
 
     ##
     # Reshapes the output from cv2.findContours from its 4D original structure to a 2D numpy array of (x, y) points
@@ -84,5 +143,5 @@ if __name__ == '__main__':
     img_path = os.path.abspath('test_images/43.jpg')
     img = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2GRAY)
     print(img_path)
-    cc = Step3(img)
+    cc = step3(img)
     cc.process()
