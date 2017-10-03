@@ -13,57 +13,72 @@ from step3 import step3
 
 class step4(step3):
 
-    def __init__(self, img):
-        self.input_img = img.copy()
+    # inherits from step 3
+    # self.input_img
+    # self.cont_groups
 
+    # def __init__(self, predictor, predictor_ps):
+    #     # create contour_splitter class ??
+    #     # create predictor ??
+    #     # create predictor ps
 
     def process(self):
+        """
+        This step determines whether or not a contour or connected component (colony)
+        is an individual colony, multiple objects or invalid.
+
+        """
         print('starting pass two ...')
+        print('self.cont_groups size: ', len(self.cont_groups))
         self.makeContourChunksArray(self.input_img)
-        self.cont_groups = preFilterContourSize(self.cont_groups)
+        self.cont_groups = self.preFilterContourSize(self.cont_groups)
         feature_matrix = self.makeFeaturesMatrix(self.cont_groups)
 
         # need to load training data in main processer file
         # training data comes from classifier scripts + training images
         # or from the file trainnedClassifier.xml
-        categ = m_predictor.predict(feature_matrix)
+        categ = predictor.predict(feature_matrix)
+
         # need to implement contour spliter helper class
-        # m_contour_spliter.split(self.cont_groups)
+        self.cont_groups , categ = contour_spliter.split(self.cont_groups, categ)
 
-        # m_predictor.predict(feature_mat,categ);
-
-        # m_contour_spliter.split(contour_fams,categ);
-        # std::vector<ContourFamily> contour_fams_split, contour_fams_unsplit;
-
-        # separateUnsplited(contour_fams,contour_fams_unsplit,contour_fams_split);
+        contour_fams_split, contour_fams_unsplit = self.separateUnsplited(self.cont_groups)
 
         # cv::Mat feature_mat_split, feature_mat_unsplit;
         # std::vector<signed char> categ_split, categ_unsplit;
 
-        # preFilterContourSize(contour_fams_split);
-        # this->makeFeaturesMatrix(contour_fams_split,feature_mat_split);
-        # m_predictor_ps.predict(feature_mat_split,categ_split);
+        contour_fams_unsplit = self.preFilterContourSize(contour_fams_unsplit)
+        # self.preFilterContourSize(contour_fams_unsplit);
 
+        feature_mat_unsplit = self.makeFeaturesMatrix(contour_fams_unsplit)
+        # this->makeFeaturesMatrix(contour_fams_unsplit, feature_mat_unsplit);
 
-        # preFilterContourSize(contour_fams_unsplit);
-        # this->makeFeaturesMatrix(contour_fams_unsplit,feature_mat_unsplit);
-        # m_predictor_ps.predict(feature_mat_unsplit,categ_unsplit);
+        categ_unsplit = predictor_ps.predict(feature_mat_unsplit)
+        # m_predictor_ps.predict(feature_mat_unsplit, categ_unsplit);
 
-
+        # add contour_fams_unsplit into contour_fams_split
         # contour_fams_split.insert( contour_fams_split.end(), contour_fams_unsplit.begin(), contour_fams_unsplit.end() );
-        # std::swap(contour_fams_split,contour_fams);
+        [contour_fams_split.append(k) for k in contour_fams_unsplit]
+
+
+        # std::swap(contour_fams_split, contour_fams);
+        self.cont_groups = contour_fams_split
+
         # categ_split.insert( categ_split.end(), categ_unsplit.begin(), categ_unsplit.end() );
-        # std::swap(categ_split,categ);
+        categ_split = []
+        [categ_split.append(k) for k in categ_unsplit]
 
+        # std::swap(categ_split, categ);
+        categ = categ_split
 
-        # writeNumResults(contour_fams,categ);
-        # m_step_result = (void*) &m_step_numerical_result;
-
+        # writeNumResults(contour_fams, categ);
+        # m_step_result = (void*) &m_step_numerical_result
         pass
 
-    def preFilterContourSize(self, cont_group):
+    def preFilterContourSize(self, cont_groups):
+        print('preFilterContourSize...')
         tmp = []
-        for k in self.cont_groups:
+        for k in cont_groups:
             if len(k.contours[0]) > 6:
                 (x, y) = features.calculateWH(k.contour[0])
                 if x > options.min_radius or y < options.max_radius:
@@ -71,6 +86,13 @@ class step4(step3):
         return tmp
 
     def makeContourChunksVect(self, src):
+        """
+        Finds contours from the source image and adds to cont_groups
+
+        input: step_image
+        output: none
+        """
+        print('makeContourChunksVect...')
         if options.has_auto_threshold:
             _, thrd = cv2.threshold(src, options.threshold, 255, cv2.THRES_BINARY | cv2.THRESH_OTSU)
         else:
@@ -95,8 +117,45 @@ class step4(step3):
                 self.cont_groups.append(cont_group( chunk[count:(count+holes+1):1] ))
                 count += holes + 1
 
-    def writeNumResults(self):
-        pass
+    def writeNumResults(self, cont_fam, categ):
+        """
+            write results for step,
+        """
+        print('writeNumResults ...')
+        valid_idx = []
+        for i in categ:
+            if i = 'S':
+                valid_idx.append(i)
+        print('valid_idx size: ', len(valid_idx))
 
-    def separateUnsplited(self):
-        pass
+        for i in valid_idx:
+            pass
+            # OneObjectRow  draws contours on raw image
+            # m_step_numerical_result.add_at(OneObjectRow(contour_fams[idx], m_raw_img),i);
+
+    def separateUnsplited(self, cont_groups):
+        """ applied to self.cont_groups
+        return: contour_fams_unsplit, contour_fams_split
+        """
+        print('separateUnsplited...')
+        contour_fams_split = []
+        contour_fams_unsplit = []
+
+        for k in cont_groups:
+            if k.n_per_clust > 1:
+                contour_fams_split.append(k)
+            else:
+                contour_fams_unsplit.append(k)
+
+        print('N splitted:', len(contour_fams_split))
+        print('N unsplitted:', len(contour_fams_unsplit))
+
+        return contour_fams_split, contour_fams_unsplit
+
+
+if __name__ == '__main__':
+    img_path = os.path.abspath('test_images/step1_img-bad_2.jpg')
+    img = cv2.imread(img_path)
+    print(img_path)
+    cc = step4(img)
+    cc.process()
