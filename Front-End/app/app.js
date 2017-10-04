@@ -18,7 +18,7 @@ angular.module('App', [
 ])
 .controller('MainController', [ function( ) {
 }])
-.config(function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
+.config(function($stateProvider, $urlRouterProvider, $mdThemingProvider, $httpProvider) {
     
     $stateProvider.state('site', {
             abstract: true,
@@ -58,6 +58,11 @@ angular.module('App', [
     $mdThemingProvider.theme('default')
       .primaryPalette('blue')
       .dark();
+
+    $httpProvider.defaults.headers.common = {};
+    $httpProvider.defaults.headers.post = {};
+    $httpProvider.defaults.headers.put = {};
+    $httpProvider.defaults.headers.patch = {};
 })
 .run(function(){
 

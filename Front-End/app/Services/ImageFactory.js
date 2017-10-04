@@ -3,35 +3,40 @@ angular
     .factory('ImageFactory', ImageFactory);
 
 ImageFactory.$inject = [
-    "$http"
+    "$http",
+    "$q"
 ];
 
-function ImageFactory($http){
-    var file;    
-    return {
-            encodeImage: function(file){
-                 var reader = new FileReader();
-                 reader.onload = function(loadEvent){
-                    file = loadEvent.target.result;
-                    uploadFile();
-                 };
-               var encodedFile = reader.readAsDataURL(file);
-               if (file === null || file === "" || !file){
-                alert("No file has been uploaded");
-                return;
-                }
-               return $http.post("http://localhost:8000/ccopencv/colonycount", {'file' : encodedFile,
-                                                                                'type' : file.type});
+function ImageFactory($http, $q){    
+    return {  
+
+            encodeImage2: function(inputFile) {
+                // Upload the file
+                // Make the request
+                // Take the data from the request return, add it to a $q promise, and then do a deferred.resolve()
+                //  which would trigger the "success" of the promis
             },
-                
-            uploadFile: function(){
-                    var dtx = eval("(" + atob($scope.file.substring("data:application/json;base64,".length)) + ")");
-                
-                    $http.get('yourScript.php?data=' + encodeURIComponent(JSON.stringify(dtx))).then(function(response){
-                        if(response.data.status_code == 200){
-                            // Done!
-                        } else {ERROR}
-                    })
-        }
+            file: null,   
+            /*uploadFile: function(){
+                if (this.file === null || this.file === "" || !this.file){
+                    alert("No file has been uploaded");
+                    return;
+                    }
+                   return $http.post("http://localhost:8000/ccopencv/colonycount", {'file' : encodedFile,
+                                                                                    'type' : this.file.type});
+            },*/
+            encodeImage: function(inputFile){
+                var reader = new FileReader();
+                reader.onload = function(loadEvent){
+                    this.file = loadEvent.target.result;
+                    if (this.file === null || this.file === "" || !this.file){
+                        alert("No file has been uploaded");
+                        return;
+                        }
+                       return $http.post("http://localhost:8000/ccopencv/colonycount", {'file' : encodedFile,
+                                                                                        'type' : this.file.type});
+                };
+                var encodedFile = reader.readAsDataURL(inputFile);
+            },
     }
 }
