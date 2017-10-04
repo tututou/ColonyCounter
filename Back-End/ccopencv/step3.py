@@ -18,21 +18,43 @@ class step3(object):
     # The main driving method for the processing involved at this step in the algorithm
     ##
     def process(self):
-        categories = []
-        contour_fams = []
-        step_img = np.full(
+        self.step_img = np.full(
             (self.input_img.shape[0], self.input_img.shape[1]), 
             1,
             dtype = "uint8")
         self.makeContourChunksArray(self.input_img)
-        feature_matrix = self.makeFeaturesMatrix(self.cont_groups)
+        # feature_matrix = self.makeFeaturesMatrix(self.cont_groups)
+        # predictor step
+        self.drawAllValidContours(self.cont_groups, [])
+        cv2.imwrite('test_images/step3_img-contours.jpg', self.step_img, [cv2.IMWRITE_JPEG_QUALITY, 100])
+
+
+    def drawAllValidContours(self, cont_groups, categories):
+        print("Entering drawAllValidContours")
+        for i in range(0, len(cont_groups)):
+            print("iterating drawAllValidContours. i = ", i)
+            contours = cont_groups[i].contours
+            hierarchies = cont_groups[i].hierarchies
+            print("num contours: ", len(contours))
+            rectX, rectY, rectW, rectH = cv2.boundingRect(contours[0])
+            rect_mat = np.full(
+                (rectH, rectW),
+                0,
+                dtype="uint8")
+            # if categories[i] != "N":
+            #     cv2.drawContours(rect_mat, contours, -1, (255,0,0), -1, 8, hierarchies, 2, (-rectX, -rectY))
+            #     self.step_img[rectY:(rectY+rectH), rectX:(rectX+rectW)] = self.step_img[rectY:(rectY+rectH), rectX:(rectX+rectW)] + rect_mat
+            cv2.drawContours(rect_mat, contours, -1, (255,0,0), thickness = -1, lineType = 8, maxLevel = 2, offset = (-rectX, -rectY))
+            self.step_img[rectY:(rectY+rectH), rectX:(rectX+rectW)] += rect_mat
 
 
     def makeFeaturesMatrix(self, cont_groups):
+        print("Entering makeFeaturesMatrix")
         n = len(cont_groups)
         n_features = features.getNFeature()
         out = []
         for i in range(0, n):
+            print("iterating makeFeaturesMatrix. i = ", i)
             row = features.calcFeatures(cont_groups[i])
             out.append(np.array(row))
         return np.array(out)
@@ -42,6 +64,7 @@ class step3(object):
     # Contours are taken over a variety of thresholds to score later.
     ##
     def makeContourChunksArray(self, src):
+        print("Entering makeContourChunksArray")
         # minLoc/maxLoc is a tuple of form (x, y)
         [minVal, maxVal, minLoc, maxLoc] = cv2.minMaxLoc(src)
         low = int(minVal)
@@ -53,6 +76,7 @@ class step3(object):
 
         # Threshold image in multiples of two and see if contours exist in each threshold; get hierarchies
         for thresholdAmt in range(2, limit, 2):
+            print("iterating thresholds. thresholdAmt = ", thresholdAmt)
             _, thrd = cv2.threshold(src, low + thresholdAmt, 255, cv2.THRESH_BINARY)
             # contours is a 2D list of (x, y), hierarchy is a list of 4 element vectors
             _, contours, hierarchy = cv2.findContours(thrd, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
@@ -66,8 +90,9 @@ class step3(object):
                 hierarchies.append(np.array(hierarchy[0])) # Gets rid of extra dime
         contour_chunks = np.array(contour_chunks)
         hierarchies = np.array(hierarchies)
-
+        print("Number of contour chunks: ", len(contour_chunks))
         for index, chunk in enumerate(contour_chunks):
+            print("iterating contour_chunks. index = ", index)
             hierarchy = hierarchies[index]
             count = 0
             chunkCount = len(chunk)
@@ -85,7 +110,7 @@ class step3(object):
         if len(contour) < 7: # Magic numbers -__-
             return False
         (x, y) = features.calculateWH(contour)
-        if x < options.min_radius or y > options.max_radius:
+        if x < options.min_radius or y < options.min_radius or x > options.max_radius or y > options.max_radius:
             return False
         return True
 
@@ -122,7 +147,7 @@ class step3(object):
         return np.array(out)
 
 if __name__ == '__main__':
-    img_path = os.path.abspath('test_images/43.jpg')
+    img_path = os.path.abspath('test_images/step1_img-bad_2.jpg')
     img = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2GRAY)
     print(img_path)
     cc = step3(img)

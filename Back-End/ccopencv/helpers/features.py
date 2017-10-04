@@ -69,6 +69,8 @@ def calcFeatures(contour_group):
         area -= area_hole
     perim += perim_hole
     pa_hull = (pa_hull[0] + perim_hole, pa_hull[1] - area_hole)
+    print("pa_hull: ", pa_hull)
+    assert pa_hull[1] != 0
     matData = [0.0]*getNFeature()
     p = 0
     matData[p] = perim * perim / area
