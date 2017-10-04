@@ -34,12 +34,10 @@ class step4(step3):
         self.cont_groups = self.preFilterContourSize(self.cont_groups)
         feature_matrix = self.makeFeaturesMatrix(self.cont_groups)
 
-        # need to load training data in main processer file
-        # training data comes from classifier scripts + training images
-        # or from the file trainnedClassifier.xml
-        categ = predictor.predict(feature_matrix)
+        categ = self.predictor.predict(feature_matrix)
 
         # need to implement contour spliter helper class
+        # <----  TODO  ----->
         self.cont_groups , categ = contour_spliter.split(self.cont_groups, categ)
 
         contour_fams_split, contour_fams_unsplit = self.separateUnsplited(self.cont_groups)
@@ -53,7 +51,7 @@ class step4(step3):
         feature_mat_unsplit = self.makeFeaturesMatrix(contour_fams_unsplit)
         # this->makeFeaturesMatrix(contour_fams_unsplit, feature_mat_unsplit);
 
-        categ_unsplit = predictor_ps.predict(feature_mat_unsplit)
+        categ_unsplit = self.predictor_ps.predict(feature_mat_unsplit)
         # m_predictor_ps.predict(feature_mat_unsplit, categ_unsplit);
 
         # add contour_fams_unsplit into contour_fams_split
@@ -73,7 +71,6 @@ class step4(step3):
 
         # writeNumResults(contour_fams, categ);
         # m_step_result = (void*) &m_step_numerical_result
-        pass
 
     def preFilterContourSize(self, cont_groups):
         print('preFilterContourSize...')

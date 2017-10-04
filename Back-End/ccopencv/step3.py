@@ -4,28 +4,37 @@ import numpy as np
 import os
 mpl.use('TkAgg')
 from matplotlib import pyplot as plt
+from sklearn.externals import joblib
+
 import helpers.features as features
 from helpers.cont_group import cont_group
 from helpers.proc_options import proc_options as options
-        
+
 class step3(object):
-        
+
     def __init__(self, img):
         self.input_img = img.copy()
         self.cont_groups = []
+        cur_path = os.path.dirname(__file__)
+        filename = os.path.join(cur_path, 'classifier', 'rTree_trained_model.pkl')
+        filename_ps = os.path.join(cur_path, 'classifier', 'rTree_trained_model_ps.pkl')
+        print('path to trained model: ',filename)
+        print('path to trained model: ',filename_ps)
+        self.predictor = joblib.load(filename)
+        self.predictor_ps = joblib.load(filname_ps)
 
     ##
     # The main driving method for the processing involved at this step in the algorithm
     ##
     def process(self):
         self.step_img = np.full(
-            (self.input_img.shape[0], self.input_img.shape[1]), 
+            (self.input_img.shape[0], self.input_img.shape[1]),
             1,
             dtype = "uint8")
         self.makeContourChunksArray(self.input_img)
-        # feature_matrix = self.makeFeaturesMatrix(self.cont_groups)
-        # predictor step
-        self.drawAllValidContours(self.cont_groups, [])
+        feature_matrix = self.makeFeaturesMatrix(self.cont_groups)
+        categ = self.clf.predict(feature_matrix)
+        self.drawAllValidContours(self.cont_groups, categ)
         cv2.imwrite('test_images/step3_img-contours.jpg', self.step_img, [cv2.IMWRITE_JPEG_QUALITY, 100])
 
 
@@ -34,6 +43,7 @@ class step3(object):
         for i in range(0, len(cont_groups)):
             print("iterating drawAllValidContours. i = ", i)
             contours = cont_groups[i].contours
+            print
             hierarchies = cont_groups[i].hierarchies
             print("num contours: ", len(contours))
             rectX, rectY, rectW, rectH = cv2.boundingRect(contours[0])
@@ -41,11 +51,14 @@ class step3(object):
                 (rectH, rectW),
                 0,
                 dtype="uint8")
-            # if categories[i] != "N":
-            #     cv2.drawContours(rect_mat, contours, -1, (255,0,0), -1, 8, hierarchies, 2, (-rectX, -rectY))
-            #     self.step_img[rectY:(rectY+rectH), rectX:(rectX+rectW)] = self.step_img[rectY:(rectY+rectH), rectX:(rectX+rectW)] + rect_mat
-            cv2.drawContours(rect_mat, contours, -1, (255,0,0), thickness = -1, lineType = 8, maxLevel = 2, offset = (-rectX, -rectY))
-            self.step_img[rectY:(rectY+rectH), rectX:(rectX+rectW)] += rect_mat
+            print('categories: ', categories[i])
+            if categories[i] != "N":
+                cv2.drawContours(rect_mat, contours, -1, (255,0,0), thickness = -1, lineType = 8, maxLevel = 2, offset = (-rectX, -rectY))
+                self.step_img[rectY:(rectY+rectH), rectX:(rectX+rectW)] += rect_mat
+                # cv2.drawContours(rect_mat, contours, -1, (255,0,0), -1, 8, hierarchies, 2, (-rectX, -rectY))
+                # self.step_img[rectY:(rectY+rectH), rectX:(rectX+rectW)] = self.step_img[rectY:(rectY+rectH), rectX:(rectX+rectW)] + rect_mat
+            # cv2.drawContours(rect_mat, contours, -1, (255,0,0), thickness = -1, lineType = 8, maxLevel = 2, offset = (-rectX, -rectY))
+            # self.step_img[rectY:(rectY+rectH), rectX:(rectX+rectW)] += rect_mat
 
 
     def makeFeaturesMatrix(self, cont_groups):
@@ -105,7 +118,7 @@ class step3(object):
                 if self.sizeOk(chunk[count]):
                     self.cont_groups.append(cont_group( chunk[count:(count+holes+1):1] ))
                 count += holes + 1
-                    
+
     def sizeOk(self, contour):
         if len(contour) < 7: # Magic numbers -__-
             return False
@@ -147,8 +160,8 @@ class step3(object):
         return np.array(out)
 
 if __name__ == '__main__':
-    img_path = os.path.abspath('test_images/step1_img-bad_2.jpg')
+    img_path = os.path.abspath('test_images/step1_img-good_3.jpg')
     img = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2GRAY)
-    print(img_path)
+
     cc = step3(img)
     cc.process()
