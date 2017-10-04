@@ -29,19 +29,17 @@ function DashboardController(ImageFactory, $window){
     function fileChanged(){
         vm.showProgress = true;
         console.log(vm.file);
-        var request = ImageFactory.encodeImage(vm.file[0]);
-        request.then(
-            function(success){
-                vm.showProgress = false;
-                console.log("success", success);
-            },
-            function(error){
-                vm.showProgress = false;
-                $window.alert("Upload/processing failed, please try resubmitting!");
-                console.log("error", error);
-            }    
-        );
-        console.log("yo");
+        ImageFactory.encodeImage(vm.file[0], function(request) {
+            request.then(
+                function(success) {
+                    vm.showProgress = false;
+                    // success.data contains the response data
+                },
+                function(error) {
+                    vm.showProgress = false;
+                    // error stuff
+                });
+        });
     }
 
     function clearAll(){

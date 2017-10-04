@@ -58,11 +58,6 @@ angular.module('App', [
     $mdThemingProvider.theme('default')
       .primaryPalette('blue')
       .dark();
-
-    $httpProvider.defaults.headers.common = {};
-    $httpProvider.defaults.headers.post = {};
-    $httpProvider.defaults.headers.put = {};
-    $httpProvider.defaults.headers.patch = {};
 })
 .run(function(){
 

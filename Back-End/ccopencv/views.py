@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
+from django.http import HttpResponse
 import base64
 
 # Create your views here.
@@ -15,23 +16,13 @@ def hello_world(request, format=None):
 @api_view(['POST', 'GET'])
 def colonycount(request, format=None):
     if request.method=='POST':
-        # print(request.FILES, len(request.FILES.getlist('file')))
-        img_files = request.FILES.getlist('file')
-        base64File = request.POST.get('file')
-        base64Type = request.POST.get('type')
-        image = base64.decodestring(base64File)
-        imageResult = open("postTest" + base64Type, 'wb')
-        imageResult.write(image)
-        imageResult.close()
-        resp = {}
-
-        #for img in img_files:
-            # call opencv code on each image here
-
-            # to return image:
-            # return HttpResponse(img, content_type="image/png")
-            #resp.update( {str(img.name): str(randint(1,100))} )
-        return HttpResponse(status_code = 200)
+        img64str = request.data['file']
+        print(img64str)
+        decoded64 = base64.b64decode(img64str)
+        image_result = open('THAT_IMG.png', 'wb')
+        image_result.write(decoded64)
+        image_result.close()
+        return Response({'message': 'done'})
     else:
         return Response(
             {
