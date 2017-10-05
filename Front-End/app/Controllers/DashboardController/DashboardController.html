@@ -7,19 +7,23 @@
 					</li>
 				</ul>
 			</div>
+
 			<form name="imageForm" ng-submit="">
 				<input type="file" file-input="dashboardController.file"/>
 			</form>
+
 			<div layout = "row" layout-sm = "column" layout-align = "space-around">
 				<md-progress-linear ng-show = "dashboardController.showProgress" class = "md-warn" md-mode = "{{ctrl.modes[0]}}"
 				   value = "{{ctrl.determinateValue}}"
 				   md-buffer-value = "{{ctrl.determinateValue2}}"></md-progress-linear>
-			 </div>
+			</div>
+
 			<div layout="row">
 				<md-button class="md-raised md-success" flex="100" ng-click="dashboardController.submitImage()">Submit</md-button>
 			</div>
+			
 			<div layout="row">
 				<md-button class="md-raised md-warn" flex="100" ng-click="dashboardController.clearAll()">Clear all</md-button>
 			</div>
 		</md-content>
-	</md-input-container>
+</div>

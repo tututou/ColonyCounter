@@ -46,14 +46,15 @@ function DashboardController(ImageFactory, $state, $window){
                         image: img64,
                         count: success.data.colonyCount
                     });
-                    $window.alert(success.data.colonyCount);
+                    console.log(ImageFactory.results)
+                    $state.go('site.result');
                     // Other notes:
                     // use $state.go('site.results'), or whatever the state name is in app.js, to go to the result page.
                     // Read more here: https://github.com/angular-ui/ui-router/wiki/Quick-Reference#stategoto--toparams--options
                 },
                 function(error) {
                     vm.showProgress = false;
-                    $window.alert("There was an error processing your image, please try submitting it again!");
+                    alert("There was an error processing your image, please try submitting it again!");
                     // Error stuff. It would be nice to pop up an error message here at the very least. 
                     // for MVP an alert is fine, although in the future we should make some nicer looking messages.
                 });

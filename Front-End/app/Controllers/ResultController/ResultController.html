@@ -1,0 +1,11 @@
+<div class="md-padding" ng-controller="ResultController as resultController">
+    these is them nice results
+    <md-content layout-padding layout="column">
+        <div layout="row" ng-show="ImageFactory.results.length > 0">
+            <ul>
+                <li ng-repeat="result in ImageFactory.results">
+                    {{result.count}}
+                </li>
+            </ul>
+        </div>
+</div>
