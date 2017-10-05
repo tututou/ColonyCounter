@@ -69,7 +69,6 @@ def calcFeatures(contour_group):
         area -= area_hole
     perim += perim_hole
     pa_hull = (pa_hull[0] + perim_hole, pa_hull[1] - area_hole)
-    print("pa_hull: ", pa_hull)
     assert pa_hull[1] != 0
     matData = [0.0]*getNFeature()
     p = 0
@@ -89,5 +88,4 @@ def calcFeatures(contour_group):
     hu_moments = cv2.HuMoments(cv2.moments(contour))
     for i in range(0, 7):
         matData[i + p] = hu_moments[i]
-    print("matData: ", np.array(matData))
     return np.array(matData)

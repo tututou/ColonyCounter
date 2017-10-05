@@ -20,8 +20,8 @@ class step3(object):
         filename_ps = os.path.join(cur_path, 'classifier', 'rTree_trained_model_ps.pkl')
         print('path to trained model: ',filename)
         print('path to trained model: ',filename_ps)
-        self.predictor = joblib.load(filename)
-        self.predictor_ps = joblib.load(filname_ps)
+        self.predictor = joblib.load(filename) # ?
+        self.predictor_ps = joblib.load(filename_ps)
 
     ##
     # The main driving method for the processing involved at this step in the algorithm
@@ -33,25 +33,22 @@ class step3(object):
             dtype = "uint8")
         self.makeContourChunksArray(self.input_img)
         feature_matrix = self.makeFeaturesMatrix(self.cont_groups)
-        categ = self.clf.predict(feature_matrix)
+        categ = self.predictor.predict(feature_matrix)
         self.drawAllValidContours(self.cont_groups, categ)
-        cv2.imwrite('test_images/step3_img-contours.jpg', self.step_img, [cv2.IMWRITE_JPEG_QUALITY, 100])
+        return self.step_img
 
 
     def drawAllValidContours(self, cont_groups, categories):
         print("Entering drawAllValidContours")
         for i in range(0, len(cont_groups)):
-            print("iterating drawAllValidContours. i = ", i)
             contours = cont_groups[i].contours
             print
             hierarchies = cont_groups[i].hierarchies
-            print("num contours: ", len(contours))
             rectX, rectY, rectW, rectH = cv2.boundingRect(contours[0])
             rect_mat = np.full(
                 (rectH, rectW),
                 0,
                 dtype="uint8")
-            print('categories: ', categories[i])
             if categories[i] != "N":
                 cv2.drawContours(rect_mat, contours, -1, (255,0,0), thickness = -1, lineType = 8, maxLevel = 2, offset = (-rectX, -rectY))
                 self.step_img[rectY:(rectY+rectH), rectX:(rectX+rectW)] += rect_mat
@@ -67,7 +64,6 @@ class step3(object):
         n_features = features.getNFeature()
         out = []
         for i in range(0, n):
-            print("iterating makeFeaturesMatrix. i = ", i)
             row = features.calcFeatures(cont_groups[i])
             out.append(np.array(row))
         return np.array(out)
@@ -89,7 +85,6 @@ class step3(object):
 
         # Threshold image in multiples of two and see if contours exist in each threshold; get hierarchies
         for thresholdAmt in range(2, limit, 2):
-            print("iterating thresholds. thresholdAmt = ", thresholdAmt)
             _, thrd = cv2.threshold(src, low + thresholdAmt, 255, cv2.THRESH_BINARY)
             # contours is a 2D list of (x, y), hierarchy is a list of 4 element vectors
             _, contours, hierarchy = cv2.findContours(thrd, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
@@ -103,9 +98,7 @@ class step3(object):
                 hierarchies.append(np.array(hierarchy[0])) # Gets rid of extra dime
         contour_chunks = np.array(contour_chunks)
         hierarchies = np.array(hierarchies)
-        print("Number of contour chunks: ", len(contour_chunks))
         for index, chunk in enumerate(contour_chunks):
-            print("iterating contour_chunks. index = ", index)
             hierarchy = hierarchies[index]
             count = 0
             chunkCount = len(chunk)

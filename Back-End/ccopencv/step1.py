@@ -10,18 +10,10 @@ class step1(object):
 
     LAPOFGAUSS_BLUR_SIZE = 7
 
-    def __init__(self, img_path, **kwargs):
+    def __init__(self, img, **kwargs):
         # load img
-        self.original_img = cv2.imread(img_path)
-        self.step_img = self.original_img.copy()
-
-        # get minRad & maxRad
-        self.minRad = kwargs.get('minRad', None)
-        self.maxRad = kwargs.get('maxRad', None)
-        self.thresValue = kwargs.get('thresValue', None)
-
-        # results
-        self.colonycount = None
+        self.img = img
+        self.step_img = self.img.copy()
 
     def process(self):
         '''
@@ -33,7 +25,7 @@ class step1(object):
         inverted_mask = cv2.bitwise_not(self.conv_mask)
 
         # split channels
-        # channels = cv2.split(self.original_img)
+        # channels = cv2.split(self.img)
         # split a costly operation (in terms of time).
         # Numpy indexing is much more efficient.
         blue = self.step_img[:,:,0]
@@ -88,16 +80,13 @@ class step1(object):
             # Subtract positive Laplacian of Gaussian
             channels[idx] = self.subtract_Lap_of_gaussian(channel, step1.LAPOFGAUSS_BLUR_SIZE)
 
-        # merge all channels into grayscale step_img
-        self.step_img = cv2.cvtColor(cv2.merge(channels), cv2.COLOR_BGR2GRAY)
-        cv2.imshow('step_img', self.step_img)
-        cv2.waitKey(0)
-        cv2.imwrite('test_images/step1_img-good_3.jpg', self.step_img, [cv2.IMWRITE_JPEG_QUALITY, 100])
+        # merge all channels into grayscale step_img and return
+        return cv2.cvtColor(cv2.merge(channels), cv2.COLOR_BGR2GRAY)
 
     def make_convoluted_mask(self):
         ''' All "mask" white image of size original(rows,col) '''
         self.conv_mask = np.full(
-            (self.original_img.shape[0], self.original_img.shape[1]),
+            (self.img.shape[0], self.img.shape[1]),
             255,
             dtype = "uint8"
         )
