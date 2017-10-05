@@ -19,7 +19,7 @@ angular.module('App', [
 ])
 .controller('MainController', [ function( ) {
 }])
-.config(function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
+.config(function($stateProvider, $urlRouterProvider, $mdThemingProvider, $httpProvider) {
     
     $stateProvider.state('site', {
             abstract: true,
