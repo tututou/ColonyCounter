@@ -3,12 +3,14 @@ angular
     .controller('ResultController', ResultController);
 
 ResultController.$inject = [
-	'$scope'
+	'$scope',
+	'ImageFactory',
 ];
 
-function ResultController( $scope ) {
+function ResultController($scope, ImageFactory){
 
 	var vm = this;
+	vm.results = ImageFactory.results;
 
 	init();
 
