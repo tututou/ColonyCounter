@@ -13,6 +13,7 @@ angular.module('App', [
   'App.NavigationController',
   'App.SidebarController',
   'App.TutorialController',
+  'App.ResultController',
   'App.ImageFactory',
   'App.fileInput'
 ])
@@ -52,11 +53,11 @@ angular.module('App', [
                 }
             }
         })
-        .state('site.results', {
-            url: '/results',
+        .state('site.result', {
+            url: '/result',
             views: {
                 'content@': {
-                    templateUrl: 'Controllers/ResultsController/ResultsController.html',
+                    templateUrl: 'Controllers/ResultController/ResultController.html',
                 }
             }
         });
