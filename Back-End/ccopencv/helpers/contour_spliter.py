@@ -66,7 +66,8 @@ class ContourSpliter(object):
             cv2.drawContours(labels, peaks_conts, idx, (idx+2,0,0), thickness = -1, lineType = 8)
         return labels
 
-    def findPeaks(self, binary, distance_map, peaks_conts): # return distance_map and peaks
+
+    def findPeaks(self, binary): # return distance_map and peaks
 #     void ContourSpliter::findPeaks(const cv::Mat& binary, cv::Mat& distance_map, cont_chunk& peaks_conts){
 #         cv::Mat tmp_mat,peaks;
 #         cv::distanceTransform(binary,distance_map,CV_DIST_L2,CV_DIST_MASK_5);
@@ -80,6 +81,32 @@ class ContourSpliter(object):
 #         cv::findContours(peaks, peaks_conts, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
 #         distance_map.convertTo(distance_map,CV_8U);
 # }
+
+        distance_map = cv2.distanceTransform(binary, cv2.CV_DIST_L2, cv2.CV_DIST_MASK_5)
+
+        # defult kernel in c++ when using cv::Mat()
+        kernel = np.ones((3,3),np.uint8)
+
+        # dilate increses white regions (or foreground) in image
+        peaks = cv2.dilate(distance_map, kernel, anchor=(-1,-1), iterations = 3)
+        tmp_mat = cv2.dilate(binary, kernel, anchor=(-1,-1), iterations = 3)
+
+        peaks = peaks - distance_map
+
+        # threshold peaks
+        _, peaks = cv2.threshold(peaks, 0, 255, cv2.THRESH_BINARY)
+
+        # convert to "CV_8U" and clip
+        peaks = (peaks/256).astype('uint8')
+        peaks = cv2.bitwise_xor(peaks, tmp_mat)
+
+        peaks = cv2.dilate(peaks, kernel, anchor=(-1,-1), iterations=1)
+        cv2.findContours()
+
+        # convert to "CV_U8" and clip
+        distance_map = (distance_map/256).astype('uint8')
+
+        return distance_map, peaks
 
     def splitOneCont(self, contour_fam): # return out
 
