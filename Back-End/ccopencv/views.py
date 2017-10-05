@@ -17,12 +17,11 @@ def hello_world(request, format=None):
 def colonycount(request, format=None):
     if request.method=='POST':
         img64str = request.data['file']
-        print(img64str)
         decoded64 = base64.b64decode(img64str)
         image_result = open('THAT_IMG.png', 'wb')
         image_result.write(decoded64)
         image_result.close()
-        return Response({'message': 'done'})
+        return Response({'colonyCount': 57})
     else:
         return Response(
             {

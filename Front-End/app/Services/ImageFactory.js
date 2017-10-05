@@ -3,13 +3,13 @@ angular
     .factory('ImageFactory', ImageFactory);
 
 ImageFactory.$inject = [
-    "$http",
-    "$q"
+    '$http'
 ];
 
 function ImageFactory($http){
     var file;    
     return {
+        results: [],
         encodeImage: function(file, onLoadCallback){
             var reader = new FileReader();
             reader.onload = function(loadEvent) {
@@ -18,8 +18,8 @@ function ImageFactory($http){
                     'file' : base64,
                     'type' : file.type
                 };
-                var request = $http.post("http://localhost:8000/ccopencv/colonycount/", postBody);
-                onLoadCallback(request);
+                var request = $http.post('http://localhost:8000/ccopencv/colonycount/', postBody);
+                onLoadCallback(request, base64);
             }
             reader.readAsDataURL(file);
         }
