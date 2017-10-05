@@ -12,11 +12,13 @@ angular.module('App', [
   'App.DashboardController',
   'App.NavigationController',
   'App.SidebarController',
-  'App.TutorialController'
+  'App.TutorialController',
+  'App.ImageFactory',
+  'App.fileInput'
 ])
 .controller('MainController', [ function( ) {
 }])
-.config(function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
+.config(function($stateProvider, $urlRouterProvider, $mdThemingProvider, $httpProvider) {
     
     $stateProvider.state('site', {
             abstract: true,

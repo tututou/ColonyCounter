@@ -5,10 +5,10 @@ import os
 mpl.use('TkAgg')
 from matplotlib import pyplot as plt
 
-import helpers.features as features
-from helpers.cont_group import cont_group
-from helpers.proc_options import proc_options as options
-from helpers.predictor import Predictor
+import ccopencv.helpers.features as features
+from ccopencv.helpers.cont_group import cont_group
+from ccopencv.helpers.proc_options import proc_options as options
+from ccopencv.helpers.predictor import Predictor
 from step3 import step3
 
 class step4(step3):

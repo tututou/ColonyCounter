@@ -6,9 +6,9 @@ mpl.use('TkAgg')
 from matplotlib import pyplot as plt
 from sklearn.externals import joblib
 
-import helpers.features as features
-from helpers.cont_group import cont_group
-from helpers.proc_options import proc_options as options
+import ccopencv.helpers.features as features
+from ccopencv.helpers.cont_group import cont_group
+from ccopencv.helpers.proc_options import proc_options as options
 
 class step3(object):
 
