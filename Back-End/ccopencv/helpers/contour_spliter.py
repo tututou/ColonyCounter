@@ -1,5 +1,7 @@
 import cv2
+import numpy as np
 
+from cont_group import cont_group
 
 class ContourSpliter(object):
 
@@ -55,7 +57,7 @@ class ContourSpliter(object):
                 tmp_v[0] = contour_fams[idx]
 
 
-    def makeWatershedLabel(self, binary, peaks_conts): # set = labels
+    def makeWatershedLabel(self, binary, peaks_conts): # return labels
         """
 
         """
@@ -64,7 +66,7 @@ class ContourSpliter(object):
             cv2.drawContours(labels, peaks_conts, idx, (idx+2,0,0), thickness = -1, lineType = 8)
         return labels
 
-    def findPeaks(self, binary, distance_map, peaks_conts):
+    def findPeaks(self, binary, distance_map, peaks_conts): # return distance_map and peaks
 #     void ContourSpliter::findPeaks(const cv::Mat& binary, cv::Mat& distance_map, cont_chunk& peaks_conts){
 #         cv::Mat tmp_mat,peaks;
 #         cv::distanceTransform(binary,distance_map,CV_DIST_L2,CV_DIST_MASK_5);
@@ -79,32 +81,117 @@ class ContourSpliter(object):
 #         distance_map.convertTo(distance_map,CV_8U);
 # }
 
-    def splitOneCont(self, contour_fam):
-    #     cv::Rect rect = cv::boundingRect(in.contours[0]);
-    #     cv::Mat miniTmp(rect.height,rect.width,CV_8U,cv::Scalar(0));
-    #     cv::drawContours(miniTmp,in.contours,-1,cv::Scalar(255),-1,8,in.hierarchies, INT_MAX, cv::Point(-rect.x,-rect.y));
-    #     cv::copyMakeBorder(miniTmp,miniTmp, 4,4,4,4, cv::BORDER_CONSTANT, cv::Scalar(0));
+    def splitOneCont(self, contour_fam): # return out
 
-    #     cv::Mat distance_map;
-    #     cont_chunk peaks;
-    #     findPeaks(miniTmp,distance_map,peaks);
+        # find bonding box for contour
+        rectX, rectY, rectW, rectH = cv2.boundingRect(contour_fam.contours[0])
 
-    #     unsigned int n_peaks = peaks.size();
-    #     cv::Mat label_mat;
-    #     makeWatershedLabel(miniTmp,peaks,label_mat);
-    #     watershedLike(label_mat,distance_map,n_peaks,1.6);
-    #     std::vector<ContourFamily> tmp_out;
-    #     tmp_out.reserve(n_peaks);
-    #     for(unsigned int k=0;k != n_peaks; ++k){
-    #         cv::Mat tmp;
-    #         cont_chunk tmpc;
-    #         cv::inRange(label_mat, k+2,k+2, tmp);
-    #         cv::findContours(tmp, tmpc, cv::RETR_CCOMP, cv::CHAIN_APPROX_SIMPLE,cv::Point(rect.x-4,rect.y-4));
-    #         tmp_out.push_back(ContourFamily(tmpc));
-    #     }
-    #     std::swap(out,tmp_out);
+        # create temp matrix
+        miniTmp = np.full((rectH, rectW), 0, dtype="uint8")
+
+        # draw all contours and nested contours on temp matrix
+        cv2.drawContours(
+            miniTmp,
+            contour_fams.contours,
+            -1,
+            (255,0,0),
+            thickness = -1,
+            lineType = 8,
+            hierarchy = contour_fams.hierarchies,
+            maxLevel = 2,
+            offset = (-rectX, -rectY)
+        )
+        # draw 4px constant boarder around temp matrix
+        miniTmp = cv2.copyMakeBoarder(miniTmp, 4,4,4,4, cv2.BORDER_CONSTANT, 0)
+
+        distance_map, peaks = self.findPeaks(minTmp)
+        n_peaks = len(peaks)
+        label_mat = self.makeWatershedLabel(miniTmp, peaks)
+        self.watershedLike(label_mat, distance_map, n_peaks, 1.6)
+
+        tmp_out = []
+        for k in range(n_peaks):
+            # find contours for each threshold in 2 integer jumps
+            tmp = cv2.inRange(label_mat, k+2, k+2, )
+             _, contours, hierachies = cv2.findContours(tmp, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE, ):
+            tmp_out.append(cont_group(contours))
+
+        return tmp_out
+
+    def watershedLike(self, mask, gray, nlabs, maxAreaModif):
+    # void ContourSpliter::watershedLike(cv::Mat &mask,cv::Mat& gray,int nlabs,double maxAreaModif){
+    # /* Mask is 0 where no objects exist, 1 in undefined womes and >1 for attributed zones/labels*/
+    # /* toUse is >0 for mpixel that have not yet been used as seed, and ==0 for the rest*/
+    # cv::Mat toUse, tmp;
+    # std::vector<int> areaCount(nlabs),peakValSQ(nlabs), maxArea(nlabs);
+    # std::vector<cv::Point> center(nlabs);
+    # for(unsigned int j=0; j<areaCount.size();j++){
+    #     areaCount[j] = 0;
+    #     peakValSQ[j] = 0;
     # }
 
+    # mask.copyTo(toUse);
+    # unsigned int nc=mask.cols;
+    # unsigned int nl=mask.rows;
 
-    def watershedLike(self):
-        pass
+    # /*define the peaks heigh in gray*/
+    # for(unsigned int j=0; j<nl;j++){
+    #     for(unsigned int i=0; i<nc;i++){
+    #         char newVal =*(mask.data+j*mask.step+i*mask.elemSize());
+    #         if(newVal > 1){
+    #             if(peakValSQ[newVal-2] < *(gray.data+(j)*gray.step+(i)*gray.elemSize()) ){
+    #                peakValSQ[newVal-2] = *(gray.data+(j)*gray.step+(i)*gray.elemSize());
+    #                peakValSQ[newVal-2] = peakValSQ[newVal-2] * peakValSQ[newVal-2];
+    #                center[newVal-2]=cv::Point(j,i);
+
+    #             }
+    #         }
+    #     }
+    # }
+    # for(unsigned int j=0; j<areaCount.size();j++){
+    #     maxArea[j] = maxAreaModif * peakValSQ[j]*3.1416;
+    # }
+    # bool on =true;
+    # int iter = 0;
+    # while(on){
+    #     mask.copyTo(tmp);
+    #     on =false;
+    #     for(unsigned int j=0; j != nl; ++j){
+    #         for(unsigned int i=0; i != nc; ++i){
+    #             /* find pixels that are labels (mask) and unused(toUse)*/
+    #             if(*(mask.data+j*mask.step+i*mask.elemSize()) > 1 && *(toUse.data+j*toUse.step+i*toUse.elemSize()) > 0){
+    #                 /*for each neighbourgs*/
+    #                 for(int m=-1; m != 2;++m){
+    #                     for(int n=-1; n !=2;n++){
+    #                         bool test = !(n == 0 && m==0 ) || (n==0 || m==0);
+    #                             if( test && *(tmp.data+(j+m)*tmp.step+(i+n)*tmp.elemSize()) == 1){
+    #                             switch (*(mask.data+(j+m)*mask.step+(i+n)*mask.elemSize())){
+    #                                 case 0:
+    #                                     break;
+    #                                 /* if the mask in markable*/
+    #                                 case 1:
+    #                                     /* if the neighbour value in gray is lower or equal to the target*/
+    #                                     if(*(gray.data+(j+m)*gray.step+(i+n)*gray.elemSize()) <= *(gray.data+j*gray.step+i*gray.elemSize()) ){
+    #                                         char newVal =*(mask.data+j*mask.step+i*mask.elemSize());
+    #                                         int xd = (j+m)-center[newVal-2].x;
+    #                                         int yd = (i+m)-center[newVal-2].y;
+    #                                         if(areaCount[newVal-2] < maxArea[newVal-2] && xd*xd+yd*yd < maxAreaModif*peakValSQ[newVal-2]){
+    #                                             *(tmp.data+(j+m)*tmp.step+(i+n)*tmp.elemSize()) = newVal;
+    #                                             ++areaCount[newVal-2];
+    #                                         }
+    #                                     }
+    #                                     break;
+    #                                 default:
+    #                                     break;
+    #                             }
+    #                         }
+    #                     }
+    #                 }
+    #                 *(toUse.data+j*toUse.step+i*toUse.elemSize()) = 0;
+    #                 on = true;
+    #             }
+    #         }
+    #     }
+    #     tmp.copyTo(mask);
+    #     ++iter;
+    # }
