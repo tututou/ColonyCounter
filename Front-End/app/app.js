@@ -51,6 +51,14 @@ angular.module('App', [
                     templateUrl: 'Controllers/TutorialController/TutorialController.html',
                 }
             }
+        })
+        .state('site.results', {
+            url: '/results',
+            views: {
+                'content@': {
+                    templateUrl: 'Controllers/ResultsController/ResultsController.html',
+                }
+            }
         });
     
     $urlRouterProvider.otherwise('/');
