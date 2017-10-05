@@ -16,11 +16,6 @@ function SidebarController( $mdSidenav ) {
                 name: 'Process Images',
                 iconClass: 'fa-picture-o',
                 sref: 'site.home'
-            },
-            {
-                name: 'Image History',
-                iconClass: 'fa-list',
-                sref: 'site.history' // doesn't exist yet
             }
         ]
     }
