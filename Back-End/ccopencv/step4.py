@@ -9,7 +9,7 @@ import ccopencv.helpers.features as features
 from ccopencv.helpers.cont_group import cont_group
 from ccopencv.helpers.proc_options import proc_options as options
 from ccopencv.helpers.predictor import Predictor
-from step3 import step3
+from ccopencv.step3 import step3
 
 class step4(step3):
 
@@ -89,13 +89,13 @@ class step4(step3):
         else:
             _, thrd = cv2.threshold(src, options.threshold, 255, cv2.THRES_BINARY)
 
-        _, contours, hierachies = cv2.findContours(thrd, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE):
+        _, contours, hierachies = cv2.findContours(thrd, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
 
         # look at step3 code
         contours = np.array(contours)
         hierachies = np.array(hierachies)
 
-        for index, chunk in enumerate(contours)
+        for index, chunk in enumerate(contours):
             hierarchy = hierachies[index]
             count = 0
             chunkCount = len(contours)
@@ -113,7 +113,7 @@ class step4(step3):
             write results for step,
         """
         print('writeNumResults ...')
-            std::vector<unsigned int> valid_idx;
+        # std::vector<unsigned int> valid_idx;
         # for(unsigned int i=0;i < categ.size() ; i++)
         #     if(categ[i] == 'S')
         #         valid_idx.push_back(i);
@@ -127,7 +127,7 @@ class step4(step3):
         #     }
         valid_idx = []
         for i,c  in enumerate(categ):
-            if c = 'S':
+            if c == 'S':
                 valid_idx.append(i)
         print('valid_idx size: ', len(valid_idx))
 
