@@ -27,8 +27,9 @@ class Processor(object):
         process2 = step3(step_res)
         step_res = process2.process()
         cv2.imwrite('step2res.' + extension, step_res, [cv2.IMWRITE_JPEG_QUALITY, 100]) 
-        _, contours, hierarchy = cv2.findContours(step_res, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
-        return 56
+        process3 = step4(step_res)
+        res = process3.process()
+        return res
 
     def writeResults(self):
         """ print out resutls """

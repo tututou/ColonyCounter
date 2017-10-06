@@ -14,10 +14,12 @@ class step4(step3):
     # self.input_img
     # self.cont_groups
 
-    # def __init__(self, predictor, predictor_ps):
-    #     # create contour_splitter class ??
-    #     # create predictor ??
-    #     # create predictor ps
+    # def __init__(self, step_img, predictor, predictor_ps):
+    #     self.input_img = step_img        
+
+    def __init__(self, step_img):
+        self.input_img = step_img.copy()
+        self.cont_groups = []
 
     def process(self):
         """
@@ -60,7 +62,7 @@ class step4(step3):
         # std::swap(categ_split, categ);
         categ = categ_split + categ_unsplit
 
-        self.writeNumResults(self.cont_groups, categ);
+        return self.writeNumResults(self.cont_groups, categ);
         # m_step_result = (void*) &m_step_numerical_result
 
     def preFilterContourSize(self, cont_groups):
@@ -82,28 +84,30 @@ class step4(step3):
         """
         print('makeContourChunksVect...')
         if options.has_auto_threshold:
-            _, thrd = cv2.threshold(src, options.threshold, 255, cv2.THRES_BINARY | cv2.THRESH_OTSU)
+            _, thrd = cv2.threshold(src, options.threshold, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
         else:
-            _, thrd = cv2.threshold(src, options.threshold, 255, cv2.THRES_BINARY)
+            _, thrd = cv2.threshold(src, options.threshold, 255, cv2.THRESH_BINARY)
 
         _, contours, hierachies = cv2.findContours(thrd, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
 
         # look at step3 code
         contours = np.array(contours)
-        hierachies = np.array(hierachies)
+        hierachies = np.array(hierachies[0])
 
-        for index, chunk in enumerate(contours):
-            hierarchy = hierachies[index]
-            count = 0
-            chunkCount = len(contours)
-            while(count < chunkCount):
-                holes = 0
-                if hierachies[count][0] > 0:
-                    holes = hierachies[count][0]-count-1
-                else:
-                    holes = chunkCount - (count+1)
-                self.cont_groups.append(cont_group( chunk[count:(count+holes+1):1] ))
-                count += holes + 1
+        for index, item in enumerate(contours):
+            if len(item) > 0:
+                chunk = self.reshapeContours(item)
+                hierarchy = hierachies[index]
+                count = 0
+                chunkCount = len(contours)
+                while(count < chunkCount):
+                    holes = 0
+                    if hierachies[count][0] > 0:
+                        holes = hierachies[count][0]-count-1
+                    else:
+                        holes = chunkCount - (count + 1)
+                    self.cont_groups.append(cont_group( chunk[count:(count+holes+1):1] ))
+                    count += holes + 1
 
     def writeNumResults(self, cont_fam, categ):
         """
@@ -126,11 +130,11 @@ class step4(step3):
         for i,c  in enumerate(categ):
             if c == 'S':
                 valid_idx.append(i)
-        print('valid_idx size: ', len(valid_idx))
-
-        for i, in enumerate(valid_idx):
-            idx = valid_idx[i]
-            # OneObjectRow  draws contours on raw image
+        # print('valid_idx size: ', len(valid_idx))
+        return len(valid_idx)
+        # for i, in enumerate(valid_idx):
+        #     idx = valid_idx[i]
+        #     # OneObjectRow  draws contours on raw image
             # m_step_numerical_result.add_at(OneObjectRow(contour_fams[idx], m_raw_img),i);
 
     def separateUnsplited(self, cont_groups):

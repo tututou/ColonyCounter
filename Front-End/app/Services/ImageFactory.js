@@ -7,7 +7,7 @@ ImageFactory.$inject = [
 ];
 
 function ImageFactory($http){
-    var postUrl = 'http://localhost:8000/ccopencv/colonycount/';
+    var postUrl = 'http://localhost:8000/colonycount/';
     return {
         results: [],
         encodeImage: function(file, onLoadCallback){
