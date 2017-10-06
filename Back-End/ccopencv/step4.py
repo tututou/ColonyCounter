@@ -1,9 +1,6 @@
 import cv2
-import matplotlib as mpl
 import numpy as np
 import os
-mpl.use('TkAgg')
-from matplotlib import pyplot as plt
 
 import ccopencv.helpers.features as features
 from ccopencv.helpers.cont_group import cont_group

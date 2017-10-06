@@ -1,10 +1,7 @@
 import cv2
 import math
-import matplotlib as mpl
 import numpy as np
 import os
-mpl.use('TkAgg')
-from matplotlib import pyplot as plt
         
 def calculateWH(contour):
     rects = cv2.minAreaRect(contour)

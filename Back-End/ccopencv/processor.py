@@ -1,5 +1,4 @@
 import cv2
-import matplotlib as mpl
 import numpy as np
 
 from ccopencv.helpers.predictor import Predictor
