@@ -8,8 +8,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
-from django.http import HttpResponse
-import ccopencv.processor
+from django.http import HttpResponseBadRequest
+from ccopencv.processor import Processor
 import base64
 
 # Create your views here.
@@ -23,12 +23,13 @@ def hello_world(request, format=None):
 def colonycount(request, format=None):
     if request.method=='POST':
         img64str = request.data['file']
+        extension = request.data['type']
+        if extension != '.png' and extension != '.jpg': 
+            return HttpResponseBadRequest()
         decoded64 = base64.b64decode(img64str)
-        # image_result = open('THAT_IMG.png', 'wb')
-        # image_result.write(decoded64)
-        # image_result.close()
-        processor = Processor
-        return Response({'colonyCount': 57})
+        processor = Processor(decoded64)
+        count = processor.runAll(extension)
+        return Response({'colonyCount': count})
     else:
         return Response(
             {

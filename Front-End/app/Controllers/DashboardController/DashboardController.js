@@ -26,8 +26,8 @@ function DashboardController(ImageFactory, $state){
 
     function submitImage() {
         // Check valid file type
-        var split = vm.file[0].name.split('.');
-        if (!arrayContainsAnElement([split[split.length-1]], validFiletypes)) {
+        var fileExtension = ImageFactory.getFileExtension(vm.file[0].name);
+        if (!arrayContainsAnElement([fileExtension], validFiletypes)) {
             alert('Invalid file type! Must be of type .png or .jpg');
             return;
         }
@@ -45,6 +45,7 @@ function DashboardController(ImageFactory, $state){
                         image: img64,
                         count: success.data.colonyCount
                     });
+                    console.log(success.data);
                     // Other notes:
                     // use $state.go('site.results'), or whatever the state name is in app.js, to go to the result page.
                     // Read more here: https://github.com/angular-ui/ui-router/wiki/Quick-Reference#stategoto--toparams--options
