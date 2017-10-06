@@ -5,66 +5,34 @@ from cont_group import cont_group
 
 class ContourSpliter(object):
 
-    def split(self, contour_family, categ):
-    # unsigned int hi = contour_fams.size();
-    # std::vector<std::vector<ContourFamily> > list_contour_fams(hi);
-    list_contour_fams = ???
+    # DONE
+    def split(self, contour_groups, categ):
+        assert len(contour_groups) == len(categ)
+        hi = len(contour_groups)
+        cont_fams_matrix = []
 
-        # #pragma omp parallel for schedule(dynamic)
-        # for(unsigned int i=0; i < hi; ++i ){
-        #     signed char cat_it = categ[i];
-        #     std::vector<ContourFamily> tmp_v = list_contour_fams[i];
-        #     if(cat_it == 'M'){
-        #         splitOneCont(contour_fams[i], tmp_v);
-        #     }
-        #     else if(cat_it == 'S' ){
-        #         tmp_v.resize(1);
-        #         tmp_v[0] = contour_fams[i];
-        #     }
-        #     list_contour_fams[i] = tmp_v;
-        # }
+        for i in range(0, hi):
+            category = categ[i]
+            cont_list = []
+            if category == "M":
+                cont_list = splitOneCont(contour_groups[i])
+            elif category == "S":
+                cont_list = [contour_groups[i]]
+            cont_fams_matrix.append(cont_list)
 
-        for idx,k in enumerate(contour_family):
-            cat_it = categ[idx]
-            tmp_v = list_contour_fams[idx];
-            if cat_it == 'M':
-                tmp_v = self.splitOneCont(k)
-            elif cat_it == 'S':
-                tmp_v[0] = contour_fams[idx]
-            list_contour_fams[i] = tmp_v
+        contour_groups_tmp = []
+        categ_tmp = []
+        k = 0
+        for i, item in enumerate(cont_fams_matrix):
+            ncl = len(item)
+            for j, group in enumerate(item):
+                contour_groups_tmp.append(group)
+                categ_tmp.append(categ[i])
+                contour_groups_tmp[k].n_per_clust = ncl
+                k += 1
+        return contour_groups_tmp, categ_tmp
 
-
-#     unsigned int siz = 0;
-#     for(unsigned int i=0; i < hi; ++i )
-#         siz += list_contour_fams[i].size();
-        size = 0
-        for i in range(len(contour_family)):
-            size += len(list_contour_fams[i])
-
-#     std::vector<ContourFamily> tmp_contour_fams(siz);
-#     std::vector<signed char> tmp_categ(siz);
-
-#     unsigned int k = 0;
-
-
-#     for(unsigned int i=0; i < hi; ++i ){
-#         unsigned int ncl = list_contour_fams[i].size();
-
-#         for(unsigned int j=0; j < ncl; ++j ){
-#             tmp_contour_fams[k] = list_contour_fams[i][j];
-#             tmp_categ[k] = categ[i];
-#             tmp_contour_fams[k].n_per_clust = ncl;
-#             k++;
-
-#         }
-#     }
-
-#     std::swap(tmp_contour_fams,contour_fams);
-#     std::swap(tmp_categ,categ);
-# }
-        return contour_fams, categ
-
-
+    # DONE
     def makeWatershedLabel(self, binary, peaks_conts): # return labels
         """
 
@@ -74,7 +42,7 @@ class ContourSpliter(object):
             cv2.drawContours(labels, peaks_conts, idx, (idx+2,0,0), thickness = -1, lineType = 8)
         return labels
 
-
+    #DONE 
     def findPeaks(self, binary): # return distance_map and peaks
 #     void ContourSpliter::findPeaks(const cv::Mat& binary, cv::Mat& distance_map, cont_chunk& peaks_conts){
 #         cv::Mat tmp_mat,peaks;
@@ -117,6 +85,7 @@ class ContourSpliter(object):
 
         return distance_map, peaks
 
+    # DONE
     def splitOneCont(self, contour_fam): # return out
 
         # find bonding box for contour
@@ -190,8 +159,8 @@ class ContourSpliter(object):
 
     # /*define the peaks heigh in gray*/
     # for(unsigned int j=0; j<nl;j++){
-    #     for(unsigned int i=0; i<nc;i++){
-    #         char newVal =*(mask.data+j*mask.step+i*mask.elemSize());
+    #     for(unsigned int i=0; i<nc;i++) {
+    #         char newVal = *(mask.data + j*mask.step + i*mask.elemSize());
     #         if(newVal > 1){
     #             if(peakValSQ[newVal-2] < *(gray.data+(j)*gray.step+(i)*gray.elemSize()) ){
     #                peakValSQ[newVal-2] = *(gray.data+(j)*gray.step+(i)*gray.elemSize());
