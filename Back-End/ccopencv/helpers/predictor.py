@@ -32,7 +32,6 @@ class Predictor:
 
         self.model.train(features, cv2.CV_ROW_SAMPLE, categs, varType = var_types, params = params)
 
-
     def predict(self, input_samples):
         """ For each input sample predict the output category """
         return np.float32( [self.model.predict(s) for s in input_samples] )
