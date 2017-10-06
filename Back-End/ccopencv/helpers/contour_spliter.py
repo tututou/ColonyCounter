@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+from math import pi
 from cont_group import cont_group
 
 class ContourSpliter(object):
@@ -8,23 +8,38 @@ class ContourSpliter(object):
     def split(self, contour_family, categ):
     # unsigned int hi = contour_fams.size();
     # std::vector<std::vector<ContourFamily> > list_contour_fams(hi);
+    list_contour_fams = ???
 
-    # #pragma omp parallel for schedule(dynamic)
-    # for(unsigned int i=0; i < hi; ++i ){
-    #     signed char cat_it = categ[i];
-    #     std::vector<ContourFamily> tmp_v = list_contour_fams[i];
-    #     if(cat_it == 'M'){
-    #         splitOneCont(contour_fams[i], tmp_v);
-    #     }
-    #     else if(cat_it == 'S' ){
-    #         tmp_v.resize(1);
-    #         tmp_v[0] = contour_fams[i];
-    #     }
-    #     list_contour_fams[i] = tmp_v;
-    # }
+        # #pragma omp parallel for schedule(dynamic)
+        # for(unsigned int i=0; i < hi; ++i ){
+        #     signed char cat_it = categ[i];
+        #     std::vector<ContourFamily> tmp_v = list_contour_fams[i];
+        #     if(cat_it == 'M'){
+        #         splitOneCont(contour_fams[i], tmp_v);
+        #     }
+        #     else if(cat_it == 'S' ){
+        #         tmp_v.resize(1);
+        #         tmp_v[0] = contour_fams[i];
+        #     }
+        #     list_contour_fams[i] = tmp_v;
+        # }
+
+        for idx,k in enumerate(contour_family):
+            cat_it = categ[idx]
+            tmp_v = list_contour_fams[idx];
+            if cat_it == 'M':
+                tmp_v = self.splitOneCont(k)
+            elif cat_it == 'S':
+                tmp_v[0] = contour_fams[idx]
+            list_contour_fams[i] = tmp_v
+
+
 #     unsigned int siz = 0;
 #     for(unsigned int i=0; i < hi; ++i )
 #         siz += list_contour_fams[i].size();
+        size = 0
+        for i in range(len(contour_family)):
+            size += len(list_contour_fams[i])
 
 #     std::vector<ContourFamily> tmp_contour_fams(siz);
 #     std::vector<signed char> tmp_categ(siz);
@@ -47,14 +62,7 @@ class ContourSpliter(object):
 #     std::swap(tmp_contour_fams,contour_fams);
 #     std::swap(tmp_categ,categ);
 # }
-
-        for idx,k in enumerate(contour_family):
-            cat_it = categ[idx]
-            tmp_v = list_contour_fams[idx];
-            if cat_it == 'M':
-                tmp_v = self.splitOneCont(k)
-            elif cat_it == 'S':
-                tmp_v[0] = contour_fams[idx]
+        return contour_fams, categ
 
 
     def makeWatershedLabel(self, binary, peaks_conts): # return labels
@@ -153,14 +161,32 @@ class ContourSpliter(object):
     # cv::Mat toUse, tmp;
     # std::vector<int> areaCount(nlabs),peakValSQ(nlabs), maxArea(nlabs);
     # std::vector<cv::Point> center(nlabs);
+
+    # init vectors
+    areaCount = []
+    peakValSQ = []
+    maxArea = []
+    center = []
+    for i in range(len(nlabs)):
+        areaCount.append(0)
+        peakValSQ.append(0)
+        maxArea.append(0)
+        center.append((0,0))
+
     # for(unsigned int j=0; j<areaCount.size();j++){
     #     areaCount[j] = 0;
     #     peakValSQ[j] = 0;
     # }
 
+    # for j in range(len(nlabs)):
+    #     areaCount[j] = 0
+    #     peakValSQ[j] = 0
+
     # mask.copyTo(toUse);
     # unsigned int nc=mask.cols;
     # unsigned int nl=mask.rows;
+    toUse = mask.copy()
+    nc, nl = toUse.shape
 
     # /*define the peaks heigh in gray*/
     # for(unsigned int j=0; j<nl;j++){
@@ -176,26 +202,54 @@ class ContourSpliter(object):
     #         }
     #     }
     # }
+
+    for j in range(nl):
+        for i in range(nc):
+            newVal = mask[(j,i)]
+            if newVal > 1:
+                if peakValSQ[newVal-2] < gray[(j,i)]:
+                    peakValSQ[newVal-2] = gray[(j,i)]
+                    peakValSQ[newVal-2] = peakValSQ[newVal-2] * peakValSQ[newVal-2]
+                    center[newVal-2] = (j,i)
+
     # for(unsigned int j=0; j<areaCount.size();j++){
     #     maxArea[j] = maxAreaModif * peakValSQ[j]*3.1416;
     # }
+    for j in range(len(areaCount)):
+        maxArea[j] = maxAreaModif * peakValSQ[j]*pi
+
     # bool on =true;
     # int iter = 0;
     # while(on){
     #     mask.copyTo(tmp);
     #     on =false;
+    on = True
+    count = 0
+    while(on):
+        tmp = mask.copy()
+        on = False
+
     #     for(unsigned int j=0; j != nl; ++j){
     #         for(unsigned int i=0; i != nc; ++i){
+        for j in range(len(nl)):
+            for i in range(len(nc)):
     #             /* find pixels that are labels (mask) and unused(toUse)*/
-    #             if(*(mask.data+j*mask.step+i*mask.elemSize()) > 1 && *(toUse.data+j*toUse.step+i*toUse.elemSize()) > 0){
+    #            if(*(mask.data+j*mask.step+i*mask.elemSize()) > 1 && *(toUse.data+j*toUse.step+i*toUse.elemSize()) > 0){
+                if mask[(j,i)] > 1 and toUse[(j,i)] > 0:
     #                 /*for each neighbourgs*/
     #                 for(int m=-1; m != 2;++m){
     #                     for(int n=-1; n !=2;n++){
+                    for m in range(-1,2):
+                        for n in range(-1,n):
     #                         bool test = !(n == 0 && m==0 ) || (n==0 || m==0);
+                            test = not(n == 0 and m==0) or (n==0 or m==0)
     #                             if( test && *(tmp.data+(j+m)*tmp.step+(i+n)*tmp.elemSize()) == 1){
+                            if test and tmp[(j+m, i+n)] == 1:
     #                             switch (*(mask.data+(j+m)*mask.step+(i+n)*mask.elemSize())){
+                                    # if mask[(j+m,i+n)] == 0:
     #                                 case 0:
     #                                     break;
+                                    if mask[(j+m,i+n)] == 1
     #                                 /* if the mask in markable*/
     #                                 case 1:
     #                                     /* if the neighbour value in gray is lower or equal to the target*/
@@ -208,6 +262,13 @@ class ContourSpliter(object):
     #                                             ++areaCount[newVal-2];
     #                                         }
     #                                     }
+                                        if gray[(j+m,i+n)] <= gray[(j,i)]:
+                                            newVal = mask[(j,i)]
+                                            xd = (j+m) - center[newVal-2][0] # (x,y)
+                                            yd = (j+m) - center[newVal-2][1]
+                                            if areaCount[newVal-2] < maxArea[newVal-2] and xd*xd+yd*yd < maxAreaModif*peakValSQ[newVal-2]:
+                                                tmp[(j+m,i+n)] = newVal
+
     #                                     break;
     #                                 default:
     #                                     break;
@@ -215,11 +276,15 @@ class ContourSpliter(object):
     #                         }
     #                     }
     #                 }
+                    toUse[(j,i)] = 0
+                    on = True
     #                 *(toUse.data+j*toUse.step+i*toUse.elemSize()) = 0;
     #                 on = true;
     #             }
     #         }
     #     }
+          mask = tmp.copy()
     #     tmp.copyTo(mask);
     #     ++iter;
+         count += 1 # NOT EVEN USED ?!!?
     # }
