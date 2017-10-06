@@ -81,7 +81,7 @@ class ContourSpliter(object):
 #         cv::findContours(peaks, peaks_conts, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
 #         distance_map.convertTo(distance_map,CV_8U);
 # }
-
+        # Calculates the distance to the closest zero pixel for each pixel of the source image.
         distance_map = cv2.distanceTransform(binary, cv2.CV_DIST_L2, cv2.CV_DIST_MASK_5)
 
         # defult kernel in c++ when using cv::Mat()
@@ -91,7 +91,8 @@ class ContourSpliter(object):
         peaks = cv2.dilate(distance_map, kernel, anchor=(-1,-1), iterations = 3)
         tmp_mat = cv2.dilate(binary, kernel, anchor=(-1,-1), iterations = 3)
 
-        peaks = peaks - distance_map
+        # subtract can handel negative values
+        peaks = cv2.subtract(peaks, distance_map)
 
         # threshold peaks
         _, peaks = cv2.threshold(peaks, 0, 255, cv2.THRESH_BINARY)
@@ -101,7 +102,7 @@ class ContourSpliter(object):
         peaks = cv2.bitwise_xor(peaks, tmp_mat)
 
         peaks = cv2.dilate(peaks, kernel, anchor=(-1,-1), iterations=1)
-        cv2.findContours()
+        _, peaks_conts, hierachies = cv2.findContours(peaks, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE):
 
         # convert to "CV_U8" and clip
         distance_map = (distance_map/256).astype('uint8')
