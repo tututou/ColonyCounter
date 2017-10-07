@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import os
 
+from ccopencv.helpers.contour_spliter import ContourSpliter
 import ccopencv.helpers.features as features
 from ccopencv.helpers.cont_group import cont_group
 from ccopencv.helpers.proc_options import proc_options as options
@@ -21,6 +22,8 @@ class step4(step3):
         self.cont_groups = []
         self.predictor = predictor
         self.predictor_ps = predictor_ps
+        self.contour_spliter = ContourSpliter()
+
 
     def process(self):
         """
@@ -38,12 +41,12 @@ class step4(step3):
         self.cont_groups = self.preFilterContourSize(self.cont_groups)
         print('self.cont_groups size: ', len(self.cont_groups))
         feature_matrix = self.makeFeaturesMatrix(self.cont_groups)
-        print('feature_matrix', len(feature_matrix))
         categ = self.predictor.predict(feature_matrix)
 
         # need to implement contour spliter helper class
         # <----  TODO  ----->
-        self.cont_groups , categ = contour_spliter.split(self.cont_groups, categ)
+
+        self.cont_groups , categ = self.contour_spliter.split(self.cont_groups, categ)
 
         # split the contours into 2 groups (split and unsplit)
         contour_fams_split, contour_fams_unsplit = self.separateUnsplited(self.cont_groups)
@@ -51,22 +54,30 @@ class step4(step3):
         # predict categories for split contours
         contour_fams_split = self.preFilterContourSize(contour_fams_split)
         feature_mat_split = self.makeFeaturesMatrix(contour_fams_split)
-        categ_split = self.predictor.predict(feature_mat_split)
+        if len(feature_mat_split) > 0:
+            categ_split = self.predictor.predict(feature_mat_split)
+            print(type(categ_split))
+        else:
+            categ_split = np.array([])
 
         # predict categories for unsplit contours
         contour_fams_unsplit = self.preFilterContourSize(contour_fams_unsplit)
         feature_mat_unsplit = self.makeFeaturesMatrix(contour_fams_unsplit)
-        categ_unsplit = self.predictor_ps.predict(feature_mat_unsplit)
+        if len(feature_mat_unsplit) > 0:
+            categ_unsplit = self.predictor_ps.predict(feature_mat_unsplit)
+            print(type(categ_unsplit))
+        else:
+            categ_unsplit = np.array([])
 
         # combine contour_fams_unsplit into contour_fams_split
         # contour_fams_split.insert( contour_fams_split.end(), contour_fams_unsplit.begin(), contour_fams_unsplit.end() );
         # std::swap(contour_fams_split, contour_fams);
-        self.cont_groups = contour_fams_split + contour_fams_unsplit
+        self.cont_groups = np.concatenate((contour_fams_split, contour_fams_unsplit))
 
         # combine categ_split and unsplit
         # categ_split.insert( categ_split.end(), categ_unsplit.begin(), categ_unsplit.end() );
         # std::swap(categ_split, categ);
-        categ = categ_split + categ_unsplit
+        categ = np.concatenate((categ_split, categ_unsplit), axis=0)
 
         return self.writeNumResults(self.cont_groups, categ);
         # m_step_result = (void*) &m_step_numerical_result
@@ -75,12 +86,12 @@ class step4(step3):
         print('preFilterContourSize...')
         tmp = []
         for k in cont_groups:
-            print('k', k)
-            print('k.contours', k.contours) # this is returning []
-            print('len(k.contours)', len(k.contours))
+            # print('k', k)
+            # print('k.contours', k.contours) # this is returning []
+            # print('len(k.contours)', len(k.contours))
 
             if len(k.contours[0]) > 6:
-                (x, y) = features.calculateWH(k.contour[0])
+                (x, y) = features.calculateWH(k.contours[0])
                 if x > options.min_radius or y < options.max_radius:
                     tmp.append(k)
         return tmp
@@ -108,20 +119,18 @@ class step4(step3):
         contours = np.array(contours)
         hierachies = np.array(hierachies[0])
 
-        for index, item in enumerate(contours):
-            #if len(item) > 0:
-                #chunk = self.reshapeContours(item)
-            hierarchy = hierachies[index]
-            count = 0
-            chunkCount = len(contours)
-            while(count < chunkCount):
-                holes = 0
-                if hierachies[count][0] > 0:
-                    holes = hierachies[count][0]-count-1
-                else:
-                    holes = chunkCount - (count + 1)
-                self.cont_groups.append(cont_group( item[count:(count+holes+1):1] ))
-                count += holes + 1
+        count = 0
+        chunkCount = len(contours)
+
+        while(count < chunkCount):
+            holes = 0
+            if hierachies[count][0] > 0:
+                holes = hierachies[count][0]-count-1
+            else:
+                holes = chunkCount - (count + 1)
+            # print('item[count:(count+holes+1):1]', item[count:(count+holes+1):1] )
+            self.cont_groups.append(cont_group( contours[count:(count+holes+1):1] ))
+            count += holes + 1
 
     def writeNumResults(self, cont_fam, categ):
         """
@@ -144,7 +153,7 @@ class step4(step3):
         for i,c  in enumerate(categ):
             if c == 'S':
                 valid_idx.append(i)
-        # print('valid_idx size: ', len(valid_idx))
+        print('valid_idx size: ', len(valid_idx))
         return len(valid_idx)
         # for i, in enumerate(valid_idx):
         #     idx = valid_idx[i]

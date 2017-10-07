@@ -15,9 +15,11 @@ function DashboardController(ImageFactory, $state){
     vm.clearAll = clearAll;
     var validFiletypes = [
         'png',
-        'jpg'
+        'jpg',
+        'PNG',
+        'JPG'
     ];
-    
+
     init();
 
     function init() {
@@ -34,12 +36,12 @@ function DashboardController(ImageFactory, $state){
         vm.showProgress = true;
         ImageFactory.encodeImage(vm.file[0], function(request, img64) {
             request.then(
-                // success.data contains the response data 
-                function(success) {     
+                // success.data contains the response data
+                function(success) {
                     vm.showProgress = false;
                     // We can keep a list of all the results in the ImageFactory for use in the ResultController.
                     // In the ResultController we can ng-repeat over ImageFactory.results to display them.
-                    // It's an in-memory array so as long as the user doesn't do a hard refresh of the page, we could 
+                    // It's an in-memory array so as long as the user doesn't do a hard refresh of the page, we could
                     // actually display multiple results if the state of the JavaScript in memory is maintained
                     ImageFactory.results.push({
                         image: img64,
@@ -52,7 +54,7 @@ function DashboardController(ImageFactory, $state){
                 },
                 function(error) {
                     vm.showProgress = false;
-                    // Error stuff. It would be nice to pop up an error message here at the very least. 
+                    // Error stuff. It would be nice to pop up an error message here at the very least.
                     // for MVP an alert is fine, although in the future we should make some nicer looking messages.
                 });
         });
