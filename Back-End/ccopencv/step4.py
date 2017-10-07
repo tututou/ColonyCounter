@@ -5,7 +5,6 @@ import os
 import ccopencv.helpers.features as features
 from ccopencv.helpers.cont_group import cont_group
 from ccopencv.helpers.proc_options import proc_options as options
-from ccopencv.helpers.predictor import Predictor
 from ccopencv.step3 import step3
 
 class step4(step3):
@@ -15,11 +14,13 @@ class step4(step3):
     # self.cont_groups
 
     # def __init__(self, step_img, predictor, predictor_ps):
-    #     self.input_img = step_img        
+    #     self.input_img = step_img
 
-    def __init__(self, step_img):
+    def __init__(self, step_img, predictor, predictor_ps):
         self.input_img = step_img.copy()
         self.cont_groups = []
+        self.predictor = predictor
+        self.predictor_ps = predictor_ps
 
     def process(self):
         """
@@ -27,12 +28,17 @@ class step4(step3):
         is an individual colony, multiple objects or invalid.
 
         """
-        print('starting pass two ...')
+        print('starting step4...')
         print('self.cont_groups size: ', len(self.cont_groups))
 
         self.makeContourChunksVect(self.input_img)
+        print('self.cont_groups size: ', len(self.cont_groups))
+        print(self.cont_groups[0].contours)
+
         self.cont_groups = self.preFilterContourSize(self.cont_groups)
+        print('self.cont_groups size: ', len(self.cont_groups))
         feature_matrix = self.makeFeaturesMatrix(self.cont_groups)
+        print('feature_matrix', len(feature_matrix))
         categ = self.predictor.predict(feature_matrix)
 
         # need to implement contour spliter helper class
@@ -69,6 +75,10 @@ class step4(step3):
         print('preFilterContourSize...')
         tmp = []
         for k in cont_groups:
+            print('k', k)
+            print('k.contours', k.contours) # this is returning []
+            print('len(k.contours)', len(k.contours))
+
             if len(k.contours[0]) > 6:
                 (x, y) = features.calculateWH(k.contour[0])
                 if x > options.min_radius or y < options.max_radius:
@@ -89,25 +99,29 @@ class step4(step3):
             _, thrd = cv2.threshold(src, options.threshold, 255, cv2.THRESH_BINARY)
 
         _, contours, hierachies = cv2.findContours(thrd, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+        print(len(contours))
+
+        for index in range(0, len(contours)):
+            contours[index] = self.reshapeContours(contours[index])
 
         # look at step3 code
         contours = np.array(contours)
         hierachies = np.array(hierachies[0])
 
         for index, item in enumerate(contours):
-            if len(item) > 0:
-                chunk = self.reshapeContours(item)
-                hierarchy = hierachies[index]
-                count = 0
-                chunkCount = len(contours)
-                while(count < chunkCount):
-                    holes = 0
-                    if hierachies[count][0] > 0:
-                        holes = hierachies[count][0]-count-1
-                    else:
-                        holes = chunkCount - (count + 1)
-                    self.cont_groups.append(cont_group( chunk[count:(count+holes+1):1] ))
-                    count += holes + 1
+            #if len(item) > 0:
+                #chunk = self.reshapeContours(item)
+            hierarchy = hierachies[index]
+            count = 0
+            chunkCount = len(contours)
+            while(count < chunkCount):
+                holes = 0
+                if hierachies[count][0] > 0:
+                    holes = hierachies[count][0]-count-1
+                else:
+                    holes = chunkCount - (count + 1)
+                self.cont_groups.append(cont_group( item[count:(count+holes+1):1] ))
+                count += holes + 1
 
     def writeNumResults(self, cont_fam, categ):
         """
@@ -158,7 +172,7 @@ class step4(step3):
 
 
 if __name__ == '__main__':
-    img_path = os.path.abspath('test_images/step1_img-bad_2.jpg')
+    img_path = os.path.abspath('test_images/step3_img-contours.jpg')
     img = cv2.imread(img_path)
     print(img_path)
     cc = step4(img)

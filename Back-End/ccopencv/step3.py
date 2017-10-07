@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 import os
-from sklearn.externals import joblib
 
 import ccopencv.helpers.features as features
 from ccopencv.helpers.cont_group import cont_group
@@ -9,16 +8,11 @@ from ccopencv.helpers.proc_options import proc_options as options
 
 class step3(object):
 
-    def __init__(self, img):
+    def __init__(self, img, predictor):
+        print('starting step3...')
         self.input_img = img.copy()
         self.cont_groups = []
-        cur_path = os.path.dirname(__file__)
-        filename = os.path.join(cur_path, 'classifier', 'rTree_trained_model.pkl')
-        filename_ps = os.path.join(cur_path, 'classifier', 'rTree_trained_model_ps.pkl')
-        print('path to trained model: ',filename)
-        print('path to trained model: ',filename_ps)
-        self.predictor = joblib.load(filename) # ?
-        self.predictor_ps = joblib.load(filename_ps)
+        self.predictor = predictor
 
     ##
     # The main driving method for the processing involved at this step in the algorithm
@@ -58,6 +52,7 @@ class step3(object):
     def makeFeaturesMatrix(self, cont_groups):
         print("Entering makeFeaturesMatrix")
         n = len(cont_groups)
+        print('n', n)
         n_features = features.getNFeature()
         out = []
         for i in range(0, n):
@@ -93,6 +88,7 @@ class step3(object):
                         contours[index] = self.subsample(contour, 100)
                 contour_chunks.append(np.array(contours))
                 hierarchies.append(np.array(hierarchy[0])) # Gets rid of extra dime
+
         contour_chunks = np.array(contour_chunks)
         hierarchies = np.array(hierarchies)
         for index, chunk in enumerate(contour_chunks):
