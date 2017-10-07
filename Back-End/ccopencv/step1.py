@@ -90,8 +90,7 @@ class step1(object):
 
     def subtract_Lap_of_gaussian(self, img_in, blur_size):
         '''
-        https://github.com/qgeissmann/OpenCFU/blob/master/src/processor/src/Step_2.cpp#L26
-        (Edge Detection)
+        Find and enhance edges of colonies using Laplacian of Gaussian
         '''
         print('subtract lap of Gaussian ...')
         temp_mat = cv2.GaussianBlur(img_in, (blur_size, blur_size), 3)
@@ -112,7 +111,6 @@ class step1(object):
             if hierarchy[idx][2] < 0 and hierarchy[idx][3] < 0:
 
                 contoursToDraw.append(cnt)
-                # print(len(contoursToDraw[0]))
                 x,y,w,h = cv2.boundingRect(contoursToDraw[0])
                 cv2.drawContours(
                     temp_mat,

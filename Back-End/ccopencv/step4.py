@@ -13,10 +13,6 @@ class step4(step3):
     # inherits from step 3
     # self.input_img
     # self.cont_groups
-
-    # def __init__(self, step_img, predictor, predictor_ps):
-    #     self.input_img = step_img
-
     def __init__(self, step_img, predictor, predictor_ps):
         self.input_img = step_img.copy()
         self.cont_groups = []
@@ -32,64 +28,48 @@ class step4(step3):
 
         """
         print('starting step4...')
-        print('self.cont_groups size: ', len(self.cont_groups))
 
+        # make initial contour category predictions
         self.makeContourChunksVect(self.input_img)
-        print('self.cont_groups size: ', len(self.cont_groups))
-        print(self.cont_groups[0].contours)
-
         self.cont_groups = self.preFilterContourSize(self.cont_groups)
-        print('self.cont_groups size: ', len(self.cont_groups))
         feature_matrix = self.makeFeaturesMatrix(self.cont_groups)
         categ = self.predictor.predict(feature_matrix)
 
-        # need to implement contour spliter helper class
-        # <----  TODO  ----->
-
+        # split contour groups into single or multiple colonies
         self.cont_groups , categ = self.contour_spliter.split(self.cont_groups, categ)
 
         # split the contours into 2 groups (split and unsplit)
+        # this could use some work as it missed some multiple colony groups
         contour_fams_split, contour_fams_unsplit = self.separateUnsplited(self.cont_groups)
 
-        # predict categories for split contours
+        # predict category labels ('N', 'S', 'M') for split contours
         contour_fams_split = self.preFilterContourSize(contour_fams_split)
         feature_mat_split = self.makeFeaturesMatrix(contour_fams_split)
         if len(feature_mat_split) > 0:
             categ_split = self.predictor.predict(feature_mat_split)
-            print(type(categ_split))
         else:
             categ_split = np.array([])
 
-        # predict categories for unsplit contours
+        # predict categories for ('N', 'S', 'M') unsplit contours
         contour_fams_unsplit = self.preFilterContourSize(contour_fams_unsplit)
         feature_mat_unsplit = self.makeFeaturesMatrix(contour_fams_unsplit)
         if len(feature_mat_unsplit) > 0:
             categ_unsplit = self.predictor_ps.predict(feature_mat_unsplit)
-            print(type(categ_unsplit))
         else:
             categ_unsplit = np.array([])
 
-        # combine contour_fams_unsplit into contour_fams_split
-        # contour_fams_split.insert( contour_fams_split.end(), contour_fams_unsplit.begin(), contour_fams_unsplit.end() );
-        # std::swap(contour_fams_split, contour_fams);
+        # combine results back into
         self.cont_groups = np.concatenate((contour_fams_split, contour_fams_unsplit))
-
-        # combine categ_split and unsplit
-        # categ_split.insert( categ_split.end(), categ_unsplit.begin(), categ_unsplit.end() );
-        # std::swap(categ_split, categ);
         categ = np.concatenate((categ_split, categ_unsplit), axis=0)
 
-        return self.writeNumResults(self.cont_groups, categ);
-        # m_step_result = (void*) &m_step_numerical_result
+        return self.writeNumResults(self.cont_groups, categ)
+
 
     def preFilterContourSize(self, cont_groups):
+        """ Filter out contours with sizes less than min_radius  or greater than max_radius """
         print('preFilterContourSize...')
         tmp = []
         for k in cont_groups:
-            # print('k', k)
-            # print('k.contours', k.contours) # this is returning []
-            # print('len(k.contours)', len(k.contours))
-
             if len(k.contours[0]) > 6:
                 (x, y) = features.calculateWH(k.contours[0])
                 if x > options.min_radius or y < options.max_radius:
@@ -101,7 +81,7 @@ class step4(step3):
         Finds contours from the source image and adds to cont_groups
 
         input: step_image
-        output: none
+        output: self.cont_groups
         """
         print('makeContourChunksVect...')
         if options.has_auto_threshold:
@@ -112,10 +92,10 @@ class step4(step3):
         _, contours, hierachies = cv2.findContours(thrd, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
         print(len(contours))
 
+        # reshape contours to condense array
         for index in range(0, len(contours)):
             contours[index] = self.reshapeContours(contours[index])
 
-        # look at step3 code
         contours = np.array(contours)
         hierachies = np.array(hierachies[0])
 
@@ -128,7 +108,6 @@ class step4(step3):
                 holes = hierachies[count][0]-count-1
             else:
                 holes = chunkCount - (count + 1)
-            # print('item[count:(count+holes+1):1]', item[count:(count+holes+1):1] )
             self.cont_groups.append(cont_group( contours[count:(count+holes+1):1] ))
             count += holes + 1
 
@@ -137,28 +116,23 @@ class step4(step3):
             write results for step,
         """
         print('writeNumResults ...')
-        # std::vector<unsigned int> valid_idx;
-        # for(unsigned int i=0;i < categ.size() ; i++)
-        #     if(categ[i] == 'S')
-        #         valid_idx.push_back(i);
-
-        # DEV_INFOS(valid_idx.size());
-        # m_step_numerical_result.reset(valid_idx.size());
-
-        # for(unsigned int i=0;i < valid_idx.size() ; i++){
-        #      unsigned int idx = valid_idx[i];
-        #         m_step_numerical_result.add_at(OneObjectRow(contour_fams[idx],m_raw_img),i);
-        #     }
+        # print(cont_fam[0].contours)
+        # print(type(cont_fam))
         valid_idx = []
+
+        h, w = self.input_img.shape
+        tmp_mat = np.full((h,w), 0, dtype='uint8')
+
         for i,c  in enumerate(categ):
-            if c == 'S':
+            print('c: ', c)
+            if c == 'S' or c=='M':
                 valid_idx.append(i)
-        print('valid_idx size: ', len(valid_idx))
+                # contours = cont_fam[i].contours
+                # cv2.drawContours(tmp_mat, contours, -1, (255,0,0), thickness = -1, lineType = 8)
+
+        # print('valid_idx size: ', len(valid_idx))
+        # cv2.imwrite('step4_img-good_3.jpg', tmp_mat, [cv2.IMWRITE_JPEG_QUALITY, 100])
         return len(valid_idx)
-        # for i, in enumerate(valid_idx):
-        #     idx = valid_idx[i]
-        #     # OneObjectRow  draws contours on raw image
-            # m_step_numerical_result.add_at(OneObjectRow(contour_fams[idx], m_raw_img),i);
 
     def separateUnsplited(self, cont_groups):
         """ applied to self.cont_groups

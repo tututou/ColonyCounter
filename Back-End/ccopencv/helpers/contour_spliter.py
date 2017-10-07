@@ -4,8 +4,9 @@ from math import pi
 from ccopencv.helpers.cont_group import cont_group
 
 class ContourSpliter(object):
+    """ Used to determine if contours are single or multiple colonies and divide them """
 
-    # DONE
+
     def split(self, contour_groups, categ):
         assert len(contour_groups) == len(categ)
         hi = len(contour_groups)
@@ -32,8 +33,8 @@ class ContourSpliter(object):
                 k += 1
         return contour_groups_tmp, categ_tmp
 
-    # DONE
-    def makeWatershedLabel(self, binary, peaks_conts): # return labels
+
+    def makeWatershedLabel(self, binary, peaks_conts):
         """
 
         """
@@ -42,21 +43,9 @@ class ContourSpliter(object):
             cv2.drawContours(labels, peaks_conts, idx, (idx+2,0,0), thickness = -1, lineType = 8)
         return labels
 
-    #DONE
-    def findPeaks(self, binary): # return distance_map and peaks
-#     void ContourSpliter::findPeaks(const cv::Mat& binary, cv::Mat& distance_map, cont_chunk& peaks_conts){
-#         cv::Mat tmp_mat,peaks;
-#         cv::distanceTransform(binary,distance_map,CV_DIST_L2,CV_DIST_MASK_5);
-#         cv::dilate(distance_map,peaks,cv::Mat(),cv::Point(-1,-1),3);
-#         cv::dilate(binary,tmp_mat,cv::Mat(),cv::Point(-1,-1),3);
-#         peaks = peaks - distance_map;
-#         cv::threshold(peaks,peaks,0,255,cv::THRESH_BINARY);
-#         peaks.convertTo(peaks,CV_8U);
-#         cv::bitwise_xor(peaks,tmp_mat,peaks);
-#         cv::dilate(peaks,peaks,cv::Mat(),cv::Point(-1,-1),1);
-#         cv::findContours(peaks, peaks_conts, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
-#         distance_map.convertTo(distance_map,CV_8U);
-# }
+
+    def findPeaks(self, binary):
+
         # Calculates the distance to the closest zero pixel for each pixel of the source image.
         distance_map = cv2.distanceTransform(binary, distanceType=cv2.DIST_L2, maskSize=5)
 
@@ -95,10 +84,11 @@ class ContourSpliter(object):
         miniTmp = np.full((rectH, rectW), 0, dtype="uint8")
 
         # draw all contours and nested contours on temp matrix
-        print('contours len', len(contour_fams.contours))
-        print('contour_fams.contours', contour_fams.contours)
-        print('hierachies len', len(contour_fams.hierarchies))
-        print('hierachies', contour_fams.hierarchies)
+        # debug statments
+        # print('contours len', len(contour_fams.contours))
+        # print('contour_fams.contours', contour_fams.contours)
+        # print('hierachies len', len(contour_fams.hierarchies))
+        # print('hierachies', contour_fams.hierarchies)
 
         cv2.drawContours(
             miniTmp,
@@ -131,14 +121,9 @@ class ContourSpliter(object):
         return tmp_out
 
     def watershedLike(self, mask, gray, nlabs, maxAreaModif):
-    # void ContourSpliter::watershedLike(cv::Mat &mask,cv::Mat& gray,int nlabs,double maxAreaModif){
-    # /* Mask is 0 where no objects exist, 1 in undefined womes and >1 for attributed zones/labels*/
-    # /* toUse is >0 for mpixel that have not yet been used as seed, and ==0 for the rest*/
-    # cv::Mat toUse, tmp;
-    # std::vector<int> areaCount(nlabs),peakValSQ(nlabs), maxArea(nlabs);
-    # std::vector<cv::Point> center(nlabs);
+    # Mask is 0 where no objects exist, 1 in undefined womes and >1 for attributed zones/labels
+    # toUse is >0 for mpixel that have not yet been used as seed, and ==0 for the rest
 
-    # init vectors
         areaCount = []
         peakValSQ = []
         maxArea = []
@@ -151,13 +136,10 @@ class ContourSpliter(object):
 
         toUse = mask.copy()
         nl, nc = toUse.shape
-        print('nc, nl: ', nc, nl)
-        print('mask.shape', mask.shape)
-        print('gray.shape', gray.shape)
-        # /*define the peaks heigh in gray*/
+
+        # define the peaks heigh in gray matrix
         for j in range(nl):
             for i in range(nc):
-                print('j,i', j,i)
                 newVal = mask[(j,i)]
                 if newVal > 1:
                     if peakValSQ[newVal-2] < gray[(j,i)]:
@@ -176,14 +158,16 @@ class ContourSpliter(object):
 
             for j in range(nl):
                 for i in range(nc):
-        #           /* find pixels that are labels (mask) and unused(toUse)*/
+                    # find pixels that are labels (mask) and unused(toUse)
                     if mask[(j,i)] > 1 and toUse[(j,i)] > 0:
-        #               /*for each neighbourgs*/
+                        # for each neighbourgs
                         for m in range(-1,2):
                             for n in range(-1,n):
                                 test = not(n == 0 and m==0) or (n==0 or m==0)
                                 if test and tmp[(j+m, i+n)] == 1:
+                                        # if the mask in markable
                                         if mask[(j+m,i+n)] == 1:
+                                            # if the neighbour value in gray is lower or equal to the target
                                             if gray[(j+m,i+n)] <= gray[(j,i)]:
                                                 newVal = mask[(j,i)]
                                                 xd = (j+m) - center[newVal-2][0] # (x,y)
@@ -194,4 +178,4 @@ class ContourSpliter(object):
                         on = True
 
             mask = tmp.copy()
-            count += 1 # NOT EVEN USED ?!!?
+            count += 1

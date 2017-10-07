@@ -11,6 +11,7 @@ from ccopencv.step4 import step4
 
 
 class Processor(object):
+    """ Main class that runs the image processing algorthim to detect and count colonies """
 
     def __init__(self, img64):
         self.img_base64 = img64
@@ -19,9 +20,7 @@ class Processor(object):
         cur_path = os.path.dirname(__file__)
         filename = os.path.join(cur_path, 'classifier', 'rTree_trained_model.pkl')
         filename_ps = os.path.join(cur_path, 'classifier', 'rTree_trained_model_ps.pkl')
-        print('path to trained model: ',filename)
-        print('path to trained model: ',filename_ps)
-        self.predictor = joblib.load(filename) # ?
+        self.predictor = joblib.load(filename)
         self.predictor_ps = joblib.load(filename_ps)
 
 
@@ -32,11 +31,11 @@ class Processor(object):
 
         process1 = step1(self.img)
         step_res = process1.process()
-        cv2.imwrite('step1res.' + extension, step_res, [cv2.IMWRITE_JPEG_QUALITY, 100])
+        # cv2.imwrite('step1res.' + extension, step_res, [cv2.IMWRITE_JPEG_QUALITY, 100])
 
         process2 = step3(step_res, self.predictor)
         step_res = process2.process()
-        cv2.imwrite('step2res.' + extension, step_res, [cv2.IMWRITE_JPEG_QUALITY, 100])
+        # cv2.imwrite('step2res.' + extension, step_res, [cv2.IMWRITE_JPEG_QUALITY, 100])
 
         process3 = step4(step_res, self.predictor, self.predictor_ps)
         res = process3.process()

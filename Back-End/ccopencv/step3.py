@@ -33,7 +33,6 @@ class step3(object):
         print("Entering drawAllValidContours")
         for i in range(0, len(cont_groups)):
             contours = cont_groups[i].contours
-            print
             hierarchies = cont_groups[i].hierarchies
             rectX, rectY, rectW, rectH = cv2.boundingRect(contours[0])
             rect_mat = np.full(
@@ -43,16 +42,11 @@ class step3(object):
             if categories[i] != "N":
                 cv2.drawContours(rect_mat, contours, -1, (255,0,0), thickness = -1, lineType = 8, maxLevel = 2, offset = (-rectX, -rectY))
                 self.step_img[rectY:(rectY+rectH), rectX:(rectX+rectW)] += rect_mat
-                # cv2.drawContours(rect_mat, contours, -1, (255,0,0), -1, 8, hierarchies, 2, (-rectX, -rectY))
-                # self.step_img[rectY:(rectY+rectH), rectX:(rectX+rectW)] = self.step_img[rectY:(rectY+rectH), rectX:(rectX+rectW)] + rect_mat
-            # cv2.drawContours(rect_mat, contours, -1, (255,0,0), thickness = -1, lineType = 8, maxLevel = 2, offset = (-rectX, -rectY))
-            # self.step_img[rectY:(rectY+rectH), rectX:(rectX+rectW)] += rect_mat
 
 
     def makeFeaturesMatrix(self, cont_groups):
         print("Entering makeFeaturesMatrix")
         n = len(cont_groups)
-        print('n', n)
         n_features = features.getNFeature()
         out = []
         for i in range(0, n):
