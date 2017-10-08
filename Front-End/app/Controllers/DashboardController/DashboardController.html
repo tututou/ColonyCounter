@@ -1,25 +1,29 @@
 <div class="md-padding" ng-controller="DashboardController as dashboardController">
 		<md-content layout-padding layout="column">
-			<div layout="row" ng-show="dashboardController.files.length > 0">
+			<div layout="row" ng-show="dashboardController.file.length > 0">
 				<ul>
-					<li ng-repeat="file in dashboardController.files">
-						{{file}}
+					<li ng-repeat="file in dashboardController.file">
+						{{file.name}}
 					</li>
 				</ul>
 			</div>
+
 			<form name="imageForm" ng-submit="">
-				<input ng-model='dashboardController.files' type="file" multiple/>
-				<!--<input type="submit" value='Submit'/>-->
+				<input type="file" file-input="dashboardController.file"/>
 			</form>
-			<div layout="row">
-				<md-button class="md-raised md-success" flex="100" ng-click="dashboardController.show()">Submit</md-button>
+
+			<div layout = "row" layout-sm = "column" layout-align = "space-around">
+				<md-progress-linear ng-show = "dashboardController.showProgress" class = "md-warn" md-mode = "{{ctrl.modes[0]}}"
+				   value = "{{ctrl.determinateValue}}"
+				   md-buffer-value = "{{ctrl.determinateValue2}}"></md-progress-linear>
 			</div>
+
 			<div layout="row">
-				<md-button class="md-raised md-warn" flex="100">Clear all</md-button>
+				<md-button class="md-raised md-success" flex="100" ng-click="dashboardController.submitImage()">Submit</md-button>
 			</div>
-			<!--<div flex="33" layout-align="center">
-				<button>Submit</button>
-			</div>-->
+			
+			<div layout="row">
+				<md-button class="md-raised md-warn" flex="100" ng-click="dashboardController.clearAll()">Clear all</md-button>
+			</div>
 		</md-content>
-	</md-input-container>
 </div>

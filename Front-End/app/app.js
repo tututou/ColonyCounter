@@ -12,11 +12,14 @@ angular.module('App', [
   'App.DashboardController',
   'App.NavigationController',
   'App.SidebarController',
-  'App.TutorialController'
+  'App.TutorialController',
+  'App.ResultController',
+  'App.ImageFactory',
+  'App.fileInput'
 ])
 .controller('MainController', [ function( ) {
 }])
-.config(function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
+.config(function($stateProvider, $urlRouterProvider, $mdThemingProvider, $httpProvider) {
     
     $stateProvider.state('site', {
             abstract: true,
@@ -47,6 +50,14 @@ angular.module('App', [
             views: {
                 'content@': {
                     templateUrl: 'Controllers/TutorialController/TutorialController.html',
+                }
+            }
+        })
+        .state('site.result', {
+            url: '/result',
+            views: {
+                'content@': {
+                    templateUrl: 'Controllers/ResultController/ResultController.html',
                 }
             }
         });
