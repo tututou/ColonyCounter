@@ -1,5 +1,9 @@
 # ColonyCounter
-#### Colony Counter is a web application used to count the number of colonies of yeast in a picture of a petri dish...
+
+ColonyCounter is a web application that uses OpenCV to count the number of yeast colonies in a petri dish.
+
+## Check out the latest release: http://54.164.59.69/
+
 
 ## Back-End Setup
 1. Install python 3.6 (make sure pip is also installed and python is in your system path)
