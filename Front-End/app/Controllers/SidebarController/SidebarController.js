@@ -18,9 +18,9 @@ function SidebarController( $mdSidenav ) {
                 sref: 'site.home'
             },
             {
-                name: 'Image History',
+                name: 'View Results',
                 iconClass: 'fa-list',
-                sref: 'site.history' // doesn't exist yet
+                sref: 'site.result'
             }
         ]
     }
