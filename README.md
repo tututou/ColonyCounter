@@ -14,4 +14,4 @@
 10. In a web browser navigate to http://localhost:8000/admin to verify. If a login screen appears, your backend is running!
 
 ## Front-End Setup
-The README.md for the front-end can be found in the "Front-End" directory.
+The README.md for the front-end can be found in the `Front-End` directory of this repository, containing instructions for installing and running.

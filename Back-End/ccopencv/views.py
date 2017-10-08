@@ -2,13 +2,11 @@ from random import randint
 
 from . import step1, step3
 
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.http import JsonResponse
-from django.http import HttpResponseBadRequest
 from ccopencv.processor import Processor
 import base64
 

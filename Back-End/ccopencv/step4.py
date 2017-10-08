@@ -67,7 +67,6 @@ class step4(step3):
 
     def preFilterContourSize(self, cont_groups):
         """ Filter out contours with sizes less than min_radius  or greater than max_radius """
-        print('preFilterContourSize...')
         tmp = []
         for k in cont_groups:
             if len(k.contours[0]) > 6:
@@ -83,7 +82,6 @@ class step4(step3):
         input: step_image
         output: self.cont_groups
         """
-        print('makeContourChunksVect...')
         if options.has_auto_threshold:
             _, thrd = cv2.threshold(src, options.threshold, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
         else:
@@ -115,7 +113,6 @@ class step4(step3):
         """
             write results for step,
         """
-        print('writeNumResults ...')
         # print(cont_fam[0].contours)
         # print(type(cont_fam))
         valid_idx = []
@@ -124,7 +121,6 @@ class step4(step3):
         tmp_mat = np.full((h,w), 0, dtype='uint8')
 
         for i,c  in enumerate(categ):
-            print('c: ', c)
             if c == 'S' or c=='M':
                 valid_idx.append(i)
                 # contours = cont_fam[i].contours
@@ -138,7 +134,6 @@ class step4(step3):
         """ applied to self.cont_groups
         return: contour_fams_unsplit, contour_fams_split
         """
-        print('separateUnsplited...')
         contour_fams_split = []
         contour_fams_unsplit = []
 
@@ -147,9 +142,6 @@ class step4(step3):
                 contour_fams_split.append(k)
             else:
                 contour_fams_unsplit.append(k)
-
-        print('N splitted:', len(contour_fams_split))
-        print('N unsplitted:', len(contour_fams_unsplit))
 
         return contour_fams_split, contour_fams_unsplit
 

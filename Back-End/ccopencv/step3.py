@@ -9,7 +9,6 @@ from ccopencv.helpers.proc_options import proc_options as options
 class step3(object):
 
     def __init__(self, img, predictor):
-        print('starting step3...')
         self.input_img = img.copy()
         self.cont_groups = []
         self.predictor = predictor
@@ -18,6 +17,7 @@ class step3(object):
     # The main driving method for the processing involved at this step in the algorithm
     ##
     def process(self):
+        print('Starting step3')
         self.step_img = np.full(
             (self.input_img.shape[0], self.input_img.shape[1]),
             1,
@@ -30,7 +30,6 @@ class step3(object):
 
 
     def drawAllValidContours(self, cont_groups, categories):
-        print("Entering drawAllValidContours")
         for i in range(0, len(cont_groups)):
             contours = cont_groups[i].contours
             hierarchies = cont_groups[i].hierarchies
@@ -45,7 +44,6 @@ class step3(object):
 
 
     def makeFeaturesMatrix(self, cont_groups):
-        print("Entering makeFeaturesMatrix")
         n = len(cont_groups)
         n_features = features.getNFeature()
         out = []
@@ -59,7 +57,6 @@ class step3(object):
     # Contours are taken over a variety of thresholds to score later.
     ##
     def makeContourChunksArray(self, src):
-        print("Entering makeContourChunksArray")
         # minLoc/maxLoc is a tuple of form (x, y)
         [minVal, maxVal, minLoc, maxLoc] = cv2.minMaxLoc(src)
         low = int(minVal)

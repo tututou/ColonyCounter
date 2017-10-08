@@ -16,7 +16,7 @@ class step1(object):
         '''
         correct_brightness: Remove noise from image, enhance edges
         '''
-        print('correcting brightness...')
+        print('Starting step1')
         # make background mask
         self.make_convoluted_mask()
         inverted_mask = cv2.bitwise_not(self.conv_mask)
@@ -92,7 +92,6 @@ class step1(object):
         '''
         Find and enhance edges of colonies using Laplacian of Gaussian
         '''
-        print('subtract lap of Gaussian ...')
         temp_mat = cv2.GaussianBlur(img_in, (blur_size, blur_size), 3)
         temp_mat = cv2.Laplacian(temp_mat, ddepth=cv2.CV_8U, ksize=5, scale=0.3)
         ret, temp = cv2.threshold(temp_mat, 10, 255, cv2.THRESH_BINARY) # <-- WHY ?? hardcoded

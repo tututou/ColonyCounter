@@ -22,3 +22,4 @@ urlpatterns = [
     url(r'^', include('ccopencv.urls')),
     url(r'^hello/', hello.hello_world),
 ]
+
