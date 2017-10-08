@@ -16,6 +16,11 @@ function SidebarController( $mdSidenav ) {
                 name: 'Process Images',
                 iconClass: 'fa-picture-o',
                 sref: 'site.home'
+            },
+            {
+                name: 'View Results',
+                iconClass: 'fa-list',
+                sref: 'site.result'
             }
         ]
     }

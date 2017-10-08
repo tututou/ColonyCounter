@@ -1,5 +1,9 @@
 # ColonyCounter
-#### Colony Counter is a web application used to count the number of colonies of yeast in a picture of a petri dish...
+
+ColonyCounter is a web application that uses OpenCV to count the number of yeast colonies in a petri dish.
+
+## Check out the latest release: http://54.164.59.69/
+
 
 ## Back-End Setup
 1. Install python 3.6 (make sure pip is also installed and python is in your system path)
@@ -11,7 +15,7 @@
 7. from the command line navigate to the Back-End folder within the git repo
 8. run `pip install -r requirements.txt`
 9. run `python manage.py runserver`
-10. In a web browser navigate to https://127.0.0.1:8000
+10. In a web browser navigate to http://localhost:8000/admin to verify. If a login screen appears, your backend is running!
 
-##Front-End Setup
-The README.md for the front-end can be found in the "Front-End" directory.
+## Front-End Setup
+The README.md for the front-end can be found in the `Front-End` directory of this repository, containing instructions for installing and running.

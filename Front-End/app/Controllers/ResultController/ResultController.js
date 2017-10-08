@@ -10,12 +10,12 @@ ResultController.$inject = [
 function ResultController($scope, ImageFactory){
 
 	var vm = this;
-	vm.results = ImageFactory.results;
 
 	init();
 
 	function init() {
-
+		vm.results = ImageFactory.results;
+		vm.results.reverse();
 	}
 
 }

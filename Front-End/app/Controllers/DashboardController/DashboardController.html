@@ -1,29 +1,37 @@
 <div class="md-padding" ng-controller="DashboardController as dashboardController">
-		<md-content layout-padding layout="column">
-			<div layout="row" ng-show="dashboardController.file.length > 0">
-				<ul>
-					<li ng-repeat="file in dashboardController.file">
-						{{file.name}}
-					</li>
-				</ul>
-			</div>
-
-			<form name="imageForm" ng-submit="">
-				<input type="file" file-input="dashboardController.file"/>
-			</form>
-
-			<div layout = "row" layout-sm = "column" layout-align = "space-around">
-				<md-progress-linear ng-show = "dashboardController.showProgress" class = "md-warn" md-mode = "{{ctrl.modes[0]}}"
-				   value = "{{ctrl.determinateValue}}"
-				   md-buffer-value = "{{ctrl.determinateValue2}}"></md-progress-linear>
-			</div>
-
-			<div layout="row">
-				<md-button class="md-raised md-success" flex="100" ng-click="dashboardController.submitImage()">Submit</md-button>
-			</div>
-			
-			<div layout="row">
-				<md-button class="md-raised md-warn" flex="100" ng-click="dashboardController.clearAll()">Clear all</md-button>
-			</div>
-		</md-content>
+	<md-content layout-padding layout="column">
+		<div>
+			<h2 style="text-align: center;">Welcome to ColonyCounter!</h2>
+			<p style="width:450px; text-align:center;">
+				<a href="https://c2.staticflickr.com/8/7093/7244339692_03186e6cfc_b.jpg" target="_blank">Counting yeast colonies</a> in petri dishes is a pain for researchers. Upload an image below. Our web-based implementation of the <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0054072" target="_blank">OpenCFU algorithm</a> will try its best to count them for you!
+			</p>
+			<p style="width:450px; text-align:center;">
+				We currently only provide accurate results for high contrast .jpg and .png images with little to no glare. We hope to improve on this soon!
+			</p>
+		</div>
+		<div layout="row" ng-show="dashboardController.file.length > 0">
+			<ul>
+				<li ng-repeat="file in dashboardController.file" ng-bind="file.name">
+				</li>
+			</ul>
+		</div>
+		<form name="imageForm" ng-submit="">
+			<input type="file" file-input="dashboardController.file"/>
+		</form>
+		<div layout="row" layout-sm="column" layout-align="space-around" ng-show="dashboardController.showProgress">	
+			Please wait, this may take a moment...
+		</div>
+		<div layout="row" layout-sm="column" layout-align="space-around" ng-show="dashboardController.showProgress">	
+			<md-progress-linear class="md-warn" md-mode="{{ctrl.modes[0]}}"
+				value="{{ctrl.determinateValue}}"
+				md-buffer-value="{{ctrl.determinateValue2}}">   	
+			</md-progress-linear>
+		</div>
+		<div layout="row">
+			<md-button class="md-raised md-success" flex="100" ng-click="dashboardController.submitImage()">Submit</md-button>
+		</div>
+		<div layout="row">
+			<md-button class="md-raised md-warn" flex="100" ng-click="dashboardController.clearAll()">Clear</md-button>
+		</div>
+	</md-content>
 </div>

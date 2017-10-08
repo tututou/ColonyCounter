@@ -29,8 +29,3 @@ If you find a library that you'd like to add to the project, there are a couple 
 1. Within the `Front-End` directory, run `bower install [package-name] --save` to install the package and add its target to the project's `bower.json` file. The `--save` tag is important! If you leave it out you could cause build issues for your teammates, although this isn't the end of the world.
 2. Now that you've installed the library, you need to add its relevant files to `Front-End/gulpconfig.js`. This is essentially a JSON object that stores filepaths to relevant files needed by `GulpJS` to build the project. If the file is a JavaScript file, add the main JavaScript file of the library to `bowerLibs.js` in `gulpconfig.js`. If it's a CSS file, add it to `bowerLibs.css`. The specific instructions for the library should inform you which files need to be selected here.
 3. Finally, if the library involves some kind of AngularJS module, you need to add it as a dependency in `Front-End/app/app.js`. Add the module name string to the 2nd argument passed to the `angular.module()` method (this is the same array of strings that contains all the controller names. Note you need to do this each time you add a controller as well!).
-
-# Setting up Chrome to test
-Use these two commands:
-1. cd C:\Program Files (x86)\Google\Chrome\Application   
-2. chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security
