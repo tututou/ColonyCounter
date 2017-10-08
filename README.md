@@ -19,3 +19,4 @@ ColonyCounter is a web application that uses OpenCV to count the number of yeast
 
 ## Front-End Setup
 The README.md for the front-end can be found in the `Front-End` directory of this repository, containing instructions for installing and running.
+
