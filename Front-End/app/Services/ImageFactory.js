@@ -7,6 +7,7 @@ ImageFactory.$inject = [
 ];
 
 function ImageFactory($http){
+    var file;    
     var postUrl = 'http://localhost:8000/colonycount/';
     return {
         results: [],
