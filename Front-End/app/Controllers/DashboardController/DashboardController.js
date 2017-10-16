@@ -18,7 +18,7 @@ function DashboardController(ImageFactory, $state, $window){
         'png',
         'jpg'
     ];
-
+    
     init();
 
     function init() {

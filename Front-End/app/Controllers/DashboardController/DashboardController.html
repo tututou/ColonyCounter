@@ -1,29 +1,15 @@
 <div class="md-padding" ng-controller="DashboardController as dashboardController">
 		<md-content layout-padding layout="column">
-			<div layout="row" style="overflow-x: scroll; white-space: nowrap;">
-				<div ng-show="dashboardController.file.length > 0" ng-repeat="file in dashboardController.file">
-					<md-card style="min-width:200px;" flex="33" md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" md-theme-watch>
-						<img src="file" class="md-card-image" alt="img caption">
-						<md-card-title>
-							<md-card-title-text>
-							<span class="md-headline">{{file.name}}</span>
-							</md-card-title-text>
-						</md-card-title>
-						<md-card-actions layout="row" layout-align="end center">
-							<md-button>Submit</md-button>
-							<md-button>Remove</md-button>
-						</md-card-actions>
-					</md-card>
-					<!--<ul>
-						<li ng-repeat="file in dashboardController.file">
-							{{file.name}}
-						</li>
-					</ul>-->
-				</div>
+			<div layout="row" ng-show="dashboardController.file.length > 0">
+				<ul>
+					<li ng-repeat="file in dashboardController.file">
+						{{file.name}}
+					</li>
+				</ul>
 			</div>
 
 			<form name="imageForm" ng-submit="">
-				<input type="file" file-input="dashboardController.file" multiple/>
+				<input type="file" file-input="dashboardController.file"/>
 			</form>
 
 			<div layout = "row" layout-sm = "column" layout-align = "space-around">
