@@ -1,9 +1,13 @@
+from random import randint
+
+from . import step1, step3
+
+from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.http import JsonResponse
-from django.http import HttpResponse
+from ccopencv.processor import Processor
 import base64
 
 # Create your views here.
@@ -17,11 +21,14 @@ def hello_world(request, format=None):
 def colonycount(request, format=None):
     if request.method=='POST':
         img64str = request.data['file']
+        extension = request.data['type']
+        good_file_types = ['.png', '.jpg']
+        if not any(extension.lower() in s for s in good_file_types):
+            return HttpResponseBadRequest()
         decoded64 = base64.b64decode(img64str)
-        image_result = open('THAT_IMG.png', 'wb')
-        image_result.write(decoded64)
-        image_result.close()
-        return Response({'colonyCount': 57})
+        processor = Processor(decoded64)
+        count = processor.runAll(extension)
+        return Response({'colonyCount': count})
     else:
         return Response(
             {

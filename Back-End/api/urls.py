@@ -19,6 +19,6 @@ from api import hello
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^ccopencv/', include('ccopencv.urls')),
-	url(r'^hello/', hello.hello_world),
+    url(r'^', include('ccopencv.urls')),
+    url(r'^hello/', hello.hello_world),
 ]
