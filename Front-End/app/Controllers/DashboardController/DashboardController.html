@@ -9,29 +9,50 @@
 				We currently only provide accurate results for high contrast .jpg and .png images with little to no glare. We hope to improve on this soon!
 			</p>
 		</div>
-		<div layout="row" ng-show="dashboardController.file.length > 0">
-			<ul>
-				<li ng-repeat="file in dashboardController.file" ng-bind="file.name">
-				</li>
-			</ul>
+
+		<div layout="row" style="overflow-x: scroll; white-space: nowrap;">
+			<div ng-show="dashboardController.file.length > 0" ng-repeat="file in dashboardController.file">
+				<md-card style="min-width:200px;" flex="33" md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" md-theme-watch>
+					<img src="file" class="md-card-image" alt="img caption">
+					<md-card-title>
+						<md-card-title-text>
+						<span class="md-headline">{{file.name}}</span>
+						</md-card-title-text>
+					</md-card-title>
+					<md-card-actions layout="row" layout-align="end center">
+						<md-button>Submit</md-button>
+						<md-button>Remove</md-button>
+					</md-card-actions>
+				</md-card>
+				<!--<ul>
+					<li ng-repeat="file in dashboardController.file">
+						{{file.name}}
+					</li>
+				</ul>-->
+			</div>
 		</div>
+
 		<form name="imageForm" ng-submit="">
-			<input type="file" file-input="dashboardController.file"/>
+			<input type="file" file-input="dashboardController.file" multiple/>
 		</form>
+
 		<div layout="row" layout-sm="column" layout-align="space-around" ng-show="dashboardController.showProgress">	
 			Please wait, this may take a moment...
 		</div>
+
 		<div layout="row" layout-sm="column" layout-align="space-around" ng-show="dashboardController.showProgress">	
 			<md-progress-linear class="md-warn" md-mode="{{ctrl.modes[0]}}"
 				value="{{ctrl.determinateValue}}"
 				md-buffer-value="{{ctrl.determinateValue2}}">   	
 			</md-progress-linear>
 		</div>
+
 		<div layout="row">
 			<md-button class="md-raised md-success" flex="100" ng-click="dashboardController.submitImage()">Submit</md-button>
 		</div>
+
 		<div layout="row">
-			<md-button class="md-raised md-warn" flex="100" ng-click="dashboardController.clearAll()">Clear</md-button>
+			<md-button class="md-raised md-warn" onclick="imageForm.reset()" flex="100" ng-click="dashboardController.clearAll()">Clear</md-button>
 		</div>
 	</md-content>
 </div>
