@@ -4,12 +4,7 @@ angular
 
 DashboardController.$inject = [
     'ImageFactory',
-<<<<<<< HEAD
-    '$state',
-    '$window'
-=======
     '$state'
->>>>>>> refs/remotes/origin/develop
 ];
 
 function DashboardController(ImageFactory, $state, $window){
