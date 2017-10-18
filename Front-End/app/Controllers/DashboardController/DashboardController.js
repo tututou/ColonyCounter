@@ -13,6 +13,9 @@ function DashboardController(ImageFactory, $state, $window){
     vm.showProgress = false;
     vm.submitImage = submitImage;
     vm.clearAll = clearAll;
+    vm.disableSlider = true;
+    vm.removeImage = removeImage;
+
     var validFiletypes = [
         'png',
         'jpg',
@@ -24,6 +27,13 @@ function DashboardController(ImageFactory, $state, $window){
 
     function init() {
 
+    }
+
+    function removeImage(fileObj){
+        var index = file.indexOf(fileObj);
+        if (index > -1) {
+            file.splice(index, 1);
+        }
     }
 
     function submitImage() {
