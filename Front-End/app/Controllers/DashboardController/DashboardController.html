@@ -1,37 +1,68 @@
-<div class="md-padding" ng-controller="DashboardController as dashboardController">
-	<md-content layout-padding layout="column">
-		<div>
-			<h2 style="text-align: center;">Welcome to ColonyCounter!</h2>
-			<p style="width:450px; text-align:center;">
-				<a href="https://c2.staticflickr.com/8/7093/7244339692_03186e6cfc_b.jpg" target="_blank">Counting yeast colonies</a> in petri dishes is a pain for researchers. Upload an image below. Our web-based implementation of the <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0054072" target="_blank">OpenCFU algorithm</a> will try its best to count them for you!
-			</p>
-			<p style="width:450px; text-align:center;">
-				We currently only provide accurate results for high contrast .jpg and .png images with little to no glare. We hope to improve on this soon!
-			</p>
-		</div>
-		<div layout="row" ng-show="dashboardController.file.length > 0">
-			<ul>
-				<li ng-repeat="file in dashboardController.file" ng-bind="file.name">
-				</li>
-			</ul>
-		</div>
-		<form name="imageForm" ng-submit="">
-			<input type="file" file-input="dashboardController.file"/>
-		</form>
-		<div layout="row" layout-sm="column" layout-align="space-around" ng-show="dashboardController.showProgress">	
-			Please wait, this may take a moment...
-		</div>
-		<div layout="row" layout-sm="column" layout-align="space-around" ng-show="dashboardController.showProgress">	
-			<md-progress-linear class="md-warn" md-mode="{{ctrl.modes[0]}}"
-				value="{{ctrl.determinateValue}}"
-				md-buffer-value="{{ctrl.determinateValue2}}">   	
-			</md-progress-linear>
-		</div>
-		<div layout="row">
-			<md-button class="md-raised md-success" flex="100" ng-click="dashboardController.submitImage()">Submit</md-button>
-		</div>
-		<div layout="row">
-			<md-button class="md-raised md-warn" flex="100" ng-click="dashboardController.clearAll()">Clear</md-button>
-		</div>
-	</md-content>
+<div flex ng-controller="DashboardController as dashboardController">
+	<div flex>
+		<md-content layout="column" layout-align-gt-sm="row">
+			<div class="md-padding" layout="column" style="text-align: center;">
+				<h2>ColonyCounter</h2>
+			</div>
+		</md-content>
+	</div>
+	<div class="md-padding" layout="row" layout-align="center start">
+		<md-content class="md-padding" layout="row">
+			<md-card flex="33">
+				<md-card-content layout="row" layout-align="center">
+					<img src="/assets/images/petri-icon-black.png" />
+				</md-card-content>
+				<md-card-title>
+					<md-card-title-text>
+						<span class="md-headline">BASIL</span>
+						<span class="md-subhead">Extra Large</span>
+					</md-card-title-text>
+				</md-card-title>
+			</md-card>
+			<md-card flex="33">
+				<md-card-content layout="row" layout-align="center">
+					<img src="/assets/images/petri-icon-black.png" />
+				</md-card-content>
+				<md-card-title>
+					<md-card-title-text>
+						<span class="md-headline">JUST WHAT</span>
+						<span class="md-subhead">Extra Large</span>
+					</md-card-title-text>
+				</md-card-title>
+			</md-card>
+			<md-card flex="33">
+				<md-card-content layout="row" layout-align="center">
+					<img src="/assets/images/petri-icon-black.png" />
+				</md-card-content>
+				<md-card-title>
+					<md-card-title-text>
+						<span class="md-headline">YOU'RE LOOKIN FOR</span>
+						<span class="md-subhead">Extra Large</span>
+					</md-card-title-text>
+				</md-card-title>
+			</md-card>
+		</md-content>
+	</div>
+	<div layout="row" layout-align="center center">
+		<md-content layout="column" layout-align="center">
+			<div layout="column">
+				<form name="imageForm" ng-submit="">
+					<input type="file" style="margin-left:7px;" file-input="dashboardController.file"/>
+				</form>
+			</div>
+			<div ng-show="dashboardController.showProgress" layout="column">	
+				Please wait, this may take a moment...
+			</div>
+			<div ng-show="dashboardController.showProgress" layout="column">	
+				<md-progress-linear class="md-warn" md-mode="{{ctrl.modes[0]}}"
+					value="{{ctrl.determinateValue}}"
+					md-buffer-value="{{ctrl.determinateValue2}}">   	
+				</md-progress-linear>
+			</div>
+			<div layout="column">
+				<md-button class="md-raised md-primary" ng-click="dashboardController.submitImage()">Submit</md-button>
+				<md-button class="md-raised md-warn" ng-click="dashboardController.clearAll()">Clear</md-button>
+			</div>
+		</md-content>
+	</div>
 </div>

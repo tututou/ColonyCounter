@@ -61,7 +61,7 @@ angular.module('App', [
                 }
             }
         });
-    
+        
     $urlRouterProvider.otherwise('/');
 
     $mdThemingProvider.theme('default');
