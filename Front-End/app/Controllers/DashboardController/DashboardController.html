@@ -19,9 +19,24 @@
 						<span class="md-headline">{{file.name}}</span>
 						</md-card-title-text>
 					</md-card-title>
+
+					<md-card-content>
+						<div layout="row">
+							<span>Threshold</span>
+						</div>
+						<md-slider-container layout="row" ng-disabled="dashboardController.disableSlider">
+							<md-slider flex  min="0" max="200" ng-model="color.red" aria-label="red" id="threshold-slider"></md-slider>
+							<md-input-container>
+								<input flex type="number" ng-model="color.red" aria-label="blue" aria-controls="red-slider">
+							</md-input-container>
+						</md-slider-container>
+						<div>
+							<md-checkbox ng-model="dashboardController.disableSlider">Use Default Threshold</md-checkbox>
+						</div>
+					</md-card-content>
+
 					<md-card-actions layout="row" layout-align="end center">
-						<md-button>Submit</md-button>
-						<md-button>Remove</md-button>
+						<md-button ng-click="dashboardController.removeImage(file)">Remove</md-button>
 					</md-card-actions>
 				</md-card>
 				<!--<ul>
