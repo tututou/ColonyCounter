@@ -1,45 +1,58 @@
 <div flex ng-controller="DashboardController as dashboardController">
 	<div flex>
-		<md-content layout="column" layout-align-gt-sm="row">
-			<div class="md-padding" layout="column" style="text-align: center;">
-				<h2>ColonyCounter</h2>
+		<md-content>
+			<div style="text-align: center;" layout="column">
+				<h2 class="md-display-2" style="color: ;"><strong>ColonyCounter</strong></h2>
 			</div>
 		</md-content>
 	</div>
 	<div class="md-padding" layout="row" layout-align="center start">
-		<md-content class="md-padding" layout="row">
+		<md-content class="md-padding" layout="column" layout-gt-xs="row">
 			<md-card flex="33">
-				<md-card-content layout="row" layout-align="center">
-					<img src="/assets/images/petri-icon-black.png" />
-				</md-card-content>
-				<md-card-title>
+				<md-card-title layout="column" layout-align="center center">
+					<md-card-title-media class="md-padding">
+						<i class="fa fa-cloud-upload fa-5x" />
+					</md-card-title-media>
 					<md-card-title-text>
-						<span class="md-headline">BASIL</span>
-						<span class="md-subhead">Extra Large</span>
+						<span class="md-headline" style="font-size: 28pt">Upload</span>
+						<span class="md-subhead"></span>
 					</md-card-title-text>
 				</md-card-title>
+				<md-card-content  style="text-align: center;">
+					Upload an image of a petri dish containing yeast colonies. Don't have any? You can download some <a href="https://sourceforge.net/projects/opencfu/files/samples/plosPicHQ.zip/download" target="_blank">here</a> to try it out.
+				</md-card-content>
 			</md-card>
 			<md-card flex="33">
-				<md-card-content layout="row" layout-align="center">
-					<img src="/assets/images/petri-icon-black.png" />
-				</md-card-content>
-				<md-card-title>
+				<md-card-title layout="column" layout-align="center center">
+					<md-card-title-media class="md-padding">
+						<i class="fa fa-magic fa-5x" />		
+					</md-card-title-media>
 					<md-card-title-text>
-						<span class="md-headline">JUST WHAT</span>
-						<span class="md-subhead">Extra Large</span>
+						<span class="md-headline" style="font-size: 28pt">Magic</span>
+						<span class="md-subhead"></span>
 					</md-card-title-text>
 				</md-card-title>
+				<div layout="column" layout-align="center start">
+				<md-card-content style="text-align: center;">
+					Wait for our implementation of the <a href="http://opencfu.sourceforge.net/" target="_blank">OpenCFU</a> algorithm to work it's magic.
+				</md-card-content>
+			</div>
 			</md-card>
 			<md-card flex="33">
-				<md-card-content layout="row" layout-align="center">
-					<img src="/assets/images/petri-icon-black.png" />
-				</md-card-content>
-				<md-card-title>
+				<md-card-title layout="column" layout-align="center center">
+					<md-card-title-media>
+						<div class="petri-card-image">
+							<img src="/assets/images/petri-icon-black.png" />
+						</div>
+					</md-card-title-media>
 					<md-card-title-text>
-						<span class="md-headline">YOU'RE LOOKIN FOR</span>
-						<span class="md-subhead">Extra Large</span>
+						<span class="md-headline" style="font-size: 28pt">Results</span>
+						<span class="md-subhead"></span>
 					</md-card-title-text>
 				</md-card-title>
+				<md-card-content style="text-align: center;" >
+					Get back a count of how many yeast colonies are in your image!
+				</md-card-content>
 			</md-card>
 		</md-content>
 	</div>
@@ -55,8 +68,8 @@
 			</div>
 			<div ng-show="dashboardController.showProgress" layout="column">	
 				<md-progress-linear class="md-warn" md-mode="{{ctrl.modes[0]}}"
-					value="{{ctrl.determinateValue}}"
-					md-buffer-value="{{ctrl.determinateValue2}}">   	
+				value="{{ctrl.determinateValue}}"
+				md-buffer-value="{{ctrl.determinateValue2}}">   	
 				</md-progress-linear>
 			</div>
 			<div layout="column">
