@@ -19,18 +19,21 @@ def hello_world(request, format=None):
 
 @api_view(['POST', 'GET'])
 def colonycount(request, format=None):
-    if request.method=='POST':
-        img64str = request.data['file']
-        extension = request.data['type']
-        good_file_types = ['.png', '.jpg']
-        if not any(extension.lower() in s for s in good_file_types):
-            return HttpResponseBadRequest()
-        decoded64 = base64.b64decode(img64str)
-        processor = Processor(decoded64)
-        count = processor.runAll(extension)
-        return Response({'colonyCount': count})
-    else:
-        return Response(
-            {
-            'message': 'please select a photo to upload'
-            })
+    try:
+        if request.method=='POST':
+            img64str = request.data['file']
+            extension = request.data['type']
+            good_file_types = ['.png', '.jpg']
+            if not any(extension.lower() in s for s in good_file_types):
+                return HttpResponseBadRequest()
+            decoded64 = base64.b64decode(img64str)
+            processor = Processor(decoded64)
+            count = processor.runAll(extension)
+            return Response({'colonyCount': count})
+        else:
+            return Response(
+                {
+                'message': 'please select a photo to upload'
+                })
+    except:
+        return HttpResponse(status=500)
