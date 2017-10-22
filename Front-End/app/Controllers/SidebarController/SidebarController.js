@@ -5,10 +5,13 @@ angular
 SidebarController.$inject = [
     '$mdSidenav'
 ];
-
+/**
+ * Controller used to handle the operation of the sidebar.
+ */
 function SidebarController( $mdSidenav ) {
 
     var vm = this;
+    // Sidebar items
     var imageSection = {
         name: 'Image Processing',
         rows: [

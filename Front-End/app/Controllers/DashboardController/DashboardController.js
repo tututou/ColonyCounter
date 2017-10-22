@@ -7,7 +7,11 @@ DashboardController.$inject = [
     '$state'
 ];
 
-function DashboardController(ImageFactory, $state, $window){
+/**
+ * Main dashboard controller. Handles image upload form and routing to the
+ * results page.
+ */
+function DashboardController(ImageFactory, $state){
     var vm = this;
     vm.file = [];
     vm.showProgress = false;
@@ -26,6 +30,9 @@ function DashboardController(ImageFactory, $state, $window){
 
     }
 
+    // Uploads the selected image file to memory and sends it in a request
+    // to the server to apply the CV algorithm to. If a result is received,
+    // route the application to the results page.
     function submitImage() {
         // Check valid file type
         var fileExtension = ImageFactory.getFileExtension(vm.file[0].name);
@@ -34,6 +41,8 @@ function DashboardController(ImageFactory, $state, $window){
             return;
         }
         vm.showProgress = true;
+        // ImageFactory.encodeImage makes a POST request with the image and 
+        // receives back a colony count.
         ImageFactory.encodeImage(vm.file[0], function(request, img64) {
             request.then(
                 function(success) {     
@@ -53,6 +62,7 @@ function DashboardController(ImageFactory, $state, $window){
         
     }
 
+    // Clears array of file metadata selected by the user.
     function clearAll(){
         vm.file = [];
         vm.showProgress = false;

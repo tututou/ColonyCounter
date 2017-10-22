@@ -1,5 +1,5 @@
 /**
- * This service acts as a singleton object (google it) that can be shared across many controllers.
+ * This service acts as a singleton object that can be shared across many controllers.
  * It's main purpose is to pull files into memory and convert them to base64 to be sent to the server
  * for processing. 
  */
