@@ -6,7 +6,9 @@ ResultController.$inject = [
 	'$scope',
 	'ImageFactory',
 ];
-
+/**
+ * Controller used to show colonycount results for images
+ */
 function ResultController($scope, ImageFactory){
 
 	var vm = this;
