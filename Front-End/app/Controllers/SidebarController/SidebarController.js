@@ -37,7 +37,7 @@ function SidebarController( $mdSidenav ) {
                 name: 'Report Bugs',
                 iconClass: 'fa-bug',
                 sref: undefined,
-                href: 'https://github.com/abarganier/ColonyCounter/issues'
+                href: 'https://github.com/abarganier/ColonyCounter/issues/new'
             },
             {
                 name: 'Testing Feedback',
