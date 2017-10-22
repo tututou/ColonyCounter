@@ -1,22 +1,15 @@
 # ColonyCounter
 
-ColonyCounter is a web application that uses OpenCV to count the number of yeast colonies in a petri dish.
+ColonyCounter is a web application that uses OpenCV to count the number of yeast colonies in images of petri dishes.
 
-## Check out the latest release: http://54.164.59.69/
+## Check out the latest release: http://www.colonycounter.org or http://18.220.127.94
 
+## New Developers:
 
-## Back-End Setup
-1. Install python 3.6 (make sure pip is also installed and python is in your system path)
-2. Install virtualenv (optional)
-3. Create new virtualenv using python 3.6 (optional)
-4. Activate the new virtualenv (optional)
-5. Install git
-6. run `git clone https://github.com/abarganier/ColonyCounter.git`
-7. from the command line navigate to the Back-End folder within the git repo
-8. run `pip install -r requirements.txt`
-9. run `python manage.py runserver`
-10. In a web browser navigate to http://localhost:8000/admin to verify. If a login screen appears, your backend is running!
+Hi, welcome to the project! ColonyCounter makes use of `django-rest-framework` and `AngularJS`. These are separated into two directories,  `Back-End/` and `Front-End/` (respectively). 
 
-## Front-End Setup
-The README.md for the front-end can be found in the `Front-End` directory of this repository, containing instructions for installing and running.
+To become acquainted with the front end portion of the project, please checkout the `README.md` in the `Front-End/` directory, and likewise for the back end of the project. Each README aims to help you install the project and give advice on how to approach adding new features.
 
+## Special Thanks:
+
+A special shoutout to Quentin Geissmann, whos open source research and development of the [OpenCFU algorithm](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0054072) has taught us so much about computer vision and image processing. 
