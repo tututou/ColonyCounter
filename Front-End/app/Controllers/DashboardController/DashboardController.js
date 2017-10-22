@@ -29,11 +29,13 @@ function DashboardController(ImageFactory, $state, $window){
 
     }
 
-    function removeImage(fileObj){
-        var index = file.indexOf(fileObj);
-        if (index > -1) {
-            file.splice(index, 1);
+    function removeImage(index){
+        console.log(file);
+        var _index = index;
+        if (_index > -1) {
+            vm.file.splice(_index, 1);
         }
+        //console.log(file);
     }
 
     function submitImage() {

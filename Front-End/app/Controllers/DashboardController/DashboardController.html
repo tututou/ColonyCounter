@@ -11,7 +11,7 @@
 		</div>
 
 		<div layout="row" style="overflow-x: scroll; white-space: nowrap;">
-			<div ng-show="dashboardController.file.length > 0" ng-repeat="file in dashboardController.file">
+			<div ng-show="dashboardController.file.length > 0" ng-repeat="file in dashboardController.file track by $index">
 				<md-card style="min-width:200px;" flex="33" md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" md-theme-watch>
 					<img src="file" class="md-card-image" alt="img caption">
 					<md-card-title>
@@ -36,7 +36,7 @@
 					</md-card-content>
 
 					<md-card-actions layout="row" layout-align="end center">
-						<md-button ng-click="dashboardController.removeImage(file)">Remove</md-button>
+						<md-button ng-click="dashboardController.removeImage($index)">Remove</md-button>
 					</md-card-actions>
 				</md-card>
 				<!--<ul>
