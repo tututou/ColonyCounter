@@ -114,4 +114,4 @@ function MyController(){
 </div>
 ```
 
-The `ng-bind` in the above example is just one of the [many components in AngularJS](https://docs.angularjs.org/api/ng/directive). Make use of these to add behavior to your HTML!
+The `ng-bind` in the above example is just one of the [many directives in AngularJS](https://docs.angularjs.org/api/ng/directive). Make use of these to add behavior to your HTML!
