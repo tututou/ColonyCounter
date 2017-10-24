@@ -4,13 +4,13 @@ Welcome to ColonyCounter's front end! Please read through this wiki to get start
 
 # Installing Node and NPM
 
-Installing the front end is fairly simple, assuming you have Node.JS installed. If you don't, you can download an installer [here](www.nodejs.org).
+Installing the front end is fairly simple, assuming you have Node.JS installed. If you don't, you can download an installer [here](https://nodejs.org/en/download/).
 
 Once you have install Node.JS, you should have access to [node package manager (npm)](https://www.npmjs.com/). To verify, open the command line or terminal, type `npm`, and hit enter. You should see a help dialog. If the `npm` command is not recognized, you need to add it as a PATH variable. You can learn more about doing so [here](https://www.java.com/en/download/help/path.xml).
 
 # Installing the front end
 
-1. From the command line, make sure you have bower installed by running the command `npm install bower`
+1. From the command line, make sure you have bower installed by running the command `npm install -g bower`
 2. With bower installed, navigate to the `Front-End/` directory of the project using the `cd` command. For example, `cd /Users/YourName/ColonyCounter/Front-End/`
 3. Before going any further, we need a global installation of GulpJS, which is used as a build tool for the front end. Run the `npm install -g gulp` command.
 4. Now that you're inside the `Front-End` directory, we must install the necessary dependencies. Run `npm install && bower install` within this directory.
