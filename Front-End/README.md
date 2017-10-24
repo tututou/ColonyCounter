@@ -10,15 +10,11 @@ Once you have install Node.JS, you should have access to [node package manager (
 
 # Installing the front end
 
-1. From the command line, make sure you have bower installed by running the command `npm install -g bower`
+1. Once you've installed NodeJS (see above), from the command line, make sure you have bower installed by running the command `npm install -g bower`. You might need to use `sudo` for this to work.
 2. With bower installed, navigate to the `Front-End/` directory of the project using the `cd` command. For example, `cd /Users/YourName/ColonyCounter/Front-End/`
-3. Before going any further, we need a global installation of GulpJS, which is used as a build tool for the front end. Run the `npm install -g gulp` command.
-4. Now that you're inside the `Front-End` directory, we must install the necessary dependencies. Run `npm install && bower install` within this directory.
-5. Run `gulp` from within the directory to launch a webserver and view the front end. Congrats, you're all set up!
-
-# A note on GulpJS and the `build/` directory.
-
-Anything that exists within the `Front-End/build/` directory should be considered temporary. When you use GulpJS, it is constantly copying files from the `Front-End/` root and deleting or overwriting what's the `build/` directory, which is where our application is served from. This means that you should be careful to not accidentally start working on any files in this directory, as they'll likely be deleted by GulpJS!
+3. Before going any further, we need a global installation of GulpJS, which is used as a build tool for the front end. Run the `npm install -g gulp` command. You might need to use `sudo` for this to work.
+4. Now that you're inside the `Front-End` directory, we must install the necessary dependencies. Run `npm install && bower install` within this directory. You might need to use `sudo` for this to work.
+5. Run `gulp` from within the directory to launch a webserver and view the front end. Congrats, you're all set up! Note again, you might need to use `sudo` for this to work.
 
 # GulpJS as a build tool
 
@@ -29,6 +25,10 @@ GulpJS is used from the command line by running a command of the `gulp [task nam
 - `gulp` - This is an "all-in-one" command. It cleans the build, re-builds, and then starts a webserver. Leave this running while you're working, it will reload any files that you update into the build directory! If you feel this reload feature isn't working as expected, file an issue.
 - `gulp clean` - This deletes the build directory and allows you to start fresh. This is usually chained in other commands as well, but sometimes it feels better on the inside to run this explicitly. 
 - `gulp build` - This builds the project without launching a webserver.
+
+# A note on GulpJS and the `build/` directory.
+
+Anything that exists within the `Front-End/build/` directory should be considered temporary. When you use GulpJS, it is constantly copying files from the `Front-End/` root and deleting or overwriting what's the `build/` directory, which is where our application is served from. This means that you should be careful to not accidentally start working on any files in this directory, as they'll likely be deleted by GulpJS!
 
 # Running things locally
 
