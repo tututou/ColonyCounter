@@ -54,6 +54,9 @@ When working on this project, please use the example of how existing features we
 
 For UI components and layout we are using [AngularJS Material](https://material.angularjs.org/latest/). Please make use of these UI components. You should be able to avoid CSS almost entirely using [AngularJS Material's layout system](https://material.angularjs.org/latest/layout/introduction). Please familiarize yourself with how this works. If you are familiar with Bootstrap, this should be easy for you to learn. 
 
+# Icons
+
+We are using [FontAwesome](http://fontawesome.io/icons/) for icons in our application. Please use these icons.
 
 # Creating a new view:
 
