@@ -4,7 +4,7 @@ Welcome to ColonyCounter's front end! Please read through this wiki to get start
 
 # Installing Node and NPM
 
-Installing the front end is fairly simple, assuming you have Node.JS installed. If you don't, you can download an installer [here](https://nodejs.org/en/download/).
+Installing the front end is fairly simple, assuming you have Node.JS installed. If you don't, you can download an installer [here](https://nodejs.org/en/download/). If you're on linux, or use a package manager, read the instructions on how to install node with package managers [here](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions).
 
 Once you have install Node.JS, you should have access to [node package manager (npm)](https://www.npmjs.com/). To verify, open the command line or terminal, type `npm`, and hit enter. You should see a help dialog. If the `npm` command is not recognized, you need to add it as a PATH variable. You can learn more about doing so [here](https://www.java.com/en/download/help/path.xml).
 
