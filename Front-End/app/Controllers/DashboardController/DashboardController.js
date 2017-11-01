@@ -17,6 +17,7 @@ function DashboardController(ImageFactory, $state){
     vm.showProgress = false;
     vm.submitImage = submitImage;
     vm.clearAll = clearAll;
+    vm.goToThresholding = goToThresholding;
     var validFiletypes = [
         'png',
         'jpg',
@@ -66,6 +67,10 @@ function DashboardController(ImageFactory, $state){
     function clearAll(){
         vm.file = [];
         vm.showProgress = false;
+    }
+
+    function goToThresholding(){
+        $state.go('site.thresholding');
     }
 
     // Checks to see if array contains at least one of the elements in searchItems

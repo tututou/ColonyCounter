@@ -1,59 +1,29 @@
 <div flex ng-controller="ThresholdController as thresholdController">
 	<div class="md-padding" layout="row" layout-align="center start">
 		<md-content class="md-padding" layout="column" layout-gt-xs="row">
-			<md-card flex="33">
+			<md-card flex="100">
 				<md-card-title layout="column" layout-align="center center">
-					<md-card-title-media class="md-padding">
-						<i class="fa fa-cloud-upload fa-5x" />
-					</md-card-title-media>
 					<md-card-title-text>
-						<span class=" home-card-title md-headline">Upload</span>
+						<span class=" home-card-title md-headline">Adjust your image's threshold</span>
 						<span class="md-subhead"></span>
 					</md-card-title-text>
 				</md-card-title>
 				<md-card-content  style="text-align: center;">
-					Upload an image of a petri dish containing yeast colonies. Don't have any? You can download some <a href="https://sourceforge.net/projects/opencfu/files/samples/plosPicHQ.zip/download" target="_blank">here</a> to try it out.
-				</md-card-content>
-			</md-card>
-			<md-card flex="33">
-				<md-card-title layout="column" layout-align="center center">
-					<md-card-title-media class="md-padding">
-						<i class="fa fa-magic fa-5x" />		
-					</md-card-title-media>
-					<md-card-title-text>
-						<span class=" home-card-title md-headline">Magic</span>
-						<span class="md-subhead"></span>
-					</md-card-title-text>
-				</md-card-title>
-				<md-card-content style="text-align: center;">
-					Wait for our implementation of the <a href="http://opencfu.sourceforge.net/" target="_blank">OpenCFU</a> algorithm to work it's magic.
-				</md-card-content>
-			</md-card>
-			<md-card flex="33">
-				<md-card-title layout="column" layout-align="center center">
-					<md-card-title-media>
-						<div class="petri-card-image">
-							<img src="/assets/images/petri-icon-black.png" />
-						</div>
-					</md-card-title-media>
-					<md-card-title-text>
-						<span class=" home-card-title md-headline">Results</span>
-						<span class="md-subhead"></span>
-					</md-card-title-text>
-				</md-card-title>
-				<md-card-content style="text-align: center;" >
-					Get back a count of how many yeast colonies are in your image!
+					<div layout="row">
+						<span>Threshold</span>
+					</div>
+					<md-slider-container layout="row">
+						<md-slider flex  min="0" max="200" ng-model="thresholdController.threshold" aria-label="red" id="threshold-slider"></md-slider>
+						<md-input-container>
+							<input flex type="number" ng-model="thresholdController.threshold" aria-label="blue" aria-controls="red-slider">
+						</md-input-container>
+					</md-slider-container>
 				</md-card-content>
 			</md-card>
 		</md-content>
 	</div>
 	<div layout="row" layout-align="center center">
 		<md-content layout="column" layout-align="center">
-			<div layout="column">
-				<form name="imageForm" ng-submit="">
-					<input type="file" style="margin-left:7px;" file-input="dashboardController.file"/>
-				</form>
-			</div>
 			<div ng-show="dashboardController.showProgress" layout="column">	
 				Please wait, this may take a moment...
 			</div>
@@ -64,8 +34,8 @@
 				</md-progress-linear>
 			</div>
 			<div layout="column">
-				<md-button class="md-raised md-primary" ng-click="dashboardController.submitImage()">Submit</md-button>
-				<md-button class="md-raised md-warn" ng-click="dashboardController.clearAll()">Clear</md-button>
+				<md-button class="md-raised md-primary" ng-click="thresholdController.submitImage()">Submit</md-button>
+				<md-button class="md-raised md-warn" ng-click="thresholdController.goToDashboard()">Back</md-button>
 			</div>
 		</md-content>
 	</div>

@@ -18,6 +18,7 @@ function ImageFactory($http){
          * Array to store results in for display
          */
         results: [],
+        encodedImage: "",
 
         /**
          * Takes in a file object containing metadata, and a callback to execute
@@ -48,6 +49,10 @@ function ImageFactory($http){
         getFileExtension: function(fileName) {
             var split = fileName.split('.');
             return split[split.length-1];
+        },
+
+        getBase64: function(file){
+            encodedImage = reader.readAsDataURL(file);
         }
     }
 }

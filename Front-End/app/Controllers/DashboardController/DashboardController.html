@@ -66,13 +66,12 @@
 			</div>
 			<div ng-show="dashboardController.showProgress" layout="column">	
 				<md-progress-linear class="md-warn" md-mode="{{ctrl.modes[0]}}"
-				value="{{ctrl.determinateValue}}"
-				md-buffer-value="{{ctrl.determinateValue2}}">   	
+					value="{{ctrl.determinateValue}}"
+					md-buffer-value="{{ctrl.determinateValue2}}">   	
 				</md-progress-linear>
 			</div>
 			<div layout="column">
-				<md-button class="md-raised md-primary" ng-click="dashboardController.submitImage()">Submit</md-button>
-				<md-button class="md-raised md-warn" ng-click="dashboardController.clearAll()">Clear</md-button>
+				<md-button class="md-raised md-primary" ng-click="dashboardController.goToThresholding()">Next</md-button>
 			</div>
 		</md-content>
 	</div>

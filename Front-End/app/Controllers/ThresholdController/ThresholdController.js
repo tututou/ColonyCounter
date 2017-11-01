@@ -13,6 +13,8 @@ ThresholdController.$inject = [
 */
 function ThresholdController(ImageFactory, $state){
 var vm = this;
+vm.goToDashboard = goToDashboard;
+vm.threshold = 10;
 
 init();
 
@@ -48,8 +50,11 @@ function submitImage() {
                 vm.showProgress = false;
                 alert("There was an error processing your image, please try submitting it again!");
             });
-    });
-    
+    });   
+}
+
+function goToDashboard(){
+    $state.go('site.home');
 }
 
 // Checks to see if array contains at least one of the elements in searchItems
