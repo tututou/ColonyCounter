@@ -15,6 +15,7 @@
       'App.DashboardController',
       'App.NavigationController',
       'App.SidebarController',
+      'App.ThresholdController',
       'App.TutorialController',
       'App.ResultController',
       'App.ImageFactory',
@@ -69,6 +70,14 @@
             }
         }
     })
+     .state('site.thresholding', {
+         url: '/thresholding',
+         views: {
+             'content@': {
+                templateUrl: 'Controllers/ThresholdController/ThresholdController.html',
+             }
+         }
+     })
      .state('site.result', {
         url: '/result',
         views: {
