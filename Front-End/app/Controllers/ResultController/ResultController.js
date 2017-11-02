@@ -16,8 +16,7 @@ function ResultController($scope, ImageFactory){
 	init();
 
 	function init() {
-		vm.results = ImageFactory.results;
-		vm.results.reverse();
+		vm.results = ImageFactory.results.slice(0).reverse();
 	}
 
 }
