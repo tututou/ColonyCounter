@@ -4,7 +4,7 @@ angular
 
 ResultController.$inject = [
 	'$scope',
-	'ImageFactory',
+	'ImageFactory'
 ];
 /**
  * Controller used to show colonycount results for images
@@ -16,7 +16,6 @@ function ResultController($scope, ImageFactory){
 	init();
 
 	function init() {
-		vm.results = ImageFactory.results.slice(0).reverse();
+		vm.results = ImageFactory.results.reverse();
 	}
-
 }

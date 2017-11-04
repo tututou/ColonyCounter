@@ -16,7 +16,6 @@
       'App.NavigationController',
       'App.SidebarController',
       'App.ThresholdController',
-      'App.TutorialController',
       'App.ResultController',
       'App.ImageFactory',
       'App.fileInput'
@@ -58,18 +57,10 @@
         }
     })
     /**
-     * Here we register a route with the URL /tutorial and name site.tutorial
+     * Here we register a route with the URL /thresholding and name site.thresholding
      * We set the attr name in `views` to 'content@' to let the router know that we want this
      * route to exist within the main content area.
      */
-     .state('site.tutorial', {
-        url: '/tutorial',
-        views: {
-            'content@': {
-                templateUrl: 'Controllers/TutorialController/TutorialController.html',
-            }
-        }
-    })
      .state('site.thresholding', {
          url: '/thresholding',
          views: {

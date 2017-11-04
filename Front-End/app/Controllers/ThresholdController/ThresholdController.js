@@ -3,8 +3,8 @@ angular
 .controller('ThresholdController', ThresholdController);
 
 ThresholdController.$inject = [
-'ImageFactory',
-'$state'
+    'ImageFactory',
+    '$state'
 ];
 
 function ThresholdController(ImageFactory, $state){
@@ -34,6 +34,7 @@ function ThresholdController(ImageFactory, $state){
         var canv = document.createElement("canvas");
         canv.style.width  = '60vh';
         canv.style.height = 'auto';
+        canv.style.maxWidth = '83vw';
         document.getElementById('thresh-canvas').appendChild(canv);
         ctx = canv.getContext('2d');
         image.onload = function() {

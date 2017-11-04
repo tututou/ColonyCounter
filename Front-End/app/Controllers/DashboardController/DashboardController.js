@@ -26,7 +26,7 @@ function DashboardController(ImageFactory, $state){
     init();
 
     function init() {
-
+        
     }
 
     function goToThresholding() {
