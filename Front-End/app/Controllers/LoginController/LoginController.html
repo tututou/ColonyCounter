@@ -1,0 +1,32 @@
+<div ng-controller="LoginController as loginController">
+	<md-dialog>
+		
+		<md-dialog-content>
+			<md-toolbar>
+				<div class="md-toolbar-tools">
+					Login
+					<span flex></span>
+      					<md-button class="md-icon-button" ng-click="loginController.close()">
+					<md-icon><i class="fa fa-close fa-lg"></i></md-icon>
+					</md-button>
+				</div>
+				
+
+			</md-toolbar>
+			<div align='center'>
+				<md-input-container>
+					<input placeholder='Username'>
+				</md-input-container>
+				<md-input-container>
+					<input type='password' placeholder='Password'>
+				</md-input-container>
+			</div>
+			<div layout='column'>
+			<md-button class="md-raised md-primary">
+				Submit
+			</md-button>
+		</md-dialog-content>
+		
+		
+	</md-dialog>
+</div>

@@ -12,6 +12,7 @@
       'ngMaterial',
       'nvd3',
       'md.data.table',
+      'App.LoginController',
       'App.DashboardController',
       'App.NavigationController',
       'App.SidebarController',
@@ -42,7 +43,10 @@
                 templateUrl: 'Controllers/DashboardController/DashboardController.html',
             },
             'sidebar': {
-                templateUrl: 'Controllers/SidebarController/SidebarController.html'
+                templateUrl: 'Controllers/SidebarController/SidebarController.html',
+            },
+            'login': {
+            	templateUrl: 'Controllers/LoginController/LoginController.html'
             }
         },
         resolve: {

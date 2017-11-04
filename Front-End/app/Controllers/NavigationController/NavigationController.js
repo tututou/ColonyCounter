@@ -4,18 +4,27 @@ angular
 
 NavigationController.$inject = [
 	'$scope',
-	'$mdSidenav'
+	'$mdSidenav',
+	'$mdDialog'
 ];
 
-function NavigationController( $scope, $mdSidenav ) {
+function NavigationController( $scope, $mdSidenav, $mdDialog ) {
 
 	var vm = this;
 	vm.openSideNavPanel = openSideNavPanel;
+	vm.openLoginPanel = openLoginPanel;
 
 	init();
 
 	function init() {
 
+	}
+
+	function openLoginPanel() {
+		$mdDialog.show({
+			templateUrl: 'Controllers/LoginController/LoginController.html',
+			clickOutsideToClose: true
+		})
 	}
 
     function openSideNavPanel() {
