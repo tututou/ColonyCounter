@@ -33,7 +33,7 @@
 					</md-card-title-text>
 				</md-card-title>
 				<md-card-content style="text-align: center;">
-					Wait for our implementation of the <a href="http://opencfu.sourceforge.net/" target="_blank">OpenCFU</a> algorithm to work it's magic.
+					Wait for our implementation of the <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0054072" target="_blank">OpenCFU</a> algorithm to work it's magic.
 				</md-card-content>
 			</md-card>
 			<md-card flex="33">
@@ -66,13 +66,12 @@
 			</div>
 			<div ng-show="dashboardController.showProgress" layout="column">	
 				<md-progress-linear class="md-warn" md-mode="{{ctrl.modes[0]}}"
-				value="{{ctrl.determinateValue}}"
-				md-buffer-value="{{ctrl.determinateValue2}}">   	
+					value="{{ctrl.determinateValue}}"
+					md-buffer-value="{{ctrl.determinateValue2}}">   	
 				</md-progress-linear>
 			</div>
 			<div layout="column">
-				<md-button class="md-raised md-primary" ng-click="dashboardController.submitImage()">Submit</md-button>
-				<md-button class="md-raised md-warn" ng-click="dashboardController.clearAll()">Clear</md-button>
+				<md-button class="md-raised md-primary" ng-click="dashboardController.goToThresholding()">Next</md-button>
 			</div>
 		</md-content>
 	</div>

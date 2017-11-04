@@ -1,0 +1,36 @@
+<div flex ng-controller="ThresholdController as thresholdController">
+	<div flex class="md-padding" layout="row" layout-align="center start">
+		<md-content class="md-padding" layout="column" layout-gt-xs="row">
+			<md-card flex="100">
+				<md-card-title layout="column" layout-align="center center">
+					<md-card-title-text>
+						<span class=" home-card-title md-headline">Adjust your image's threshold</span>
+						<span class="md-subhead"></span>
+					</md-card-title-text>
+				</md-card-title>
+				<md-card-content  style="text-align: center;">
+					<div id="thresh-canvas"></div>
+					<md-slider-container layout="row">
+						<md-slider min="0" max="255" ng-model="thresholdController.threshold" id="threshold-slider" ng-mouseup="thresholdController.updateThreshold()"></md-slider>
+						<md-input-container>
+							<input type="number" ng-model="thresholdController.threshold" ng-change="thresholdController.updateThreshold()">
+						</md-input-container>
+					</md-slider-container>
+					<md-button ng-click="thresholdController.toggleThreshold()" class="md-raised">Toggle Threshold</md-button>
+					<div flex="100" layout="column">
+						<md-progress-linear ng-show="thresholdController.showProgress" class="md-warn" md-mode="{{ctrl.modes[0]}}"
+						value="{{ctrl.determinateValue}}"
+						md-buffer-value="{{ctrl.determinateValue2}}">   	
+						</md-progress-linear>
+					</div>
+					<div flex="100" layout="column">
+						<md-button class="md-raised md-primary" layout="column" ng-click="thresholdController.submitImage()" ng-disabled="!thresholdController.canMakeRequest">Submit</md-button>
+					</div>
+					<div flex="100" layout="column">
+						<md-button class="md-raised md-warn" layout="column" ng-click="thresholdController.goToDashboard()">Back</md-button>
+					</div>
+				</md-card-content>
+			</md-card>
+		</md-content>
+	</div>
+</div>

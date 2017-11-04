@@ -11,6 +11,17 @@ SidebarController.$inject = [
 function SidebarController( $mdSidenav ) {
 
     var vm = this;
+
+    init();
+
+    function init() {
+
+    }
+
+    function closeSideNavPanel() {
+        $mdSidenav('left').close();
+    };
+    
     // Image related sidebar items
     var imageSection = {
         name: 'Image Processing',
@@ -53,14 +64,4 @@ function SidebarController( $mdSidenav ) {
         imageSection,
         feedbackSection
     ];
-
-    init();
-
-    function init() {
-
-    }
-
-    function closeSideNavPanel() {
-        $mdSidenav('left').close();
-    };
 }
