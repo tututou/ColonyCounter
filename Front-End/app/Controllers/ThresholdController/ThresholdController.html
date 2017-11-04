@@ -24,7 +24,7 @@
 						</md-progress-linear>
 					</div>
 					<div flex="100" layout="column">
-						<md-button class="md-raised md-primary" layout="column" ng-click="thresholdController.submitImage()">Submit</md-button>
+						<md-button class="md-raised md-primary" layout="column" ng-click="thresholdController.submitImage()" ng-disabled="!thresholdController.canMakeRequest">Submit</md-button>
 					</div>
 					<div flex="100" layout="column">
 						<md-button class="md-raised md-warn" layout="column" ng-click="thresholdController.goToDashboard()">Back</md-button>

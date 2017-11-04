@@ -15,6 +15,7 @@ function ThresholdController(ImageFactory, $state){
     vm.toggleThreshold = toggleThreshold;
     vm.submitImage = submitImage;
     vm.showProgress = false;
+    vm.canMakeRequest = true;
 
     var image;
     var ctx;
@@ -69,23 +70,28 @@ function ThresholdController(ImageFactory, $state){
     }
 
     function submitImage() {
-        vm.showProgress = true;
-        var threshold = vm.threshold;
-        var request = ImageFactory.submitImage(threshold);
-        request.then(
-            function(success) {     
-                vm.showProgress = false;
-                ImageFactory.results.push({
-                    image: ImageFactory.getBase64(),
-                    count: success.data.colonyCount,
-                    name: ImageFactory.getFile().name,
-                    threshold: threshold
+        if (vm.canMakeRequest) {
+            vm.canMakeRequest = false;
+            vm.showProgress = true;
+            var threshold = vm.threshold;
+            var request = ImageFactory.submitImage(threshold);
+            request.then(
+                function(success) {     
+                    vm.showProgress = false;
+                    ImageFactory.results.push({
+                        image: ImageFactory.getBase64(),
+                        count: success.data.colonyCount,
+                        name: ImageFactory.getFile().name,
+                        threshold: threshold
+                    });
+                    vm.canMakeRequest = true;
+                    $state.go('site.result');
+                },
+                function(error) {
+                    vm.showProgress = false;
+                    vm.canMakeRequest = true;
+                    alert("There was an error processing your image, please try submitting it again!");
                 });
-                $state.go('site.result');
-            },
-            function(error) {
-                vm.showProgress = false;
-                alert("There was an error processing your image, please try submitting it again!");
-            });
+        }
     }
 }
