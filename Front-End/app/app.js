@@ -84,42 +84,42 @@
 
     $urlRouterProvider.otherwise('/');
     $mdThemingProvider.definePalette('mcgpalette1', {
-        '50': 'e4f2fe',
-        '100': 'bce0fb',
-        '200': '90cbf9',
-        '300': '64b6f7',
-        '400': '42a6f5',
-        '500': '2196f3',
-        '600': '1d8ef1',
-        '700': '1883ef',
-        '800': '1479ed',
-        '900': '0b68ea',
-        'A100': 'ffffff',
-        'A200': 'e1ecff',
-        'A400': 'aeccff',
-        'A700': '95bcff',
+        '50': 'fcf3e3',
+        '100': 'f9e1ba',
+        '200': 'f5cd8c',
+        '300': 'f0b85d',
+        '400': 'eda93b',
+        '900': 'ea9a18',
+        '600': 'e79215',
+        '700': 'e48811',
+        '800': 'e17e0e',
+        '500': 'db6c08',
+        'A100': '4f1765',
+        'A200': '254b15',
+        'A400': '537c42',
+        'A700': '254b14',
         'contrastDefaultColor': 'light',
         'contrastDarkColors': [
             '50',
             '100',
-            '200',
-            '300',
-            '400',
-            'A100',
-            'A200',
-            'A400',
-            'A700'
+            '200'
         ],
             'contrastLightColors': [
+            '300',
+            '400',
             '500',
             '600',
             '700',
             '800',
-            '900'
+            '900',
+            'A100',
+            'A200',
+            'A400',
+            'A700'
         ]
     });
     $mdThemingProvider.theme('default')
-        .primaryPalette('mcgpalette1');
+        .primaryPalette('mcgpalette1', {'hue-1': 'A100', 'hue-2': 'A200'});
 
 })
 .run(function(){
