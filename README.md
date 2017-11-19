@@ -2,7 +2,7 @@
 
 ColonyCounter is a web application that uses OpenCV to count the number of yeast colonies in images of petri dishes.
 
-## Check out the latest release: http://www.colonycounter.org or http://18.220.127.94
+## Check out the latest release: https://www.colonycounter.org
 
 ## New Developers:
 
