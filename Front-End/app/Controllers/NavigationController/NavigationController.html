@@ -1,18 +1,12 @@
 <div ng-controller="NavigationController as navigationController">
-	<md-toolbar>
+	<md-toolbar style="background-color: transparent;">
 		<div class="md-toolbar-tools">
 			<md-button class="md-icon-button" aria-label="Icon" aria-label="Side Panel" ng-click="navigationController.openSideNavPanel()">
 				<md-tooltip>Side Panel</md-tooltip>
-				<md-icon><i class="fa fa-bars fa-lg"></i></md-icon>
+				<md-icon><i class="fa fa-bars fa-lg" style="color: black;"></i></md-icon>
 			</md-button>
-			<md-icon><img src="assets/images/logo-white.png" style="height:inherit; width: auto;"/></md-icon>
-			<h2 style="margin-left: 5px">
-				<span>ColonyCounter</span>
-			</h2>
+			<md-icon ui-sref="site.home"><img src="assets/images/petri-icon-black.png" style="height:inherit; width: auto;"/></md-icon>
 			<span flex></span>
-			<md-button class="md-raised" aria-label="icon" ui-sref="site.tutorial">
-				<md-icon class="fa fa-info-circle fa-lg"></md-icon> Tutorial  
-			</md-button>
 		</div>
 	</md-toolbar>
 </div>

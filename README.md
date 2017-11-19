@@ -2,7 +2,7 @@
 
 ColonyCounter is a web application that uses OpenCV to count the number of yeast colonies in images of petri dishes.
 
-## Check out the latest release: http://www.colonycounter.org or http://18.220.127.94
+## Check out the latest release: https://www.colonycounter.org
 
 ## New Developers:
 
@@ -12,4 +12,4 @@ To become acquainted with the front end portion of the project, please checkout 
 
 ## Special Thanks:
 
-A special shoutout to Quentin Geissmann, whos open source research and development of the [OpenCFU algorithm](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0054072) has taught us so much about computer vision and image processing. 
+A special shoutout to Quentin Geissmann, whos open source research and development of the [OpenCFU algorithm](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0054072) has taught us so much about computer vision and image processing.  

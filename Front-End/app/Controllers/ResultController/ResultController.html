@@ -4,14 +4,18 @@
             <h3>You don't have any results yet! To process images, press the back button and submit an image.</h3>
         </div>
         <div ng-show="resultController.results.length > 0" layout-align="center" ng-repeat="result in resultController.results">
-            <div layout="row" layout-align="center">
-            	<p >
-                    The image below, {{result.name}}, contains {{result.count}} yeast cells:
-                </p>
-            </div>
-            <div layout="row">
-     	 	    <img ng-src="data:image/png;base64, {{result.image}}" style="border: 1px solid white; height:auto; width:auto; max-width:400px; max-height:400px;"> 	
-            </div>
+            <md-card style="max-width: 760px;">
+                <md-card-title layout="column" layout-align="center center">
+                    <md-card-title-text class="md-headline">
+                        The image below, {{result.name}}, contains {{result.count}} yeast cells:
+                    </md-card-title-text>
+                    <br />
+                    <hr />
+                    <md-card-title-media class="md-media-xl">
+                        <img ng-src="{{result.image}}" />    
+                    </md-card-title-media>
+                </md-card-title>
+            </md-card>
         </div>
     <div class="spacer">
 		<md-button class="md-raised md-primary" aria-label="icon" ui-sref="site.home" style="width:100%">
@@ -19,9 +23,3 @@
 		</md-button>
 	</div>
 </div>
-
-
-
-
-	 
-		

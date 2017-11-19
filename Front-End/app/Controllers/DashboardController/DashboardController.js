@@ -15,8 +15,7 @@ function DashboardController(ImageFactory, $state){
     var vm = this;
     vm.file = [];
     vm.showProgress = false;
-    vm.submitImage = submitImage;
-    vm.clearAll = clearAll;
+    vm.goToThresholding = goToThresholding;
     var validFiletypes = [
         'png',
         'jpg',
@@ -27,45 +26,25 @@ function DashboardController(ImageFactory, $state){
     init();
 
     function init() {
-
+        
     }
 
-    // Uploads the selected image file to memory and sends it in a request
-    // to the server to apply the CV algorithm to. If a result is received,
-    // route the application to the results page.
-    function submitImage() {
-        // Check valid file type
+    function goToThresholding() {
+        if (!vm.file || vm.file.length === 0) {
+            alert('Please select a file first.');
+            return;
+        }
         var fileExtension = ImageFactory.getFileExtension(vm.file[0].name);
         if (!arrayContainsAnElement([fileExtension], validFiletypes)) {
             alert('Invalid file type! Must be of type .png or .jpg');
             return;
         }
+        ImageFactory.setFile(vm.file[0]);
         vm.showProgress = true;
-        // ImageFactory.encodeImage makes a POST request with the image and 
-        // receives back a colony count.
-        ImageFactory.encodeImage(vm.file[0], function(request, img64) {
-            request.then(
-                function(success) {     
-                    vm.showProgress = false;
-                    ImageFactory.results.push({
-                        image: img64,
-                        count: success.data.colonyCount,
-                        name: vm.file[0].name
-                    });
-                    $state.go('site.result');
-                },
-                function(error) {
-                    vm.showProgress = false;
-                    alert("There was an error processing your image, please try submitting it again!");
-                });
+        ImageFactory.readFromDisk(function() {
+            vm.showProgress = false;
+            $state.go('site.thresholding');
         });
-        
-    }
-
-    // Clears array of file metadata selected by the user.
-    function clearAll(){
-        vm.file = [];
-        vm.showProgress = false;
     }
 
     // Checks to see if array contains at least one of the elements in searchItems
