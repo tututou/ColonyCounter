@@ -42,7 +42,7 @@ function SidebarController( $mdSidenav ) {
     };
 
     var feedbackSection = {
-        name: 'Beta Release',
+        name: 'Feedback',
         rows: [
             {
                 name: 'Report Bugs',
@@ -51,7 +51,7 @@ function SidebarController( $mdSidenav ) {
                 href: 'https://github.com/abarganier/ColonyCounter/issues/new'
             },
             {
-                name: 'Testing Feedback',
+                name: 'Feedback Form',
                 iconClass: 'fa-question',
                 sref: undefined,
                 href: 'https://drive.google.com/open?id=1IyBDMSYjehq9KFSHP_k-6gV8pzyk5k3dN1Nhn-Wfloc'
