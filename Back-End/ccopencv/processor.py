@@ -37,9 +37,10 @@ class Processor(object):
         step_res = process2.process()
         # cv2.imwrite('step2res.' + extension, step_res, [cv2.IMWRITE_JPEG_QUALITY, 100])
 
-        process3 = step4(step_res, self.predictor, self.predictor_ps)
-        res = process3.process()
-        return res
+        process3 = step4(step_res, self.predictor, self.predictor_ps, self.img)
+        count, img = process3.process()
+        _, img_buff = cv2.imencode('.jpg', img)
+        return count, img_buff
 
     def writeResults(self):
         """ print out resutls """

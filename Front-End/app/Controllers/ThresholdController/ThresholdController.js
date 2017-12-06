@@ -47,12 +47,12 @@ function ThresholdController(ImageFactory, $state){
         if (threshToggled) {
             var w = ctx.canvas.width = image.width,
             h = ctx.canvas.height = image.height;
-            ctx.drawImage(image, 0, 0, w, h);      
-            var d = ctx.getImageData(0, 0, w, h);  
-            for (var i=0; i<d.data.length; i+=4) { 
+            ctx.drawImage(image, 0, 0, w, h);
+            var d = ctx.getImageData(0, 0, w, h);
+            for (var i=0; i<d.data.length; i+=4) {
                 d.data[i] = d.data[i+1] = d.data[i+2] = d.data[i+1] < vm.threshold ? 0 : 255;
             }
-            ctx.putImageData(d, 0, 0);          
+            ctx.putImageData(d, 0, 0);
         }
     }
 
@@ -62,7 +62,7 @@ function ThresholdController(ImageFactory, $state){
             updateThreshold();
         } else {
             image.src = base64;
-            ctx.drawImage(image, 0, 0, image.width, image.height); 
+            ctx.drawImage(image, 0, 0, image.width, image.height);
         }
     }
 
@@ -77,10 +77,10 @@ function ThresholdController(ImageFactory, $state){
             var threshold = vm.threshold;
             var request = ImageFactory.submitImage(threshold);
             request.then(
-                function(success) {     
+                function(success) {
                     vm.showProgress = false;
                     ImageFactory.results.push({
-                        image: ImageFactory.getBase64(),
+                        image: 'data:image/jpg;base64,' + success.data.image_with_contours,
                         count: success.data.colonyCount,
                         name: ImageFactory.getFile().name,
                         threshold: threshold

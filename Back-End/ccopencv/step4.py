@@ -13,8 +13,9 @@ class step4(step3):
     # inherits from step 3
     # self.input_img
     # self.cont_groups
-    def __init__(self, step_img, predictor, predictor_ps):
+    def __init__(self, step_img, predictor, predictor_ps, original):
         self.input_img = step_img.copy()
+        self.original_img = original.copy()
         self.cont_groups = []
         self.predictor = predictor
         self.predictor_ps = predictor_ps
@@ -123,12 +124,11 @@ class step4(step3):
         for i,c  in enumerate(categ):
             if c == 'S' or c=='M':
                 valid_idx.append(i)
-                # contours = cont_fam[i].contours
-                # cv2.drawContours(tmp_mat, contours, -1, (255,0,0), thickness = -1, lineType = 8)
 
-        # print('valid_idx size: ', len(valid_idx))
-        # cv2.imwrite('step4_img-good_3.jpg', tmp_mat, [cv2.IMWRITE_JPEG_QUALITY, 100])
-        return len(valid_idx)
+        for k in cont_fam:
+            cv2.drawContours(self.original_img, k.contours, -1, (80,244,66), thickness = 3, lineType = 8)
+
+        return len(valid_idx), self.original_img
 
     def separateUnsplited(self, cont_groups):
         """ applied to self.cont_groups
