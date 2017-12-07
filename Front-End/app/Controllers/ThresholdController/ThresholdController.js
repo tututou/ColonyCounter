@@ -25,11 +25,11 @@ function ThresholdController(ImageFactory, $state){
     init();
 
     function init() {
-        if (!ImageFactory.getBase64()) {
+        if (!ImageFactory.getOgBase64()) {
             alert('You must first select an image before thresholding.');
             $state.go('site.home');
         }
-        base64 = ImageFactory.getBase64();
+        base64 = ImageFactory.getOgBase64();
         image = new Image();
         var canv = document.createElement("canvas");
         canv.style.width  = '60vh';
@@ -79,11 +79,13 @@ function ThresholdController(ImageFactory, $state){
             request.then(
                 function(success) {
                     vm.showProgress = false;
-                    ImageFactory.results.push({
-                        image: 'data:image/jpg;base64,' + success.data.image_with_contours,
+                    ImageFactory.results.unshift({
+                        image_og: ImageFactory.getOgBase64(),
+                        image_count: ImageFactory.getBase64Prefix() + success.data.image_with_contours,
                         count: success.data.colonyCount,
                         name: ImageFactory.getFile().name,
-                        threshold: threshold
+                        threshold: threshold,
+                        showOriginal: false
                     });
                     vm.canMakeRequest = true;
                     $state.go('site.result');

@@ -10,9 +10,15 @@
                         The image below, {{result.name}}, contains {{result.count}} yeast cells:
                     </md-card-title-text>
                     <br />
-                    <hr />
-                    <md-card-title-media class="md-media-xl">
-                        <img ng-src="{{result.image}}" />    
+                    <md-button class="md-raised md-primary" aria-label="icon" ng-click="result.showOriginal = !result.showOriginal">
+                        <span ng-show="result.showOriginal"> Show result image</span>
+                        <span ng-show="!result.showOriginal"> Show original</span>
+                    </md-button>
+                    <md-card-title-media class="md-media-xl" ng-show="result.showOriginal">
+                        <img ng-src="{{result.image_og}}" />    
+                    </md-card-title-media>
+                    <md-card-title-media class="md-media-xl" ng-show="!result.showOriginal">
+                        <img ng-src="{{result.image_count}}" />    
                     </md-card-title-media>
                 </md-card-title>
             </md-card>

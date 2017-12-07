@@ -29,11 +29,17 @@ function ImageFactory($http){
         clearFile: function() {
             currentFile = null;
         },
-        getBase64: function() {
+        getOgBase64: function() {
             if (!current64) {
                 return undefined;      
             }
-            return 'data:image/' + this.getCurrentFileExtension() + ';base64,' + current64;
+            return this.getBase64Prefix() + current64;
+        },
+        getBase64Prefix: function () {
+            if (!current64) {
+                return undefined;      
+            }
+            return 'data:image/' + this.getCurrentFileExtension() + ';base64,';
         },
         readFromDisk: function(uploadCallback) {
             var reader = new FileReader();
