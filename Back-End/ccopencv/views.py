@@ -28,8 +28,13 @@ def colonycount(request, format=None):
                 return HttpResponseBadRequest()
             decoded64 = base64.b64decode(img64str)
             processor = Processor(decoded64)
-            count = processor.runAll(extension)
-            return Response({'colonyCount': count})
+            count, img_buff = processor.runAll(extension)
+            img_as_str = base64.b64encode(img_buff)
+            return Response(
+                {'colonyCount': count,
+                 'image_with_contours': img_as_str
+                }
+            )
         else:
             return Response(
                 {
