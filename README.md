@@ -2,8 +2,6 @@
 
 ColonyCounter is a web application that uses OpenCV to count the number of yeast colonies in images of petri dishes.
 
-## Check out the latest release: https://www.colonycounter.org
-
 ## New Developers:
 
 Hi, welcome to the project! ColonyCounter makes use of `django-rest-framework` and `AngularJS`. These are separated into two directories,  `Back-End/` and `Front-End/` (respectively). 
